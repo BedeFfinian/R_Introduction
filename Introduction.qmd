@@ -24,6 +24,8 @@ R code can be used to do simple calculations with values or even create lists, v
 
 We can use either <- or = to assign a value, list or dataframe into an object
 
+An object is something that is saved in temporary memory
+
 ```{r}
 a<- 17
 ```
@@ -125,17 +127,25 @@ df$Response<-Response
 
 We can check the data we have using a base plot function
 
+The base plot() function will create a grid that is each column of the data set is plotted against all the others, this is fine for continuous data (Such as bill_depth_mm)
+
 ```{r}
 plot(df)
 ```
 
 Here we can see that the response is totally random, regardless of treatment and year
+
 for interesting plotting we can change this 
+
 For manipulation we can use something called pipes %>% which push the output from one line into the function on the next line
+
 we can change the values of response by the values of year and treatment using the case_when function to create clauses similar to if else statements
+
 The mutate function can be used to create new columns based on current columns or other values/objects
 
-These two lines do the same, but one uses a pipe and one doesn't. For a simple example there is little to no difference, but when using multiple functions in a row piping makes code a lot easier to read and understand what order functions have been carried out in.
+These two lines do the same, but one uses a pipe and one doesn't. For a simple example there is little to no difference,
+
+but when using multiple functions in a row piping makes code a lot easier to read and understand what order functions have been carried out in.
 
 
 ```{r}

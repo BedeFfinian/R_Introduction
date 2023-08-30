@@ -109,6 +109,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>We can use either &lt;- or = to assign a value, list or dataframe into an object</p>
+<p>An object is something that is saved in temporary memory</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>a<span class="ot">&lt;-</span> <span class="dv">17</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -231,14 +232,20 @@ Attaching package: 'dplyr'</code></pre>
 <section id="visualisation" class="level1">
 <h1>Visualisation</h1>
 <p>We can check the data we have using a base plot function</p>
+<p>The base plot() function will create a grid that is each column of the data set is plotted against all the others, this is fine for continuous data (Such as bill_depth_mm)</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="Introduction_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>Here we can see that the response is totally random, regardless of treatment and year for interesting plotting we can change this For manipulation we can use something called pipes %&gt;% which push the output from one line into the function on the next line we can change the values of response by the values of year and treatment using the case_when function to create clauses similar to if else statements The mutate function can be used to create new columns based on current columns or other values/objects</p>
-<p>These two lines do the same, but one uses a pipe and one doesn’t. For a simple example there is little to no difference, but when using multiple functions in a row piping makes code a lot easier to read and understand what order functions have been carried out in.</p>
+<p>Here we can see that the response is totally random, regardless of treatment and year</p>
+<p>for interesting plotting we can change this</p>
+<p>For manipulation we can use something called pipes %&gt;% which push the output from one line into the function on the next line</p>
+<p>we can change the values of response by the values of year and treatment using the case_when function to create clauses similar to if else statements</p>
+<p>The mutate function can be used to create new columns based on current columns or other values/objects</p>
+<p>These two lines do the same, but one uses a pipe and one doesn’t. For a simple example there is little to no difference,</p>
+<p>but when using multiple functions in a row piping makes code a lot easier to read and understand what order functions have been carried out in.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>df_1<span class="ot">&lt;-</span>df <span class="sc">%&gt;%</span> </span>
 <span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Response_updated=</span><span class="fu">case_when</span>(Treatment<span class="sc">==</span><span class="st">"Control"</span><span class="sc">~</span><span class="fu">jitter</span>(Response)<span class="sc">*</span>((Year<span class="dv">-1930</span>)<span class="sc">/</span><span class="dv">5</span>)<span class="sc">-</span><span class="dv">50</span>,</span>
@@ -264,9 +271,9 @@ Attaching package: 'dplyr'</code></pre>
 <pre><code># A tibble: 3 × 3
   Treatment   MeanResponse SDResponse
   &lt;fct&gt;              &lt;dbl&gt;      &lt;dbl&gt;
-1 Control             119.       118.
-2 Treatment 1        -621.      1153.
-3 Treatment 2        1200.       811.</code></pre>
+1 Control             123.       120.
+2 Treatment 1        -711.      1180.
+3 Treatment 2        1274.       879.</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>df_1_summary_year<span class="ot">&lt;-</span>df_1 <span class="sc">%&gt;%</span> </span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Treatment,Year) <span class="sc">%&gt;%</span> </span>
@@ -282,16 +289,16 @@ Attaching package: 'dplyr'</code></pre>
 # Groups:   Treatment [3]
    Treatment  Year MeanResponse SDResponse
    &lt;fct&gt;     &lt;dbl&gt;        &lt;dbl&gt;      &lt;dbl&gt;
- 1 Control    1950         32.3       36.5
- 2 Control    1951         10.9       30.8
- 3 Control    1952         36.8       26.8
- 4 Control    1953         11.0       29.7
- 5 Control    1954        -11.1       39.2
- 6 Control    1955         30.0       38.5
- 7 Control    1956         11.0       27.7
- 8 Control    1957         58.4       41.2
- 9 Control    1958         48.1       45.8
-10 Control    1959         26.5       58.6
+ 1 Control    1950         17.6       21.3
+ 2 Control    1951         17.2       30.7
+ 3 Control    1952         10.2       34.1
+ 4 Control    1953         23.2       32.9
+ 5 Control    1954         36.6       33.7
+ 6 Control    1955         10.9       47.7
+ 7 Control    1956         32.3       33.8
+ 8 Control    1957         35.0       45.3
+ 9 Control    1958         38.3       40.6
+10 Control    1959         42.5       40.7
 # ℹ 212 more rows</code></pre>
 </div>
 </div>

@@ -97,10 +97,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="basics" class="level1">
 <h1>Basics</h1>
 <p>R is a open source statistical programming language. It can used through many Graphic User Interfaces (GUI) my preferences is to use RStudio but VSCode is good and you can also code in base R.</p>
-<p>This workshop will rely on using code written in RStudio and locations of things (Script, Console, Environment, Plots) will be RStudio specific but the code could be run in any GUI.</p>
+<p>This tutorial will rely on using code written in RStudio and locations of things (Script, Console, Environment, Plots) will be RStudio specific but the code could be run in any GUI.</p>
 <p>Scripts are saved code that you are editing (What I am writing in currently), you then execute (run) the code in the ‘console’ (Normally below the script window)</p>
-<p>You can execute code one line by having your cursor on that line in the script or select many lines then click the run buttom or cmd+enter (mac) or ctrl+enter (pc)</p>
-<p>Everything to the right of a hastag ‘#’ is not executed, therefore we can use this to make comments or writing in scripts</p>
+<p>You can execute one line of code by having your cursor on that line in the script or select many lines then click the run buttom or cmd+enter (mac) or ctrl+enter (pc)</p>
+<p>Everything to the right of a hastag ‘#’ is not executed, therefore we can use this to make comments or write in scripts</p>
 <p>R code can be used to do simple calculations with values or even create lists, vectors, values, dataframes and more complex objects in the “global environment”. (normally top right)</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span><span class="sc">*</span><span class="dv">6</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -109,11 +109,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>We can use either &lt;- or = to assign a value, list or dataframe into an object</p>
-<p>An object is something that is saved in temporary memory</p>
+<p>An object is something (usually some sort of data) that is saved in temporary memory</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>a<span class="ot">&lt;-</span> <span class="dv">17</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We use c() to concatenate elements together, which means make them into a vector</p>
+<p>In R we can use functions to tasks for us, they precede a parenthesis (), some are named after what they do and some are less well named,</p>
+<p>within functions they have arguments, what you put into these arguments will define how they perform.</p>
+<p>We use c() to concatenate elements together, which means combine them into a vector, which is a series of values</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>b<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -135,17 +137,81 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>[1]  17  85  85  51 119</code></pre>
 </div>
 </div>
+<p>We can also create data systematically with R</p>
+<p>For example a sequence of 10 values going up by 1</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>Sequence<span class="ot">&lt;-</span><span class="fu">seq</span>(<span class="at">from=</span><span class="dv">1</span>,<span class="at">to=</span><span class="dv">10</span>,<span class="at">by=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We will come back to generating data systematically later.</p>
+</section>
+<section id="data-types" class="level1">
+<h1>Data Types</h1>
+<p>In R there are many different types of data, the most common four are Numeric, Interger, Character and Factor. Logical and Complex are also data types but very rarely used explicitly.</p>
+<p>Numeric data is any real numbers so 8 or 12.3 or 1.00000002 etc, while Integer data is just whole numbers 3, 4, 111 etc</p>
+<p>Character data are words or letters surrounded by quotations such as “A”, “Red”, “Treated”, Character data has no order to it in Rs ‘mind’</p>
+<p>Factor data is like character data but r (or you) have assigned an order to it e.g.&nbsp;“A”, “B”, “C”</p>
+</section>
+<section id="objects" class="level1">
+<h1>Objects</h1>
+<p>As we saw above we can store data in R as an Object, these can be many different types and combinations,</p>
+<p>The most common Object types are Vectors, Lists, Matrices, DataFrames and Arrays,</p>
+<p>The main differences of these Object types are what types and combinations of data can be stored in them and how many Dimensions they have,</p>
+<p>A single group of one data type (it could be Numeric, Character, Integer, Factor), with one dimension is called a Vector.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>Vector_Numeric<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>Vector_Integer<span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">7</span>)) <span class="co"># we change between data types with these functions </span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>Vector_Character<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"This"</span>,<span class="st">"is"</span>,<span class="st">"A"</span>,<span class="st">"Character Vector"</span>)</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>Vector_Factor<span class="ot">&lt;-</span><span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="st">"This"</span>,<span class="st">"is"</span>,<span class="st">"A"</span>,<span class="st">"Character"</span>, <span class="st">"Vector"</span>)) <span class="co"># Notice how r automatically orders alphabetically if we don't tell it the order</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Multiple groups of one data type (it could be Numeric, Character, Integer, Factor), with two dimensions is called a Matrix.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Matrix_Numeric<span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>))</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>Matrix_Character<span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">c</span>(<span class="st">"This"</span>,<span class="st">"is"</span>,<span class="st">"A"</span>,<span class="st">"Character Matrix"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Multiple groups of a combination of data types or object types (it could be Numeric, Character, Integer, Factor or vectors, dataframes or matrices of these), with two dimensions is called a List. Each element in a list can be a different length to the other elements.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>List_Numeric<span class="ot">&lt;-</span><span class="fu">list</span>(<span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>),</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">7</span>))</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>List_From_Vectors<span class="ot">&lt;-</span><span class="fu">list</span>(Vector_Character,Matrix_Numeric,Matrix_Numeric)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Multiple groups of a combination of data types (it could be Numeric, Character, Integer, Factor), with two dimensions is called a Dataframe. Each element of a dataframe must be the last length as the other elements.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df<span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="at">Column1=</span><span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>),</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">Column2=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">7</span>),</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">Column3=</span>Vector_Factor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Multiple groups of one data type (it could be Numeric, Character, Integer, Factor or vectors or matrices), with more than two dimensions is called an Array.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>Array_1d<span class="ot">&lt;-</span><span class="fu">array</span>(<span class="fu">c</span>(Matrix_Numeric,<span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>)),<span class="at">dim=</span><span class="fu">c</span>(<span class="dv">5</span>))</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>Array_2d<span class="ot">&lt;-</span><span class="fu">array</span>(<span class="fu">c</span>(Matrix_Numeric,<span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>)),<span class="at">dim=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">2</span>))</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>Array_3d<span class="ot">&lt;-</span><span class="fu">array</span>(<span class="fu">c</span>(Matrix_Numeric,<span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>)),<span class="at">dim=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Arrays are rarely used so probably won’t discuss much further.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Data/Input/Images/Object_Table.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Table of Object Types and Their Dimensions</figcaption>
+</figure>
+</div>
 </section>
 <section id="packages" class="level1">
 <h1>Packages</h1>
-<p>R relies upon packages, groups of specific functions, which can be installed from the internet and then loaded into a script. Base R, a package always already installed and loaded with R, is very powerful and useful but less user friendly for some tasks. From Base R we can use the install.packages() function to install a package from online.</p>
+<p>R relies upon packages, groups of specific functions, which can be installed from the internet and then loaded into a script.</p>
+<p>Base R, a package always already installed and loaded within R, is very powerful and useful but less user friendly for some tasks.</p>
+<p>From Base R we can use the install.packages() function to install a package from online repositories.</p>
+<p>R assumes CRAN (the official online repository but sometimes you might want to download from other repositories)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("dplyr") </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("dplyr") </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>You only have to do this when you first want the package or want to updated it.</p>
+<p>You only have to do this when you first want the package or want to update it.</p>
 <p>Once a package is installed we have to tell R that we want to use functions from this package so we load it</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
 Attaching package: 'dplyr'</code></pre>
@@ -162,15 +228,16 @@ Attaching package: 'dplyr'</code></pre>
 </div>
 </div>
 <p>This needs to be run every new R session when this package is used.</p>
-<p>We can now run functions from the dplyr library, specifically dplyr is a library, which is part of a group of packages called the tidyverse</p>
+<p>We can now run functions from the dplyr library, specifically dplyr is a package, which is part of a group or ecosystem of packages called the tidyverse</p>
 <p>We will use this group of packages for reading data into R (readr), manipulating data (dplyr) and visualisng data (ggplot2)</p>
 </section>
 <section id="data-manipulataion" class="level1">
 <h1>Data Manipulataion</h1>
-<p>First we can make some data into a dataframe, explore this data, transform and add to it, then we will make some figures with it. R has some very useful random and non-random data generation functions</p>
+<p>First we can make some data into a dataframe, explore this data, transform and add to it, then we will make some figures with it.</p>
+<p>R has some very useful random and non-random data generation functions</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("tidyverse") </span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("tidyverse") </span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
 ✔ forcats   1.0.0     ✔ readr     2.1.4
@@ -182,196 +249,300 @@ Attaching package: 'dplyr'</code></pre>
 ✖ dplyr::lag()    masks stats::lag()
 ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>Year <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">1950</span>,<span class="at">to=</span><span class="dv">2023</span>,<span class="at">by=</span><span class="dv">1</span>)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>Treatment <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Control"</span>,<span class="st">"Treatment 1"</span>,<span class="st">"Treatment 2"</span>)</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>Rep<span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">1</span>,<span class="at">to=</span><span class="dv">10</span>,<span class="at">by=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>Year <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">1950</span>,<span class="at">to=</span><span class="dv">2023</span>,<span class="at">by=</span><span class="dv">1</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>Treatment <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Control"</span>,<span class="st">"Treatment 1"</span>,<span class="st">"Treatment 2"</span>)</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>Rep<span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">1</span>,<span class="at">to=</span><span class="dv">10</span>,<span class="at">by=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>These are three vectors, which we can check information about them with a few simple functions</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(Year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(Year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 74</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
    1950    1968    1986    1986    2005    2023 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(Treatment)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(Treatment)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Treatment)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Treatment)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Length     Class      Mode 
         3 character character </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(Rep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(Rep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 10</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Rep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Rep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
    1.00    3.25    5.50    5.50    7.75   10.00 </code></pre>
 </div>
 </div>
 <p>We want to combine these vectors so we have a row for each rep, year and treatment, we can do this by expanding the grid and create a new dataframe called df.</p>
+<p>We can inspect specific elements of a dataframe too</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>df<span class="ot">&lt;-</span><span class="fu">expand.grid</span>(<span class="at">Year=</span>Year,<span class="at">Treatment=</span>Treatment,<span class="at">Rep=</span>Rep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>df<span class="ot">&lt;-</span><span class="fu">expand.grid</span>(<span class="at">Year=</span>Year,<span class="at">Treatment=</span>Treatment,<span class="at">Rep=</span>Rep)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(df) <span class="co"># type of object</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "data.frame"</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(df) <span class="co"># number of rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2220</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(df) <span class="co"># number of columns</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(df) <span class="co"># dimensions of object</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2220    3</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df) <span class="co"># the first 6 rows of the df</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Year Treatment Rep
+1 1950   Control   1
+2 1951   Control   1
+3 1952   Control   1
+4 1953   Control   1
+5 1954   Control   1
+6 1955   Control   1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(df) <span class="co"># the last 6 rows of the df</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     Year   Treatment Rep
+2215 2018 Treatment 2  10
+2216 2019 Treatment 2  10
+2217 2020 Treatment 2  10
+2218 2021 Treatment 2  10
+2219 2022 Treatment 2  10
+2220 2023 Treatment 2  10</code></pre>
+</div>
 </div>
 <p>This df is all the meta data we want for our dataframe that we want to now make up some response data</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>Response<span class="ot">&lt;-</span><span class="fu">rnorm</span>(<span class="at">n=</span><span class="fu">nrow</span>(df),<span class="at">mean =</span> <span class="dv">15</span>,<span class="at">sd=</span><span class="dv">8</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>Response<span class="ot">&lt;-</span><span class="fu">rnorm</span>(<span class="at">n=</span><span class="fu">nrow</span>(df),<span class="at">mean =</span> <span class="dv">15</span>,<span class="at">sd=</span><span class="dv">8</span>) <span class="co"># we need the response to be same length as the df so we use nrow() for the number of values we want.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We can then combine this to our df</p>
+<p>We can then combine this to our df, the dollar sign is used to select one dimension (column) from within an object (here a dataframe)</p>
+<p>df$Response isn’t present in the data but by assigning our Response vector to it with &lt;- it adds a new column</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>Response<span class="ot">&lt;-</span>Response</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>Response<span class="ot">&lt;-</span>Response</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="visualisation" class="level1">
 <h1>Visualisation</h1>
 <p>We can check the data we have using a base plot function</p>
-<p>The base plot() function will create a grid that is each column of the data set is plotted against all the others, this is fine for continuous data (Such as bill_depth_mm)</p>
+<p>The base plot() function will create a grid that is each column of the data set plotted against all the others, this is fine for continuous data (Such as bill_depth_mm)</p>
+<p>but it is hard to understand or read fully.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Introduction_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+<p><img src="Introduction_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>We can define x and y axes from columns of the data set</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x=</span>df<span class="sc">$</span>Year,<span class="at">y=</span>df<span class="sc">$</span>Response)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Introduction_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>It automatically does a scatter plot, maybe we want to colour different treatments differently? and perhaps some axis labels that are more clear?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x=</span>df<span class="sc">$</span>Year,<span class="at">y=</span>df<span class="sc">$</span>Response,<span class="at">col=</span>df<span class="sc">$</span>Treatment, <span class="at">xlab=</span><span class="st">"Year"</span>,<span class="at">ylab=</span><span class="st">"Response"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Introduction_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Some of the arguments in this function are well named but you need to know the names of the arguments to properly use a function best,</p>
+<p>you can easily find documentation of what arguments are within a function by typing two ? before the function in the console like so:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>??<span class="fu">plot</span>()</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="co"># plot is a common function name so we have to go to the base::plot() section of the help</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>With the points coloured we should add a legend to the plot, this is accomplished with another function run after the plot function</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x=</span>df<span class="sc">$</span>Year,<span class="at">y=</span>df<span class="sc">$</span>Response,<span class="at">col=</span><span class="fu">unique</span>(df<span class="sc">$</span>Treatment), <span class="at">xlab=</span><span class="st">"Year"</span>,<span class="at">ylab=</span><span class="st">"Response"</span>,<span class="at">pch=</span><span class="dv">19</span>)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="at">x =</span> <span class="st">"topright"</span>,          <span class="co"># Position</span></span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">unique</span>(df<span class="sc">$</span>Treatment),  <span class="co"># Legend texts</span></span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>, <span class="dv">3</span>),           <span class="co"># point colors</span></span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch=</span><span class="dv">19</span>)                    <span class="co"># point type</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Introduction_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>Here we can see that the response is totally random, regardless of treatment and year</p>
-<p>for interesting plotting we can change this</p>
+<p>For interesting plotting we can change this</p>
 <p>For manipulation we can use something called pipes %&gt;% which push the output from one line into the function on the next line</p>
 <p>we can change the values of response by the values of year and treatment using the case_when function to create clauses similar to if else statements</p>
 <p>The mutate function can be used to create new columns based on current columns or other values/objects</p>
-<p>These two lines do the same, but one uses a pipe and one doesn’t. For a simple example there is little to no difference,</p>
+<p>These two lines do the same, but one uses a pipe (%&gt;%) and one doesn’t. For a simple example there is little to no difference,</p>
 <p>but when using multiple functions in a row piping makes code a lot easier to read and understand what order functions have been carried out in.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>df_1<span class="ot">&lt;-</span>df <span class="sc">%&gt;%</span> </span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Response_updated=</span><span class="fu">case_when</span>(Treatment<span class="sc">==</span><span class="st">"Control"</span><span class="sc">~</span><span class="fu">jitter</span>(Response)<span class="sc">*</span>((Year<span class="dv">-1930</span>)<span class="sc">/</span><span class="dv">5</span>)<span class="sc">-</span><span class="dv">50</span>,</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>                                    Treatment<span class="sc">==</span><span class="st">"Treatment 1"</span><span class="sc">~</span><span class="fu">jitter</span>(Response)<span class="sc">*</span>((Year<span class="dv">-1930</span>)<span class="sc">*-</span><span class="dv">2</span>)<span class="sc">+</span><span class="dv">1000</span>,</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>                                    Treatment<span class="sc">==</span><span class="st">"Treatment 2"</span><span class="sc">~</span><span class="fu">jitter</span>(Response)<span class="sc">*</span>((Year<span class="dv">-1930</span>)<span class="sc">*</span><span class="fl">1.5</span>)<span class="sc">-</span><span class="dv">4</span>))</span>
-<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>df_1<span class="ot">&lt;-</span><span class="fu">mutate</span>(df,</span>
-<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">Response_updated=</span><span class="fu">case_when</span>(Treatment<span class="sc">==</span><span class="st">"Control"</span><span class="sc">~</span><span class="fu">jitter</span>(Response)<span class="sc">*</span>((Year<span class="dv">-1930</span>)<span class="sc">/</span><span class="dv">5</span>)<span class="sc">-</span><span class="dv">50</span>,</span>
-<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>                                    Treatment<span class="sc">==</span><span class="st">"Treatment 1"</span><span class="sc">~</span><span class="fu">jitter</span>(Response)<span class="sc">*</span>((Year<span class="dv">-1930</span>)<span class="sc">*-</span><span class="dv">2</span>)<span class="sc">+</span><span class="dv">1000</span>,</span>
-<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>                                    Treatment<span class="sc">==</span><span class="st">"Treatment 2"</span><span class="sc">~</span><span class="fu">jitter</span>(Response)<span class="sc">*</span>((Year<span class="dv">-1930</span>)<span class="sc">*</span><span class="fl">1.5</span>)<span class="sc">-</span><span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>df_1<span class="ot">&lt;-</span>df <span class="sc">%&gt;%</span> </span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Response_updated=</span><span class="fu">case_when</span>(Treatment<span class="sc">==</span><span class="st">"Control"</span><span class="sc">~</span><span class="fu">jitter</span>(Response)<span class="sc">*</span>((Year<span class="dv">-1930</span>)<span class="sc">/</span><span class="dv">5</span>)<span class="sc">-</span><span class="dv">50</span>,</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>                                    Treatment<span class="sc">==</span><span class="st">"Treatment 1"</span><span class="sc">~</span><span class="fu">jitter</span>(Response)<span class="sc">*</span>((Year<span class="dv">-1930</span>)<span class="sc">*-</span><span class="dv">2</span>)<span class="sc">+</span><span class="dv">1000</span>,</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>                                    Treatment<span class="sc">==</span><span class="st">"Treatment 2"</span><span class="sc">~</span><span class="fu">jitter</span>(Response)<span class="sc">*</span>((Year<span class="dv">-1930</span>)<span class="sc">*</span><span class="fl">1.5</span>)<span class="sc">-</span><span class="dv">4</span>))</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>df_1<span class="ot">&lt;-</span><span class="fu">mutate</span>(df,</span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>             <span class="at">Response_updated=</span><span class="fu">case_when</span>(Treatment<span class="sc">==</span><span class="st">"Control"</span><span class="sc">~</span><span class="fu">jitter</span>(Response)<span class="sc">*</span>((Year<span class="dv">-1930</span>)<span class="sc">/</span><span class="dv">5</span>)<span class="sc">-</span><span class="dv">50</span>,</span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>                                    Treatment<span class="sc">==</span><span class="st">"Treatment 1"</span><span class="sc">~</span><span class="fu">jitter</span>(Response)<span class="sc">*</span>((Year<span class="dv">-1930</span>)<span class="sc">*-</span><span class="dv">2</span>)<span class="sc">+</span><span class="dv">1000</span>,</span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a>                                    Treatment<span class="sc">==</span><span class="st">"Treatment 2"</span><span class="sc">~</span><span class="fu">jitter</span>(Response)<span class="sc">*</span>((Year<span class="dv">-1930</span>)<span class="sc">*</span><span class="fl">1.5</span>)<span class="sc">-</span><span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can now calculate some summary statistics such as mean or standard deviation using group_by and summarise</p>
+<p>The group_by function means that all unique values in the Treatment column are used</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>df_1_summary<span class="ot">&lt;-</span>df_1 <span class="sc">%&gt;%</span> </span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Treatment) <span class="sc">%&gt;%</span> </span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">MeanResponse=</span><span class="fu">mean</span>(Response_updated),</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">SDResponse=</span><span class="fu">sd</span>(Response_updated))</span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>df_1_summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>df_1_summary<span class="ot">&lt;-</span>df_1 <span class="sc">%&gt;%</span> </span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Treatment) <span class="sc">%&gt;%</span> </span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">MeanResponse=</span><span class="fu">mean</span>(Response_updated),</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">SDResponse=</span><span class="fu">sd</span>(Response_updated))</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>df_1_summary</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 3
   Treatment   MeanResponse SDResponse
   &lt;fct&gt;              &lt;dbl&gt;      &lt;dbl&gt;
-1 Control             123.       120.
-2 Treatment 1        -711.      1180.
-3 Treatment 2        1274.       879.</code></pre>
+1 Control             125.       119.
+2 Treatment 1        -713.      1143.
+3 Treatment 2        1266.       898.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>df_1_summary_year<span class="ot">&lt;-</span>df_1 <span class="sc">%&gt;%</span> </span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Treatment,Year) <span class="sc">%&gt;%</span> </span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">MeanResponse=</span><span class="fu">mean</span>(Response_updated),</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">SDResponse=</span><span class="fu">sd</span>(Response_updated))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>df_1_summary_year<span class="ot">&lt;-</span>df_1 <span class="sc">%&gt;%</span> </span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Treatment,Year) <span class="sc">%&gt;%</span> </span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">MeanResponse=</span><span class="fu">mean</span>(Response_updated),</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">SDResponse=</span><span class="fu">sd</span>(Response_updated))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by 'Treatment'. You can override using the
 `.groups` argument.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>df_1_summary_year</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>df_1_summary_year</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 222 × 4
 # Groups:   Treatment [3]
    Treatment  Year MeanResponse SDResponse
    &lt;fct&gt;     &lt;dbl&gt;        &lt;dbl&gt;      &lt;dbl&gt;
- 1 Control    1950         17.6       21.3
- 2 Control    1951         17.2       30.7
- 3 Control    1952         10.2       34.1
- 4 Control    1953         23.2       32.9
- 5 Control    1954         36.6       33.7
- 6 Control    1955         10.9       47.7
- 7 Control    1956         32.3       33.8
- 8 Control    1957         35.0       45.3
- 9 Control    1958         38.3       40.6
-10 Control    1959         42.5       40.7
+ 1 Control    1950        0.927       21.2
+ 2 Control    1951       -4.80        26.7
+ 3 Control    1952       26.3         37.8
+ 4 Control    1953       24.8         43.2
+ 5 Control    1954       10.6         42.9
+ 6 Control    1955        4.04        43.3
+ 7 Control    1956       15.8         38.4
+ 8 Control    1957       13.0         39.8
+ 9 Control    1958       31.4         37.2
+10 Control    1959       21.6         29.8
 # ℹ 212 more rows</code></pre>
 </div>
 </div>
-<p>Now lets try and plot these data, for more complex plots ggplot2 is by far the best package we first make a blank ggplot saying what data we will include then we want to add layers to the plot for what we want to plot and how we want it to look for elements of the plot that change with data from the df we use the aes() function</p>
+<p>Now lets try and plot these data, for more complex plots ggplot2 is by far the best package</p>
+<p>we first make a blank ggplot saying what data we will include</p>
+<p>then we want to add layers to the plot for what we want to plot and how we want it to look</p>
+<p>for elements of the plot that change with data from the df we use the aes() function to show what column we want to map to what element (mapping=aes())</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_1)<span class="sc">+</span></span>
-<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>Response_updated,<span class="at">colour=</span>Treatment))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>df_1)<span class="sc">+</span></span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>Response_updated,<span class="at">colour=</span>Treatment))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Introduction_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+<p><img src="Introduction_files/figure-html/unnamed-chunk-27-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>This looks good but could be Nicer there are many geom types to dictate the type of plot</p>
+<p>different geom types have different required aesthetic elements, we could check by using ??geom_point for example</p>
+<p>generally we use, x, y, colour, fill and alpha (transparency)</p>
+<p>unlike base plotting ggplot creates a legend automatically, this becomes more complex as the plot becomes more complex but is generally a nice default</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_1)<span class="sc">+</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x=</span>Response_updated,<span class="at">colour=</span>Treatment))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_1)<span class="sc">+</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x=</span>Response_updated,<span class="at">colour=</span>Treatment))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Introduction_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+<p><img src="Introduction_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_1)<span class="sc">+</span></span>
-<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>Response_updated,<span class="at">fill=</span>Treatment),<span class="at">alpha=</span><span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_1)<span class="sc">+</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>Response_updated,<span class="at">fill=</span>Treatment),<span class="at">alpha=</span><span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Introduction_files/figure-html/unnamed-chunk-18-2.png" class="img-fluid" width="672"></p>
+<p><img src="Introduction_files/figure-html/unnamed-chunk-28-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_1)<span class="sc">+</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Treatment,<span class="at">y=</span>Response_updated,<span class="at">fill=</span>Treatment),<span class="at">alpha=</span><span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="Introduction_files/figure-html/unnamed-chunk-28-3.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>We can also add new data into the same plot so we could use the summary data too, for this we add the data to the geom we want it used for</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>df_1,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>Response_updated,<span class="at">colour=</span>Treatment),</span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data=</span>df_1_summary_year,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">ymax=</span>MeanResponse<span class="sc">+</span>SDResponse,</span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">ymin=</span>MeanResponse<span class="sc">-</span>SDResponse,<span class="at">fill=</span>Treatment),</span>
-<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
-<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>df_1_summary_year,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>MeanResponse,<span class="at">colour=</span>Treatment))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>df_1,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>Response_updated,<span class="at">colour=</span>Treatment),</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data=</span>df_1_summary_year,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">ymax=</span>MeanResponse<span class="sc">+</span>SDResponse,</span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">ymin=</span>MeanResponse<span class="sc">-</span>SDResponse,<span class="at">fill=</span>Treatment),</span>
+<span id="cb66-6"><a href="#cb66-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
+<span id="cb66-7"><a href="#cb66-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>df_1_summary_year,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>MeanResponse,<span class="at">colour=</span>Treatment))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Introduction_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+<p><img src="Introduction_files/figure-html/unnamed-chunk-29-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>We can now change the style and appearance , theme() is used to change appearances</p>
+<p>We can now change the style and appearance, theme() is used to change appearances</p>
+<p>there are also some preset theme functions like theme_classic() or theme_bw()</p>
+<p>we can also define the colours or fill we want using the scale_colour_manual() and scale_fill_manual() functions</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
-<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>df_1,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>Response_updated,<span class="at">colour=</span>Treatment),</span>
-<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
-<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data=</span>df_1_summary_year,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">ymax=</span>MeanResponse<span class="sc">+</span>SDResponse,</span>
-<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">ymin=</span>MeanResponse<span class="sc">-</span>SDResponse,<span class="at">fill=</span>Treatment),</span>
-<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
-<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>df_1_summary_year,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>MeanResponse,<span class="at">colour=</span>Treatment))<span class="sc">+</span></span>
-<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
-<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
-<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Year"</span>,<span class="at">y=</span><span class="st">"Response Variable"</span>)<span class="sc">+</span></span>
-<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>df_1,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>Response_updated,<span class="at">colour=</span>Treatment),</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data=</span>df_1_summary_year,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">ymax=</span>MeanResponse<span class="sc">+</span>SDResponse,</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">ymin=</span>MeanResponse<span class="sc">-</span>SDResponse,<span class="at">fill=</span>Treatment),</span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>df_1_summary_year,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>MeanResponse,<span class="at">colour=</span>Treatment))<span class="sc">+</span></span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Year"</span>,<span class="at">y=</span><span class="st">"Response Variable"</span>)<span class="sc">+</span></span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Introduction_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+<p><img src="Introduction_files/figure-html/unnamed-chunk-30-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>We could even separate plots by another column</p>
+<p>We could even separate plots by another column (facetting)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>df_1,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>Response_updated,<span class="at">colour=</span>Treatment),</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data=</span>df_1_summary_year,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">ymax=</span>MeanResponse<span class="sc">+</span>SDResponse,</span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">ymin=</span>MeanResponse<span class="sc">-</span>SDResponse,<span class="at">fill=</span>Treatment),</span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>df_1_summary_year,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>MeanResponse,<span class="at">colour=</span>Treatment))<span class="sc">+</span></span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Rep, <span class="at">nrow=</span><span class="dv">2</span>)<span class="sc">+</span></span>
-<span id="cb46-9"><a href="#cb46-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
-<span id="cb46-10"><a href="#cb46-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
-<span id="cb46-11"><a href="#cb46-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Year"</span>,<span class="at">y=</span><span class="st">"Response Variable"</span>)<span class="sc">+</span></span>
-<span id="cb46-12"><a href="#cb46-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>df_1,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>Response_updated,<span class="at">colour=</span>Treatment),</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data=</span>df_1_summary_year,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">ymax=</span>MeanResponse<span class="sc">+</span>SDResponse,</span>
+<span id="cb68-5"><a href="#cb68-5" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">ymin=</span>MeanResponse<span class="sc">-</span>SDResponse,<span class="at">fill=</span>Treatment),</span>
+<span id="cb68-6"><a href="#cb68-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
+<span id="cb68-7"><a href="#cb68-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>df_1_summary_year,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>MeanResponse,<span class="at">colour=</span>Treatment))<span class="sc">+</span></span>
+<span id="cb68-8"><a href="#cb68-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Rep, <span class="at">nrow=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb68-9"><a href="#cb68-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
+<span id="cb68-10"><a href="#cb68-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
+<span id="cb68-11"><a href="#cb68-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Year"</span>,<span class="at">y=</span><span class="st">"Response Variable"</span>)<span class="sc">+</span></span>
+<span id="cb68-12"><a href="#cb68-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="Introduction_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+<p><img src="Introduction_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>Google is full of different elements that can be changed within a plot, you can google exactly what you want, then normally stackoverflow answers or blogs will help most</p>
+<p>Once we have got a plot to how we want it we can then save it as a file on our computer using the ggsave() function</p>
+<p>to do this we can save our plot as an object, then provide the location we want to save the file and its name and extension in quotations, and its size,</p>
+<p>we will save to the current directory.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>Plot_To_Save<span class="ot">&lt;-</span><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>df_1,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>Response_updated,<span class="at">colour=</span>Treatment),</span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data=</span>df_1_summary_year,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">ymax=</span>MeanResponse<span class="sc">+</span>SDResponse,</span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">ymin=</span>MeanResponse<span class="sc">-</span>SDResponse,<span class="at">fill=</span>Treatment),</span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>df_1_summary_year,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>MeanResponse,<span class="at">colour=</span>Treatment))<span class="sc">+</span></span>
+<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>Rep, <span class="at">nrow=</span><span class="dv">2</span>)<span class="sc">+</span></span>
+<span id="cb69-9"><a href="#cb69-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
+<span id="cb69-10"><a href="#cb69-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
+<span id="cb69-11"><a href="#cb69-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Year"</span>,<span class="at">y=</span><span class="st">"Response Variable"</span>)<span class="sc">+</span></span>
+<span id="cb69-12"><a href="#cb69-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb69-13"><a href="#cb69-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-14"><a href="#cb69-14" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"This_Is_Our_First_Saved_Plot.png"</span>, Plot_To_Save, <span class="at">width=</span><span class="dv">10</span>, <span class="at">height=</span><span class="dv">10</span>) <span class="co"># dont forget to put the file type at the end we will use .png</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 
 </main>

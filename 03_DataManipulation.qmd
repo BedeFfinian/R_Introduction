@@ -1,0 +1,141 @@
+---
+title: "Data Manipulation with Real World Data in R"
+format:
+  html:
+    toc: true
+    toc-location: left
+---
+
+# Real World Data
+
+Packages often have their own example datasets within them, or a package can be used to store just data without functions etc.
+
+We will look at the palmer penguins dataset
+
+```{r}
+#install.packages("palmerpenguins")
+
+library(palmerpenguins)
+data(penguins)
+```
+
+This becomes a 'promise' of a data set, we have to do something with it to get it properly, lets take a look inside
+
+```{r}
+
+library(dplyr)
+glimpse(penguins)
+
+```
+
+This gives us two datasets in our global environment
+
+Using summary() we can see which columns have NAs and which don't.
+
+```{r}
+summary(penguins)
+```
+
+Through going into the object and ordering one of the columns we find that the NA's (which order to last always) are the same rows
+So we only have to remove two rows to remove the NAs in the biometrics columns, there are more NA's in the sex column
+if we want to remove NA's there are many ways, to be selective we can filter our dataset 
+
+To subset data we can use the filter() function from the dplyr package, we create a logic clause that then filters the dataset by that clause/statement,
+
+for example if we want to select all rows of the data set where the data is from a female penguin we can do this by
+
+```{r}
+
+female_penguins<- penguins %>% 
+  filter(sex=="female")
+
+
+female_penguins
+
+```
+
+or we might want all the penguins above 5 kg
+
+```{r}
+
+heavier_penguins<- penguins %>% 
+  filter(body_mass_g>= 5000)
+
+
+heavier_penguins
+
+
+```
+
+there are a range of symbols we can use such as more than >, less than <, more than or equal to >=, less than or equal to <=, is equal to == 
+
+we can even use multiple clauses or statements in one call to filter, 
+
+so if we want all the heavier female penguins 
+
+```{r}
+
+heavier_female_penguins<- penguins %>% 
+  filter(body_mass_g>= 5000 & sex=="female")
+
+
+heavier_female_penguins
+
+
+```
+
+sometimes we might want to filter with multiple answers of a categorical variable, 
+
+for example if we wanted all penguins from Biscoe and Torgersen island
+
+to do this we can make a vector of the names we want, then filter by that vector 
+
+
+```{r}
+
+Islands_we_Want<-c("Biscoe","Torgersen")
+
+Biscoe_Torgersen_penguins<- penguins %>% 
+  filter(island%in%Islands_we_Want)
+
+Biscoe_Torgersen_penguins
+
+
+```
+
+Here we will make use of ! this means the opposite of the clause (not this)
+
+We also use %in% which is used to tell filter there are more than one element
+
+or NAs that we want to get rid of as NA is not classed like normal data
+
+```{r}
+penguins_someNAs<-penguins %>% 
+  filter(!body_mass_g%in%NA)
+```
+
+If we now look at the number of rows of the datasets we can see only two rows were removed. (not all the NAs)
+
+```{r}
+nrow(penguins)
+nrow(penguins_someNAs)
+
+summary(penguins_someNAs)
+```
+
+Still 9 NAs in sex
+
+```{r}
+penguins_noNAs<-penguins_someNAs %>% 
+  filter(!sex%in%NA)
+
+summary(penguins_noNAs)
+```
+
+All sorted
+
+
+
+
+
+

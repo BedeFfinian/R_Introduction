@@ -77,9 +77,9 @@ Here we can see that the response is totally random, regardless of treatment and
 
 For interesting plotting we can change this, we can add patterns and jitter (random noise) to our data based on its treatment. 
 
-
-
 ```{r}
+library(tidyverse)
+
 df_1<-df %>% 
   mutate(Response_updated=case_when(Treatment=="Control"~jitter(Response)*((Year-1930)/5)-50,
                                     Treatment=="Treatment 1"~jitter(Response)*((Year-1930)*-2)+1000,

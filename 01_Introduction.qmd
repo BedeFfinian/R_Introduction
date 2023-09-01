@@ -165,9 +165,7 @@ Multiple groups of a combination of data types (it could be Numeric, Character, 
 
 ```{r}
 
-df<-data.frame(Column1=c(1.3,5.8,5.122,3.00,7.12),
-                       Column2=c(1,5,5,3,7),
-                       Column3=Vector_Factor)
+df<-data.frame(Column1=c(1.3,5.8,5.122,3.00,7.12),Column2=c(1,5,5,3,7),Column3=Vector_Factor)
 
 ```
 
@@ -377,6 +375,27 @@ For example:
 My_DF<-read_csv("NewFolderName/OurNewFile.csv")
 
 ```
+
+
+# Extra Resources Cheatsheets
+
+For almost all popular and well used packages there are "cheatsheets" available that provide info on all their most used functions and how to use them.
+
+You can google them. However, as Packages update there be deprecated functions (not in use any more), but normally the package will tell you the name of the new function.
+
+Here is a short list of some of the packages we will use (these links were all found from googling so may break over time):
+
+- [Tidyverse](https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf)
+
+- [dplyr](https://nyu-cdsc.github.io/learningr/assets/data-transformation.pdf)
+
+- [readr](https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_data-import.pdf)
+
+- [tidyr](https://github.com/rstudio/cheatsheets/blob/main/tidyr.pdf)
+
+- [ggplot2](https://www.maths.usyd.edu.au/u/UG/SM/STAT3022/r/current/Misc/data-visualization-2.1.pdf)
+
+
 
 
 

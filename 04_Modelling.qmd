@@ -6,7 +6,7 @@ format:
     toc-location: left
 ---
 
-# Modelling
+# Gaussian Modelling
 
 As before lets use the Palmer penguins dataset and remove the NAs (as before don't NAs should never be remove without considering why they are NAs but here we will remove them for ease)
 
@@ -33,7 +33,6 @@ Does the flipper length of penguins change between species and between sexes
 Whether we use an interaction or not depends on if our scientific thought 
 
 believes the relationship of Species to flipper length is different between sexes (sexual dimorphism may not be consistent across species)
-
 
 ```{r}
 #| fig.width: 8

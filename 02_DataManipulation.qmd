@@ -1,0 +1,198 @@
+---
+title: "Data Manipulation with Real World Data in R"
+format:
+  html:
+    toc: true
+    toc-location: left
+---
+
+# Real World Data
+
+## Overview of Data
+
+Packages often have their own example datasets within them, or a package can be used to store just data without functions etc.
+
+We will look at the palmer penguins dataset
+
+```{r}
+#install.packages("palmerpenguins")
+
+library(palmerpenguins)
+data(penguins)
+```
+
+This becomes a 'promise' of a data set, we have to do something with it to get it properly, lets take a look inside
+
+```{r}
+
+library(dplyr)
+glimpse(penguins)
+
+```
+
+This gives us two datasets in our global environment
+
+Using summary() we can see which columns have NAs and which don't.
+
+```{r}
+summary(penguins)
+```
+
+The penguins data set is fairly well organised but we can still do a bit more with it if we want
+
+```{r}
+summary(penguins_raw)
+```
+
+The raw data has a lot of extra information that may or may not be important for us.
+
+# tidyverse 
+
+For almost all basic tasks in r I prefer and would recommend using the tidyverse, but there are many other packages for data manipulation, organisation, visualisation and analysis
+
+The main drawbacks of the tidyverse are to do with speed at scale, tidyverse code is less efficient with big data (10s of Gigabytes)
+
+The main advantages in my eyes is readability and intuition. Consistency of syntax (the order of arguments and naming of functions etc.) is also very important in the eyes of the tidyverse, where the main idea is using and aiming for what is called 'tidy' data. 
+
+## What is 'Tidy' data? All Hail Hadley Wickham
+
+From the [original paper](https://vita.had.co.nz/papers/tidy-data.pdf) discussing this: "Tidy datasets provide a standardized way to link the structure of a dataset (its physical layout) with its semantics (its meaning)."
+
+This means that Tidy data is a standard way of mapping the meaning of a dataset to its structure. A dataset is messy or tidy depending on how rows, columns and tables are matched up with observations, variables and types. 
+
+In tidy data:
+
+- Every column is a variable.
+
+- Every row is an observation.
+
+- Every cell is a single value.
+
+## Enough Theory - Using dplyr and tidyr
+
+For data manipulation and organisation we will rely heavily on the dplyr and tidyr packages, which have a suite of functions that can be used in isolation or combined to perform complex data manipulation and organisation.
+
+### Piping
+
+For manipulation we can use something called pipes %>% which push the output from one line into the function on the next line
+
+we can change the values of response by the values of year and treatment using the case_when function to create clauses similar to if else statements
+
+The mutate function can be used to create new columns based on current columns or other values/objects
+
+These two lines do the same, but one uses a pipe (%>%) and one doesn't. For a simple example there is little to no difference,
+
+but when using multiple functions in a row piping makes code a lot easier to read and understand what order functions have been carried out in.
+0
+
+### Filtering
+
+filter() is a row wise subsetting based on a statement from the dataframe.
+
+When we looked at the summary() of penguins we saw some NAs in the biometric columns and also in the sex column.
+
+So we only have to remove two rows to remove the NAs in the biometrics columns, there are more NA's in the sex column.
+
+If we want to remove NA's there are many ways, to be selective we can filter our dataset 
+
+To subset data we can use the filter() function from the dplyr package, we create a logic clause that then filters the dataset by that clause/statement,
+
+For example if we want to select all rows of the data set where the data is from a female penguin we can do this by
+
+```{r}
+
+female_penguins<- penguins %>% 
+  filter(sex=="female")
+
+female_penguins
+
+```
+
+or we might want all the penguins above 5 kg
+
+```{r}
+
+heavier_penguins<- penguins %>% 
+  filter(body_mass_g>= 5000)
+
+
+heavier_penguins
+
+
+```
+
+there are a range of symbols we can use such as more than >, less than <, more than or equal to >=, less than or equal to <=, is equal to == 
+
+we can even use multiple clauses or statements in one call to filter, 
+
+so if we want all the heavier female penguins 
+
+```{r}
+
+heavier_female_penguins<- penguins %>% 
+  filter(body_mass_g>= 5000 & sex=="female")
+
+
+heavier_female_penguins
+
+
+```
+
+sometimes we might want to filter with multiple answers of a categorical variable, 
+
+for example if we wanted all penguins from Biscoe and Torgersen island
+
+to do this we can make a vector of the names we want, then filter by that vector 
+
+
+```{r}
+
+Islands_we_Want<-c("Biscoe","Torgersen")
+
+Biscoe_Torgersen_penguins<- penguins %>% 
+  filter(island%in%Islands_we_Want)
+
+Biscoe_Torgersen_penguins
+
+
+```
+
+Here we will make use of ! this means the opposite of the clause (not this)
+
+We also use %in% which is used to tell filter there are more than one element
+
+or NAs that we want to get rid of as NA is not classed like normal data
+
+```{r}
+penguins_someNAs<-penguins %>% 
+  filter(!body_mass_g%in%NA)
+```
+
+If we now look at the number of rows of the datasets we can see only two rows were removed. (not all the NAs)
+
+```{r}
+nrow(penguins)
+nrow(penguins_someNAs)
+
+summary(penguins_someNAs)
+```
+
+Still 9 NAs in sex
+
+```{r}
+penguins_noNAs<-penguins_someNAs %>% 
+  filter(!sex%in%NA)
+
+summary(penguins_noNAs)
+```
+
+All sorted
+
+### Selecting 
+
+select() is a column wise subsetting based on a statement of column names.
+
+### Summarise by Groups
+
+### Changing between Wide and Long Data
+

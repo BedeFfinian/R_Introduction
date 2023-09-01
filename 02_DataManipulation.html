@@ -57,16 +57,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="03_DataManipulation_files/libs/clipboard/clipboard.min.js"></script>
-<script src="03_DataManipulation_files/libs/quarto-html/quarto.js"></script>
-<script src="03_DataManipulation_files/libs/quarto-html/popper.min.js"></script>
-<script src="03_DataManipulation_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="03_DataManipulation_files/libs/quarto-html/anchor.min.js"></script>
-<link href="03_DataManipulation_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="03_DataManipulation_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="03_DataManipulation_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="03_DataManipulation_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="03_DataManipulation_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="02_DataManipulation_files/libs/clipboard/clipboard.min.js"></script>
+<script src="02_DataManipulation_files/libs/quarto-html/quarto.js"></script>
+<script src="02_DataManipulation_files/libs/quarto-html/popper.min.js"></script>
+<script src="02_DataManipulation_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="02_DataManipulation_files/libs/quarto-html/anchor.min.js"></script>
+<link href="02_DataManipulation_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="02_DataManipulation_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="02_DataManipulation_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="02_DataManipulation_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="02_DataManipulation_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -79,7 +79,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#real-world-data" id="toc-real-world-data" class="nav-link active" data-scroll-target="#real-world-data">Real World Data</a></li>
+  <li><a href="#real-world-data" id="toc-real-world-data" class="nav-link active" data-scroll-target="#real-world-data">Real World Data</a>
+  <ul class="collapse">
+  <li><a href="#overview-of-data" id="toc-overview-of-data" class="nav-link" data-scroll-target="#overview-of-data">Overview of Data</a></li>
+  </ul></li>
+  <li><a href="#tidyverse" id="toc-tidyverse" class="nav-link" data-scroll-target="#tidyverse">tidyverse</a>
+  <ul class="collapse">
+  <li><a href="#what-is-tidy-data-all-hail-hadley-wickham" id="toc-what-is-tidy-data-all-hail-hadley-wickham" class="nav-link" data-scroll-target="#what-is-tidy-data-all-hail-hadley-wickham">What is ‘Tidy’ data? All Hail Hadley Wickham</a></li>
+  <li><a href="#enough-theory---using-dplyr-and-tidyr" id="toc-enough-theory---using-dplyr-and-tidyr" class="nav-link" data-scroll-target="#enough-theory---using-dplyr-and-tidyr">Enough Theory - Using dplyr and tidyr</a>
+  <ul class="collapse">
+  <li><a href="#filtering" id="toc-filtering" class="nav-link" data-scroll-target="#filtering">Filtering</a></li>
+  <li><a href="#selecting" id="toc-selecting" class="nav-link" data-scroll-target="#selecting">Selecting</a></li>
+  <li><a href="#summarise-by-groups" id="toc-summarise-by-groups" class="nav-link" data-scroll-target="#summarise-by-groups">Summarise by Groups</a></li>
+  <li><a href="#changing-between-wide-and-long-data" id="toc-changing-between-wide-and-long-data" class="nav-link" data-scroll-target="#changing-between-wide-and-long-data">Changing between Wide and Long Data</a></li>
+  </ul></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -106,6 +120,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="real-world-data" class="level1">
 <h1>Real World Data</h1>
+<section id="overview-of-data" class="level2">
+<h2 class="anchored" data-anchor-id="overview-of-data">Overview of Data</h2>
 <p>Packages often have their own example datasets within them, or a package can be used to store just data without functions etc.</p>
 <p>We will look at the palmer penguins dataset</p>
 <div class="cell">
@@ -168,15 +184,93 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
  NA's   :2         NA's   :2                                 </code></pre>
 </div>
 </div>
-<p>Through going into the object and ordering one of the columns we find that the NA’s (which order to last always) are the same rows So we only have to remove two rows to remove the NAs in the biometrics columns, there are more NA’s in the sex column if we want to remove NA’s there are many ways, to be selective we can filter our dataset</p>
-<p>To subset data we can use the filter() function from the dplyr package, we create a logic clause that then filters the dataset by that clause/statement,</p>
-<p>for example if we want to select all rows of the data set where the data is from a female penguin we can do this by</p>
+<p>The penguins data set is fairly well organised but we can still do a bit more with it if we want</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>female_penguins<span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sex<span class="sc">==</span><span class="st">"female"</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>female_penguins</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins_raw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  studyName         Sample Number      Species             Region         
+ Length:344         Min.   :  1.00   Length:344         Length:344        
+ Class :character   1st Qu.: 29.00   Class :character   Class :character  
+ Mode  :character   Median : 58.00   Mode  :character   Mode  :character  
+                    Mean   : 63.15                                        
+                    3rd Qu.: 95.25                                        
+                    Max.   :152.00                                        
+                                                                          
+    Island             Stage           Individual ID      Clutch Completion 
+ Length:344         Length:344         Length:344         Length:344        
+ Class :character   Class :character   Class :character   Class :character  
+ Mode  :character   Mode  :character   Mode  :character   Mode  :character  
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+    Date Egg          Culmen Length (mm) Culmen Depth (mm) Flipper Length (mm)
+ Min.   :2007-11-09   Min.   :32.10      Min.   :13.10     Min.   :172.0      
+ 1st Qu.:2007-11-28   1st Qu.:39.23      1st Qu.:15.60     1st Qu.:190.0      
+ Median :2008-11-09   Median :44.45      Median :17.30     Median :197.0      
+ Mean   :2008-11-27   Mean   :43.92      Mean   :17.15     Mean   :200.9      
+ 3rd Qu.:2009-11-16   3rd Qu.:48.50      3rd Qu.:18.70     3rd Qu.:213.0      
+ Max.   :2009-12-01   Max.   :59.60      Max.   :21.50     Max.   :231.0      
+                      NA's   :2          NA's   :2         NA's   :2          
+ Body Mass (g)      Sex            Delta 15 N (o/oo) Delta 13 C (o/oo)
+ Min.   :2700   Length:344         Min.   : 7.632    Min.   :-27.02   
+ 1st Qu.:3550   Class :character   1st Qu.: 8.300    1st Qu.:-26.32   
+ Median :4050   Mode  :character   Median : 8.652    Median :-25.83   
+ Mean   :4202                      Mean   : 8.733    Mean   :-25.69   
+ 3rd Qu.:4750                      3rd Qu.: 9.172    3rd Qu.:-25.06   
+ Max.   :6300                      Max.   :10.025    Max.   :-23.79   
+ NA's   :2                         NA's   :14        NA's   :13       
+   Comments        
+ Length:344        
+ Class :character  
+ Mode  :character  
+                   
+                   
+                   
+                   </code></pre>
+</div>
+</div>
+<p>The raw data has a lot of extra information that may or may not be important for us.</p>
+</section>
+</section>
+<section id="tidyverse" class="level1">
+<h1>tidyverse</h1>
+<p>For almost all basic tasks in r I prefer and would recommend using the tidyverse, but there are many other packages for data manipulation, organisation, visualisation and analysis</p>
+<p>The main drawbacks of the tidyverse are to do with speed at scale, tidyverse code is less efficient with big data (10s of Gigabytes)</p>
+<p>The main advantages in my eyes is readability and intuition. Consistency of syntax (the order of arguments and naming of functions etc.) is also very important in the eyes of the tidyverse, where the main idea is using and aiming for what is called ‘tidy’ data.</p>
+<section id="what-is-tidy-data-all-hail-hadley-wickham" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-tidy-data-all-hail-hadley-wickham">What is ‘Tidy’ data? All Hail Hadley Wickham</h2>
+<p>From the <a href="https://vita.had.co.nz/papers/tidy-data.pdf">original paper</a> discussing this: “Tidy datasets provide a standardized way to link the structure of a dataset (its physical layout) with its semantics (its meaning).”</p>
+<p>This means that Tidy data is a standard way of mapping the meaning of a dataset to its structure. A dataset is messy or tidy depending on how rows, columns and tables are matched up with observations, variables and types.</p>
+<p>In tidy data:</p>
+<ul>
+<li><p>Every column is a variable.</p></li>
+<li><p>Every row is an observation.</p></li>
+<li><p>Every cell is a single value.</p></li>
+</ul>
+</section>
+<section id="enough-theory---using-dplyr-and-tidyr" class="level2">
+<h2 class="anchored" data-anchor-id="enough-theory---using-dplyr-and-tidyr">Enough Theory - Using dplyr and tidyr</h2>
+<p>For data manipulation and organisation we will rely heavily on the dplyr and tidyr packages, which have a suite of functions that can be used in isolation or combined to perform complex data manipulation and organisation.</p>
+<p>###&nbsp;Piping</p>
+<p>For manipulation we can use something called pipes %&gt;% which push the output from one line into the function on the next line</p>
+<p>we can change the values of response by the values of year and treatment using the case_when function to create clauses similar to if else statements</p>
+<p>The mutate function can be used to create new columns based on current columns or other values/objects</p>
+<p>These two lines do the same, but one uses a pipe (%&gt;%) and one doesn’t. For a simple example there is little to no difference,</p>
+<p>but when using multiple functions in a row piping makes code a lot easier to read and understand what order functions have been carried out in. 0</p>
+<section id="filtering" class="level3">
+<h3 class="anchored" data-anchor-id="filtering">Filtering</h3>
+<p>filter() is a row wise subsetting based on a statement from the dataframe.</p>
+<p>When we looked at the summary() of penguins we saw some NAs in the biometric columns and also in the sex column.</p>
+<p>So we only have to remove two rows to remove the NAs in the biometrics columns, there are more NA’s in the sex column.</p>
+<p>If we want to remove NA’s there are many ways, to be selective we can filter our dataset</p>
+<p>To subset data we can use the filter() function from the dplyr package, we create a logic clause that then filters the dataset by that clause/statement,</p>
+<p>For example if we want to select all rows of the data set where the data is from a female penguin we can do this by</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>female_penguins<span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sex<span class="sc">==</span><span class="st">"female"</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>female_penguins</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 165 × 8
    species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
@@ -197,11 +291,11 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>or we might want all the penguins above 5 kg</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>heavier_penguins<span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(body_mass_g<span class="sc">&gt;=</span> <span class="dv">5000</span>)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>heavier_penguins</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>heavier_penguins<span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(body_mass_g<span class="sc">&gt;=</span> <span class="dv">5000</span>)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>heavier_penguins</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 67 × 8
    species island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
@@ -224,11 +318,11 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p>we can even use multiple clauses or statements in one call to filter,</p>
 <p>so if we want all the heavier female penguins</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>heavier_female_penguins<span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(body_mass_g<span class="sc">&gt;=</span> <span class="dv">5000</span> <span class="sc">&amp;</span> sex<span class="sc">==</span><span class="st">"female"</span>)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>heavier_female_penguins</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>heavier_female_penguins<span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(body_mass_g<span class="sc">&gt;=</span> <span class="dv">5000</span> <span class="sc">&amp;</span> sex<span class="sc">==</span><span class="st">"female"</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>heavier_female_penguins</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 8 × 8
   species island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
@@ -248,12 +342,12 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p>for example if we wanted all penguins from Biscoe and Torgersen island</p>
 <p>to do this we can make a vector of the names we want, then filter by that vector</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>Islands_we_Want<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"Biscoe"</span>,<span class="st">"Torgersen"</span>)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>Biscoe_Torgersen_penguins<span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(island<span class="sc">%in%</span>Islands_we_Want)</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>Biscoe_Torgersen_penguins</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>Islands_we_Want<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"Biscoe"</span>,<span class="st">"Torgersen"</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>Biscoe_Torgersen_penguins<span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(island<span class="sc">%in%</span>Islands_we_Want)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>Biscoe_Torgersen_penguins</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 220 × 8
    species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
@@ -276,20 +370,20 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p>We also use %in% which is used to tell filter there are more than one element</p>
 <p>or NAs that we want to get rid of as NA is not classed like normal data</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>penguins_someNAs<span class="ot">&lt;-</span>penguins <span class="sc">%&gt;%</span> </span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>body_mass_g<span class="sc">%in%</span><span class="cn">NA</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>penguins_someNAs<span class="ot">&lt;-</span>penguins <span class="sc">%&gt;%</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>body_mass_g<span class="sc">%in%</span><span class="cn">NA</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If we now look at the number of rows of the datasets we can see only two rows were removed. (not all the NAs)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 344</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(penguins_someNAs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(penguins_someNAs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 342</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins_someNAs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins_someNAs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      species          island    bill_length_mm  bill_depth_mm  
  Adelie   :151   Biscoe   :167   Min.   :32.10   Min.   :13.10  
@@ -309,10 +403,10 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Still 9 NAs in sex</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>penguins_noNAs<span class="ot">&lt;-</span>penguins_someNAs <span class="sc">%&gt;%</span> </span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>sex<span class="sc">%in%</span><span class="cn">NA</span>)</span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins_noNAs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>penguins_noNAs<span class="ot">&lt;-</span>penguins_someNAs <span class="sc">%&gt;%</span> </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>sex<span class="sc">%in%</span><span class="cn">NA</span>)</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins_noNAs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      species          island    bill_length_mm  bill_depth_mm  
  Adelie   :146   Biscoe   :163   Min.   :32.10   Min.   :13.10  
@@ -331,6 +425,18 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 </div>
 <p>All sorted</p>
+</section>
+<section id="selecting" class="level3">
+<h3 class="anchored" data-anchor-id="selecting">Selecting</h3>
+<p>select() is a column wise subsetting based on a statement of column names.</p>
+</section>
+<section id="summarise-by-groups" class="level3">
+<h3 class="anchored" data-anchor-id="summarise-by-groups">Summarise by Groups</h3>
+</section>
+<section id="changing-between-wide-and-long-data" class="level3">
+<h3 class="anchored" data-anchor-id="changing-between-wide-and-long-data">Changing between Wide and Long Data</h3>
+</section>
+</section>
 </section>
 
 </main>

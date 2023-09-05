@@ -20,8 +20,8 @@ For Linux: <https://cran.r-project.org/bin/linux/>
 
 ## RStudio
 
-R is a open source statistical programming language. It can used through many Graphic User Interfaces (GUI) my preferences is 
-to use RStudio but VSCode is good and you can also code in base R. 
+R is an open source statistical programming language. It can be used through many Graphic User Interfaces (GUI) my preference is 
+to use RStudio but VSCode is good and you can also code in base R (as well as many others). 
 
 We can install RStudio from <https://posit.co/download/rstudio-desktop/>
 
@@ -29,13 +29,13 @@ We can install RStudio from <https://posit.co/download/rstudio-desktop/>
 
 This tutorial will rely on using code written in RStudio and locations of things (Script, Console, Environment, Plots) will be RStudio specific but the code could be run in any GUI.
 
-Scripts are saved code that you are editing (What I am writing in currently), you then execute (run) the code in the 'console' (Normally below the script window)
+Scripts are saved code that you are editing (What I am writing in currently), you then execute (run) the code in the 'console' (Normally located below the script window)
 
-You can execute one line of code by having your cursor on that line in the script or select many lines then click the run buttom or cmd+enter (mac) or ctrl+enter (pc)
+You can execute one line of code by having your cursor on that line in the script or select many lines then click the run button or cmd+enter (mac) or ctrl+enter (pc)
 
-Everything to the right of a hastag '#' is not executed, therefore we can use this to make comments or write in scripts
+Everything to the right of a hastag '#' is not executed, therefore we can use this to make comments or write notes in our scripts
 
-R code can be used to do simple calculations with values or even create lists, vectors, values, dataframes and more complex objects in the "global environment". (normally top right)
+R code can be used to do simple calculations with values or even create lists, vectors, values, dataframes and more complex objects in the "global environment", where R stores our information in a session. (normally top right)
 
 ```{r}
 6*6
@@ -51,22 +51,30 @@ sqrt(144)
 pi
 ```
 
-We can use either <- or = to assign a value, list or dataframe into an object
+We can use either <- or = to assign a value, list or dataframe into an object, thus saving it to R's global environment for use later
 
-An object is something (usually some sort of data) that is saved in temporary memory
+An object is something (usually some sort of data) that is saved in temporary memory (global environment)
 
 ```{r}
 a<- 17
 ```
 
-In R we can use functions to tasks for us, they precede a parenthesis (), some are named after what they do and some are less well named,  
+In R we can use functions to do tasks for us, they normally precede a parenthesis (), some are named after what they do and some are less well named,  
 
-within functions they have arguments, what you put into these arguments will define how they perform. 
+Within functions there are 'arguments' (like options), what you put into these arguments will define how they perform. 
+
+One function used very often is c(),
 
 We use c() to concatenate elements together, which means combine them into a vector, which is a series of values
  
 ```{r}
 b<- c(1,5,5,3,7)
+```
+
+We can apply functions to an object
+
+```{r}
+mean(b)
 ```
 
 We can then perform different functions between objects
@@ -76,14 +84,17 @@ a*b
 ```
 
 We can even save the results to a new object
+
 ```{r}
-c<-a*b
+p<-a*b
 ```
 
-Then we can look at what is in the object by running the object
+Then we can look at what is in the new object by running the object or printing it (print())
 
 ```{r}
-c
+p
+
+print(p)
 ```
 
 We can also create data systematically with R
@@ -92,7 +103,13 @@ For example a sequence of 10 values going up by 1
 
 ```{r}
  
-Sequence<-seq(from=1,to=10,by=1)
+Sequence<-seq(from=1,to=10,by=0.5)
+
+Sequence
+
+AnotherSequence<-c(1:200)
+
+AnotherSequence
 
 ```
 
@@ -100,7 +117,9 @@ We will come back to generating data systematically later.
 
 ## Data Types
 
-In R there are many different types of data, the most common four are Numeric, Interger, Character and Factor. Logical and Complex are also data types but very rarely used explicitly.
+In R there are many different types of data, the most common four are Numeric, Integer, Character and Factor. 
+
+Logical and Complex are also data types but very rarely used explicitly. (logical is used a lot by functions but we rarely use it ourselves)
 
 Numeric data is any real numbers so 8 or 12.3 or 1.00000002 etc, while Integer data is just whole numbers 3, 4, 111 etc
 

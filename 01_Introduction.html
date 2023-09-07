@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -86,13 +86,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </ul></li>
   <li><a href="#basics" id="toc-basics" class="nav-link" data-scroll-target="#basics">Basics</a>
   <ul class="collapse">
+  <li><a href="#simple-mathematics" id="toc-simple-mathematics" class="nav-link" data-scroll-target="#simple-mathematics">Simple Mathematics</a></li>
+  <li><a href="#functions" id="toc-functions" class="nav-link" data-scroll-target="#functions">Functions</a></li>
   <li><a href="#data-types" id="toc-data-types" class="nav-link" data-scroll-target="#data-types">Data Types</a></li>
   <li><a href="#objects" id="toc-objects" class="nav-link" data-scroll-target="#objects">Objects</a>
   <ul class="collapse">
   <li><a href="#vector" id="toc-vector" class="nav-link" data-scroll-target="#vector">Vector</a></li>
   <li><a href="#matrix" id="toc-matrix" class="nav-link" data-scroll-target="#matrix">Matrix</a></li>
-  <li><a href="#list" id="toc-list" class="nav-link" data-scroll-target="#list">List</a></li>
   <li><a href="#dataframe" id="toc-dataframe" class="nav-link" data-scroll-target="#dataframe">DataFrame</a></li>
+  <li><a href="#list" id="toc-list" class="nav-link" data-scroll-target="#list">List</a></li>
   <li><a href="#array" id="toc-array" class="nav-link" data-scroll-target="#array">Array</a></li>
   </ul></li>
   <li><a href="#indexing" id="toc-indexing" class="nav-link" data-scroll-target="#indexing">Indexing</a></li>
@@ -104,7 +106,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#data-reading" id="toc-data-reading" class="nav-link" data-scroll-target="#data-reading">Data Reading</a></li>
   </ul></li>
   </ul></li>
-  <li><a href="#extra-resources-cheatsheets" id="toc-extra-resources-cheatsheets" class="nav-link" data-scroll-target="#extra-resources-cheatsheets">Extra Resources Cheatsheets</a></li>
+  <li><a href="#extra-resources-cheatsheets" id="toc-extra-resources-cheatsheets" class="nav-link" data-scroll-target="#extra-resources-cheatsheets">Extra Resources: Cheatsheets</a></li>
   </ul>
 </nav>
 </div>
@@ -151,6 +153,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>You can execute one line of code by having your cursor on that line in the script or select many lines then click the run button or cmd+enter (mac) or ctrl+enter (pc)</p>
 <p>Everything to the right of a hastag ‘#’ is not executed, therefore we can use this to make comments or write notes in our scripts</p>
 <p>R code can be used to do simple calculations with values or even create lists, vectors, values, dataframes and more complex objects in the “global environment”, where R stores our information in a session. (normally top right)</p>
+<section id="simple-mathematics" class="level2">
+<h2 class="anchored" data-anchor-id="simple-mathematics">Simple Mathematics</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">6</span><span class="sc">*</span><span class="dv">6</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -164,7 +168,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 4.6</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>(<span class="dv">4</span><span class="sc">+</span><span class="dv">3</span>)<span class="sc">/</span><span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>(<span class="dv">4</span><span class="sc">+</span><span class="dv">3</span>)<span class="sc">/</span><span class="dv">5</span> <span class="co"># mathematical ordering matters!</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1.4</code></pre>
 </div>
@@ -182,6 +186,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>a<span class="ot">&lt;-</span> <span class="dv">17</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
+<section id="functions" class="level2">
+<h2 class="anchored" data-anchor-id="functions">Functions</h2>
 <p>In R we can use functions to do tasks for us, they normally precede a parenthesis (), some are named after what they do and some are less well named,</p>
 <p>Within functions there are ‘arguments’ (like options), what you put into these arguments will define how they perform.</p>
 <p>One function used very often is c(),</p>
@@ -202,18 +209,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]  17  85  85  51 119</code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(a<span class="sc">*</span>b)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 71.4</code></pre>
+</div>
 </div>
 <p>We can even save the results to a new object</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>p<span class="ot">&lt;-</span>a<span class="sc">*</span>b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>p<span class="ot">&lt;-</span>a<span class="sc">*</span>b</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Then we can look at what is in the new object by running the object or printing it (print())</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>p</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]  17  85  85  51 119</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]  17  85  85  51 119</code></pre>
 </div>
@@ -221,16 +232,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We can also create data systematically with R</p>
 <p>For example a sequence of 10 values going up by 1</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>Sequence<span class="ot">&lt;-</span><span class="fu">seq</span>(<span class="at">from=</span><span class="dv">1</span>,<span class="at">to=</span><span class="dv">10</span>,<span class="at">by=</span><span class="fl">0.5</span>)</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>Sequence</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>Sequence<span class="ot">&lt;-</span><span class="fu">seq</span>(<span class="at">from=</span><span class="dv">1</span>,<span class="at">to=</span><span class="dv">10</span>,<span class="at">by=</span><span class="fl">0.5</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>Sequence</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1]  1.0  1.5  2.0  2.5  3.0  3.5  4.0  4.5  5.0  5.5  6.0  6.5  7.0  7.5  8.0
 [16]  8.5  9.0  9.5 10.0</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>AnotherSequence<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>AnotherSequence</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>AnotherSequence<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>AnotherSequence</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  [1]   1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18
  [19]  19  20  21  22  23  24  25  26  27  28  29  30  31  32  33  34  35  36
@@ -247,6 +258,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>We will come back to generating data systematically later.</p>
+</section>
 <section id="data-types" class="level2">
 <h2 class="anchored" data-anchor-id="data-types">Data Types</h2>
 <p>In R there are many different types of data, the most common four are Numeric, Integer, Character and Factor.</p>
@@ -259,41 +271,48 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="objects">Objects</h2>
 <p>As we saw above we can store data in R as an Object, these can be many different types and combinations,</p>
 <p>The most common Object types are Vectors, Lists, Matrices, DataFrames and Arrays,</p>
-<p>The main differences of these Object types are what types and combinations of data can be stored in them and how many Dimensions they have,</p>
+<p>The main differences of these Object types are what types and combinations of data can be stored in them and how many dimensions they have,</p>
 <section id="vector" class="level3">
 <h3 class="anchored" data-anchor-id="vector">Vector</h3>
 <p>A single group of one data type (it could be Numeric, Character, Integer, Factor), with one dimension is called a Vector.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>Vector_Numeric<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>)</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>Vector_Integer<span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">7</span>)) <span class="co"># we change between data types with these functions </span></span>
-<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>Vector_Character<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"This"</span>,<span class="st">"is"</span>,<span class="st">"A"</span>,<span class="st">"Character Vector"</span>)</span>
-<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>Vector_Factor<span class="ot">&lt;-</span><span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="st">"This"</span>,<span class="st">"is"</span>,<span class="st">"A"</span>,<span class="st">"Character"</span>, <span class="st">"Vector"</span>)) <span class="co"># Notice how r automatically orders alphabetically if we don't tell it the order</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>Vector_Numeric<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>)</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>Vector_Integer<span class="ot">&lt;-</span> <span class="fu">as.integer</span>(<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">7</span>)) <span class="co"># we change between data types with these functions </span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>Vector_Character<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"This"</span>,<span class="st">"is"</span>,<span class="st">"A"</span>,<span class="st">"Character Vector"</span>)</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>Vector_Factor<span class="ot">&lt;-</span><span class="fu">as.factor</span>(<span class="fu">c</span>(<span class="st">"This"</span>,<span class="st">"is"</span>,<span class="st">"A"</span>,<span class="st">"Character"</span>, <span class="st">"Vector"</span>)) <span class="co"># Notice how r automatically orders alphabetically if we don't tell it the order</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="matrix" class="level3">
 <h3 class="anchored" data-anchor-id="matrix">Matrix</h3>
 <p>Multiple groups of one data type (it could be Numeric, Character, Integer, Factor), with two dimensions is called a Matrix.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>Matrix_Numeric<span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>))</span>
-<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>Matrix_Character<span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">c</span>(<span class="st">"This"</span>,<span class="st">"is"</span>,<span class="st">"A"</span>,<span class="st">"Character Matrix"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>Matrix_Numeric<span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>))</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>Matrix_Character<span class="ot">&lt;-</span> <span class="fu">as.matrix</span>(<span class="fu">c</span>(<span class="st">"This"</span>,<span class="st">"is"</span>,<span class="st">"A"</span>,<span class="st">"Character Matrix"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="dataframe" class="level3">
+<h3 class="anchored" data-anchor-id="dataframe">DataFrame</h3>
+<p>Multiple groups of a combination of data types (it could be Numeric, Character, Integer, Factor), with two dimensions is called a Dataframe. Each element of a dataframe must be the last length as the other elements.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>df<span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="at">Column1=</span><span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>),<span class="at">Column2=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">7</span>),<span class="at">Column3=</span>Vector_Factor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="list" class="level3">
 <h3 class="anchored" data-anchor-id="list">List</h3>
 <p>Multiple groups of a combination of data types or object types (it could be Numeric, Character, Integer, Factor or vectors, dataframes or matrices of these), with two dimensions is called a List. Each element in a list can be a different length to the other elements.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>List_Numeric<span class="ot">&lt;-</span><span class="fu">list</span>(<span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>),</span>
-<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">7</span>))</span>
-<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>List_From_Vectors<span class="ot">&lt;-</span><span class="fu">list</span>(Vector_Character,Matrix_Numeric,Matrix_Numeric)</span>
-<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>List_Different_Lengths<span class="ot">&lt;-</span><span class="fu">list</span>(<span class="at">Item1=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>),<span class="at">Item2=</span><span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>,<span class="st">"D"</span>), <span class="at">Item3=</span><span class="fu">seq</span>(<span class="at">from=</span><span class="dv">1</span>,<span class="at">to=</span><span class="dv">100</span>,<span class="at">by=</span><span class="dv">1</span>))</span>
-<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-8"><a href="#cb30-8" aria-hidden="true" tabindex="-1"></a>List_Different_Lengths</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>List_Numeric<span class="ot">&lt;-</span><span class="fu">list</span>(<span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>),</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>                   <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">7</span>))</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>List_From_Vectors<span class="ot">&lt;-</span><span class="fu">list</span>(Vector_Character,Matrix_Numeric,Matrix_Numeric)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>List_Different_Lengths<span class="ot">&lt;-</span><span class="fu">list</span>(<span class="at">Item1=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">6</span>),<span class="at">Item2=</span><span class="fu">c</span>(<span class="st">"a"</span>,<span class="st">"B"</span>,<span class="st">"C"</span>,<span class="st">"D"</span>), <span class="at">Item3=</span><span class="fu">seq</span>(<span class="at">from=</span><span class="dv">1</span>,<span class="at">to=</span><span class="dv">100</span>,<span class="at">by=</span><span class="dv">1</span>))</span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>List_Different_Lengths</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$Item1
 [1] 1 2 3 4 5 6
@@ -311,20 +330,13 @@ $Item3
 </div>
 </div>
 </section>
-<section id="dataframe" class="level3">
-<h3 class="anchored" data-anchor-id="dataframe">DataFrame</h3>
-<p>Multiple groups of a combination of data types (it could be Numeric, Character, Integer, Factor), with two dimensions is called a Dataframe. Each element of a dataframe must be the last length as the other elements.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>df<span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="at">Column1=</span><span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>),<span class="at">Column2=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">7</span>),<span class="at">Column3=</span>Vector_Factor)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
 <section id="array" class="level3">
 <h3 class="anchored" data-anchor-id="array">Array</h3>
 <p>Multiple groups of one data type (it could be Numeric, Character, Integer, Factor or vectors or matrices), with more than two dimensions is called an Array.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>Array_1d<span class="ot">&lt;-</span><span class="fu">array</span>(<span class="fu">c</span>(Matrix_Numeric,<span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>)),<span class="at">dim=</span><span class="fu">c</span>(<span class="dv">5</span>))</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>Array_2d<span class="ot">&lt;-</span><span class="fu">array</span>(<span class="fu">c</span>(Matrix_Numeric,<span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>)),<span class="at">dim=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">2</span>))</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>Array_3d<span class="ot">&lt;-</span><span class="fu">array</span>(<span class="fu">c</span>(Matrix_Numeric,<span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>)),<span class="at">dim=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>Array_1d<span class="ot">&lt;-</span><span class="fu">array</span>(<span class="fu">c</span>(Matrix_Numeric,<span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>)),<span class="at">dim=</span><span class="fu">c</span>(<span class="dv">5</span>))</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>Array_2d<span class="ot">&lt;-</span><span class="fu">array</span>(<span class="fu">c</span>(Matrix_Numeric,<span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>)),<span class="at">dim=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">2</span>))</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>Array_3d<span class="ot">&lt;-</span><span class="fu">array</span>(<span class="fu">c</span>(Matrix_Numeric,<span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>)),<span class="at">dim=</span><span class="fu">c</span>(<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">2</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Arrays are rarely used so probably won’t discuss much further.</p>
 <div class="quarto-figure quarto-figure-center">
@@ -339,16 +351,16 @@ $Item3
 <h2 class="anchored" data-anchor-id="indexing">Indexing</h2>
 <p>Objects have dimensions and we can use a technique called indexing to select specific elements of an object</p>
 <p>We use square brackets to do this,</p>
-<p>If the object is 1 dimensional one number will return one value</p>
+<p>If the object is 1 dimensional, one number will return one value</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>Vector_Numeric[<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>Vector_Numeric[<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3</code></pre>
 </div>
 </div>
-<p>If the object is 2 dimensional, one number will return the column</p>
+<p>If the object is 2 dimensional, one number will return that column</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>df[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>df[<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Column2
 1       1
@@ -358,23 +370,32 @@ $Item3
 5       7</code></pre>
 </div>
 </div>
-<p>by adding a comma we can select the next dimension</p>
+<p>by adding a comma we can select the from both dimensions (rows first, then columns)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>df[<span class="dv">2</span>,<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>df[<span class="dv">4</span>,<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>NULL</code></pre>
+<pre><code>[1] 3</code></pre>
 </div>
 </div>
-<p>If we want all columns but only a specific row we add a comma without a number</p>
+<p>If we want all rows but only a specific column we add a comma without a number</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>df[,<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>df[,<span class="dv">2</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1 5 5 3 7</code></pre>
 </div>
 </div>
-<p>We can also use multiple numbers inside c() to select multiple elements</p>
+<p>And vice verse</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>df[<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>),]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>df[<span class="dv">2</span>,]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  Column1 Column2 Column3
+2     5.8       5      is</code></pre>
+</div>
+</div>
+<p>We can also use multiple numbers inside c() to select multiple elements</p>
+<p>For example, row 4 and 2 of all columns</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>df[<span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>),]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Column1 Column2   Column3
 2     5.8       5        is
@@ -382,8 +403,9 @@ $Item3
 </div>
 </div>
 <p>Or we can use -c() to select all but the mentioned elements</p>
+<p>For example, all rows but not columns 2 and 4</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>df[,<span class="sc">-</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>df[,<span class="sc">-</span><span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">4</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Column1   Column3
 1   1.300      This
@@ -397,16 +419,16 @@ $Item3
 <section id="packages" class="level2">
 <h2 class="anchored" data-anchor-id="packages">Packages</h2>
 <p>R relies upon packages, groups of specific functions, which can be installed from the internet and then loaded into a script.</p>
-<p>Base R, a package always already installed and loaded within R, is very powerful and useful but less user friendly for some tasks.</p>
+<p>Base R, a package already installed and loaded within R, is very powerful and useful but less user friendly for some tasks.</p>
 <p>From Base R we can use the install.packages() function to install a package from online repositories.</p>
 <p>R assumes you want to download packages from CRAN (the official online repository but sometimes you might want to download from other repositories)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("dplyr") </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("dplyr") </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>You only have to do this when you first want the package or want to update it.</p>
+<p>You only have to do this when you first want the package or want to update it or when you have updated r.</p>
 <p>Once a package is installed we have to tell R that we want to use functions from this package so we load it</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>
 Attaching package: 'dplyr'</code></pre>
@@ -423,43 +445,43 @@ Attaching package: 'dplyr'</code></pre>
 </div>
 </div>
 <p>This needs to be run every new R session when this package is used.</p>
-<p>We can now run functions from the dplyr library, specifically dplyr is a package, which is part of a group or ecosystem of packages called the tidyverse</p>
+<p>We can now run functions from the dplyr library, specifically dplyr is a package, which is part of a group or ‘ecosystem’ of packages called the tidyverse</p>
 <p>We will use this group of packages for reading and writing data into and out of R (readr), manipulating and organising data (dplyr and tidyr) and visualisng data (ggplot2)</p>
 </section>
 <section id="data-inspection" class="level2">
 <h2 class="anchored" data-anchor-id="data-inspection">Data Inspection</h2>
-<p>First we can make some data into a dataframe, explore this data, transform and add to it, then we will make some figures with it.</p>
+<p>First we can make some data into a dataframe, explore this data, then save it as a file and then read the file back into r.</p>
 <p>R has some very useful random and non-random data generation functions</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>Year <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">1950</span>,<span class="at">to=</span><span class="dv">2023</span>,<span class="at">by=</span><span class="dv">1</span>)</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>Treatment <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Control"</span>,<span class="st">"Treatment 1"</span>,<span class="st">"Treatment 2"</span>)</span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>Rep<span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">1</span>,<span class="at">to=</span><span class="dv">10</span>,<span class="at">by=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>Year <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">1950</span>,<span class="at">to=</span><span class="dv">2023</span>,<span class="at">by=</span><span class="dv">1</span>)</span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>Treatment <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Control"</span>,<span class="st">"Treatment 1"</span>,<span class="st">"Treatment 2"</span>)</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>Rep<span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">1</span>,<span class="at">to=</span><span class="dv">10</span>,<span class="at">by=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>These are three vectors, which we can check information about them with a few simple functions</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(Year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(Year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 74</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Year)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
    1950    1968    1986    1986    2005    2023 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(Treatment)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(Treatment)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Treatment)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Treatment)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Length     Class      Mode 
         3 character character </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(Rep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">length</span>(Rep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 10</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Rep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(Rep)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
    1.00    3.25    5.50    5.50    7.75   10.00 </code></pre>
@@ -468,25 +490,25 @@ Attaching package: 'dplyr'</code></pre>
 <p>We want to combine these vectors so we have a row for each rep, year and treatment, we can do this by expanding the grid and create a new dataframe called df.</p>
 <p>We can inspect specific elements of a dataframe too</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>df<span class="ot">&lt;-</span><span class="fu">expand.grid</span>(<span class="at">Year=</span>Year,<span class="at">Treatment=</span>Treatment,<span class="at">Rep=</span>Rep)</span>
-<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(df) <span class="co"># type of object</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>df<span class="ot">&lt;-</span><span class="fu">expand.grid</span>(<span class="at">Year=</span>Year,<span class="at">Treatment=</span>Treatment,<span class="at">Rep=</span>Rep)</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(df) <span class="co"># type of object</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "data.frame"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(df) <span class="co"># number of rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(df) <span class="co"># number of rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2220</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(df) <span class="co"># number of columns</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(df) <span class="co"># number of columns</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(df) <span class="co"># dimensions of object</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(df) <span class="co"># dimensions of object</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2220    3</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df) <span class="co"># the first 6 rows of the df</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df) <span class="co"># the first 6 rows of the df</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  Year Treatment Rep
 1 1950   Control   1
@@ -496,7 +518,7 @@ Attaching package: 'dplyr'</code></pre>
 5 1954   Control   1
 6 1955   Control   1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(df) <span class="co"># the last 6 rows of the df</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tail</span>(df) <span class="co"># the last 6 rows of the df</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     Year   Treatment Rep
 2215 2018 Treatment 2  10
@@ -509,12 +531,12 @@ Attaching package: 'dplyr'</code></pre>
 </div>
 <p>This df is all the meta data we want for our dataframe that we want to now make up some response data</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>Response<span class="ot">&lt;-</span><span class="fu">rnorm</span>(<span class="at">n=</span><span class="fu">nrow</span>(df),<span class="at">mean =</span> <span class="dv">15</span>,<span class="at">sd=</span><span class="dv">8</span>) <span class="co"># we need the response to be same length as the df so we use nrow() for the number of values we want.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>Response<span class="ot">&lt;-</span><span class="fu">rnorm</span>(<span class="at">n=</span><span class="fu">nrow</span>(df),<span class="at">mean =</span> <span class="dv">15</span>,<span class="at">sd=</span><span class="dv">8</span>) <span class="co"># we need the response to be same length as the df so we use nrow() for the number of values we want.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can then combine this to our df, the dollar sign is used to select one dimension (column) from within an object (here a dataframe)</p>
-<p>df$Response isn’t present in the data but by assigning our Response vector to it with &lt;- it adds a new column</p>
+<p>the column Response isn’t present in the data but by assigning our Response vector to it with df$Response &lt;- Response it adds a new column called Response to the dataframe df.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>Response<span class="ot">&lt;-</span>Response</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>Response<span class="ot">&lt;-</span>Response</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="saving-and-loading-data" class="level2">
@@ -524,27 +546,28 @@ Attaching package: 'dplyr'</code></pre>
 <p>Once we have our data set we can save it to our computer, but where that is on our computer is important.</p>
 <p>To do this we need to know where R is looking for files on your computer. This is called your current working directory.</p>
 <p>This information is displayed at the top of the console in Rstudio or you can use the base R function getwd().</p>
-<p>We can set our working directory to change where this is, or we can use our saving/loading functions to look in the correct folders (recommended).</p>
-<p>Lets find where we are, create a new folder in that location then save our df to that location.</p>
+<p>We can set our working directory to change where this is in r (not recommended normally), or we can use our saving/loading functions to look in the correct folders (recommended).</p>
+<p>Side Note: there is a method for not really needing either of these called using Projects (highly recommended) but that is a bit more advanced so lets leave that for now.</p>
+<p>Lets find out where our current working directory is, we can then create a new folder in that location, then save our df to that location.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">getwd</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "/Users/bfrd/Research/Nantes/Teaching2023/R_Introduction"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">"NewFolderName/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dir.create</span>(<span class="st">"NewFolderName/"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Warning in dir.create("NewFolderName/"): 'NewFolderName' already exists</code></pre>
 </div>
 </div>
-<p>We now can save our df we created to this new folder using the write.csv() function from base r, or even better the write_csv() function from the readr package</p>
-<p>To save to our folder we only need to say the directory we want the file saved to followed by a /, then the name of the file with file extension.</p>
-<p>Inside reading and writing functions such as write_csv() the main argument will be where is the file to be save to or taken from and we write this out with as a character string inside quotations.</p>
+<p>We now can save the df we created to this new folder using the write.csv() function from base r, or even better the write_csv() function from the readr package</p>
+<p>To save to our folder we only need to say the directory we want the file saved to, followed by a /, then the name of the file with file extension.</p>
+<p>Inside reading and writing functions such as write_csv() the main argument will be where is the file to be save to or taken from and we write this out as a character string inside quotations.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("readr")</span></span>
-<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb82-5"><a href="#cb82-5" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(df,<span class="st">"NewFolderName/OurNewFile.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("readr")</span></span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb86-4"><a href="#cb86-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-5"><a href="#cb86-5" aria-hidden="true" tabindex="-1"></a><span class="fu">write_csv</span>(df,<span class="st">"NewFolderName/OurNewFile.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="data-reading" class="level3">
@@ -553,11 +576,11 @@ Attaching package: 'dplyr'</code></pre>
 <p>These data are normally saved as excel spreadsheets. However, Excel is awful and should never be used for reproducible science! That being said it is often where a data spreadsheet starts before we bring it into R.</p>
 <p>Excel spreadsheets (.xsl) have lots of added information that actually is not needed and becomes complicated to work with so the easiest file format to read into R is a Comma Separated Values sheet (.csv)</p>
 <p>We can convert our spreadsheet in Excel to a .csv file, then we read in the .csv file with the base function read.csv() or even better the readr function read_csv().</p>
-<p>Again, inside reading and writing functions such as read_csv() the main argument will be where is the file and we write this out with as a character string inside quotations.</p>
+<p>Again, inside reading and writing functions such as read_csv() the main argument will be where the file is. we write this out with a character string inside quotations.</p>
 <p>To navigate up or down inside folders on your computer you use / to signify a folder, with the highest level folder on the far left</p>
 <p>For example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>My_DF<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">"NewFolderName/OurNewFile.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>My_DF<span class="ot">&lt;-</span><span class="fu">read_csv</span>(<span class="st">"NewFolderName/OurNewFile.csv"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Rows: 2220 Columns: 4
 ── Column specification ────────────────────────────────────────────────────────
@@ -573,9 +596,9 @@ dbl (3): Year, Rep, Response
 </section>
 </section>
 <section id="extra-resources-cheatsheets" class="level1">
-<h1>Extra Resources Cheatsheets</h1>
+<h1>Extra Resources: Cheatsheets</h1>
 <p>For almost all popular and well used packages there are “cheatsheets” available that provide info on all their most used functions and how to use them.</p>
-<p>You can google them. However, as Packages update there be deprecated functions (not in use any more), but normally the package will tell you the name of the new function.</p>
+<p>You can google them. However, as Packages update there may be deprecated functions (not in use any more), but normally the package will tell you the name of the new function.</p>
 <p>Here is a short list of some of the packages we will use (these links were all found from googling so may break over time):</p>
 <ul>
 <li><p><a href="https://www.rstudio.com/wp-content/uploads/2015/02/data-wrangling-cheatsheet.pdf">Tidyverse</a></p></li>

@@ -37,6 +37,8 @@ Everything to the right of a hastag '#' is not executed, therefore we can use th
 
 R code can be used to do simple calculations with values or even create lists, vectors, values, dataframes and more complex objects in the "global environment", where R stores our information in a session. (normally top right)
 
+## Simple Mathematics
+
 ```{r}
 6*6
 
@@ -44,7 +46,7 @@ R code can be used to do simple calculations with values or even create lists, v
 
 4+3/5
 
-(4+3)/5
+(4+3)/5 # mathematical ordering matters!
 
 sqrt(144)
 
@@ -58,6 +60,8 @@ An object is something (usually some sort of data) that is saved in temporary me
 ```{r}
 a<- 17
 ```
+
+## Functions
 
 In R we can use functions to do tasks for us, they normally precede a parenthesis (), some are named after what they do and some are less well named,  
 
@@ -81,6 +85,8 @@ We can then perform different functions between objects
 
 ```{r}
 a*b
+
+mean(a*b)
 ```
 
 We can even save the results to a new object
@@ -133,7 +139,7 @@ As we saw above we can store data in R as an Object, these can be many different
 
 The most common Object types are Vectors, Lists, Matrices, DataFrames and Arrays, 
 
-The main differences of these Object types are what types and combinations of data can be stored in them and how many Dimensions they have, 
+The main differences of these Object types are what types and combinations of data can be stored in them and how many dimensions they have, 
 
 ### Vector
 
@@ -162,6 +168,16 @@ Matrix_Character<- as.matrix(c("This","is","A","Character Matrix"))
 
 ```
 
+### DataFrame
+
+Multiple groups of a combination of data types (it could be Numeric, Character, Integer, Factor), with two dimensions is called a Dataframe. Each element of a dataframe must be the last length as the other elements.
+
+```{r}
+
+df<-data.frame(Column1=c(1.3,5.8,5.122,3.00,7.12),Column2=c(1,5,5,3,7),Column3=Vector_Factor)
+
+```
+
 ### List
 
 Multiple groups of a combination of data types or object types (it could be Numeric, Character, Integer, Factor or vectors, dataframes or matrices of these), with two dimensions is called a List. Each element in a list can be a different length to the other elements.
@@ -176,16 +192,6 @@ List_From_Vectors<-list(Vector_Character,Matrix_Numeric,Matrix_Numeric)
 List_Different_Lengths<-list(Item1=c(1,2,3,4,5,6),Item2=c("a","B","C","D"), Item3=seq(from=1,to=100,by=1))
 
 List_Different_Lengths
-```
-
-### DataFrame
-
-Multiple groups of a combination of data types (it could be Numeric, Character, Integer, Factor), with two dimensions is called a Dataframe. Each element of a dataframe must be the last length as the other elements.
-
-```{r}
-
-df<-data.frame(Column1=c(1.3,5.8,5.122,3.00,7.12),Column2=c(1,5,5,3,7),Column3=Vector_Factor)
-
 ```
 
 ### Array
@@ -210,38 +216,47 @@ Objects have dimensions and we can use a technique called indexing to select spe
 
 We use square brackets to do this,
 
-If the object is 1 dimensional one number will return one value
+If the object is 1 dimensional, one number will return one value
 
 ```{r}
-
 Vector_Numeric[4]
 ```
 
-If the object is 2 dimensional, one number will return the column
+If the object is 2 dimensional, one number will return that column
 
 ```{r}
 df[2]
 ```
 
-by adding a comma we can select the next dimension
+by adding a comma we can select the from both dimensions (rows first, then columns)
 
 ```{r}
-df[2,4]
+df[4,2]
 ```
 
-If we want all columns but only a specific row we add a comma without a number
+If we want all rows but only a specific column we add a comma without a number
 
 ```{r}
 df[,2]
 ```
 
+And vice verse
+
+```{r}
+df[2,]
+```
+
 We can also use multiple numbers inside c() to select multiple elements
+
+For example, row 4 and 2 of all columns 
 
 ```{r}
 df[c(2,4),]
 ```
 
 Or we can use -c() to select all but the mentioned elements
+
+For example, all rows but not columns 2 and 4
 
 ```{r}
 df[,-c(2,4)]
@@ -251,7 +266,7 @@ df[,-c(2,4)]
 
 R relies upon packages, groups of specific functions, which can be installed from the internet and then loaded into a script. 
 
-Base R, a package always already installed and loaded within R, is very powerful and useful but less user friendly for some tasks.
+Base R, a package already installed and loaded within R, is very powerful and useful but less user friendly for some tasks.
 
 From Base R we can use the install.packages() function to install a package from online repositories.
 
@@ -261,7 +276,7 @@ R assumes you want to download packages from CRAN (the official online repositor
 #install.packages("dplyr") 
 ```
 
-You only have to do this when you first want the package or want to update it. 
+You only have to do this when you first want the package or want to update it or when you have updated r. 
 
 Once a package is installed we have to tell R that we want to use functions from this package so we load it
 
@@ -269,15 +284,15 @@ Once a package is installed we have to tell R that we want to use functions from
 library(dplyr) 
 ```
 
-This needs to be run every new R session when this package is used.
+This needs to be run every new R session when this package is used. 
 
-We can now run functions from the dplyr library, specifically dplyr is a package, which is part of a group or ecosystem of packages called the tidyverse
+We can now run functions from the dplyr library, specifically dplyr is a package, which is part of a group or 'ecosystem' of packages called the tidyverse
 
 We will use this group of packages for reading and writing data into and out of R (readr), manipulating and organising data (dplyr and tidyr) and visualisng data (ggplot2)
 
 ## Data Inspection 
 
-First we can make some data into a dataframe, explore this data, transform and add to it, then we will make some figures with it.
+First we can make some data into a dataframe, explore this data, then save it as a file and then read the file back into r.
 
 R has some very useful random and non-random data generation functions 
 
@@ -329,7 +344,7 @@ Response<-rnorm(n=nrow(df),mean = 15,sd=8) # we need the response to be same len
 
 We can then combine this to our df, the dollar sign is used to select one dimension (column) from within an object (here a dataframe)
 
-df$Response isn't present in the data but by assigning our Response vector to it with <- it adds a new column 
+the column Response isn't present in the data but by assigning our Response vector to it with df$Response <- Response it adds a new column called Response to the dataframe df.
 
 ```{r}
 df$Response<-Response
@@ -345,9 +360,11 @@ To do this we need to know where R is looking for files on your computer. This i
 
 This information is displayed at the top of the console in Rstudio or you can use the base R function getwd().
 
-We can set our working directory to change where this is, or we can use our saving/loading functions to look in the correct folders (recommended).
+We can set our working directory to change where this is in r (not recommended normally), or we can use our saving/loading functions to look in the correct folders (recommended).
 
-Lets find where we are, create a new folder in that location then save our df to that location.
+Side Note: there is a method for not really needing either of these called using Projects (highly recommended) but that is a bit more advanced so lets leave that for now.
+
+Lets find out where our current working directory is, we can then create a new folder in that location, then save our df to that location.
 
 ```{r}
 
@@ -357,11 +374,11 @@ dir.create("NewFolderName/")
 
 ```
 
-We now can save our df we created to this new folder using the write.csv() function from base r, or even better the write_csv() function from the readr package
+We now can save the df we created to this new folder using the write.csv() function from base r, or even better the write_csv() function from the readr package
 
-To save to our folder we only need to say the directory we want the file saved to followed by a /, then the name of the file with file extension.
+To save to our folder we only need to say the directory we want the file saved to, followed by a /, then the name of the file with file extension.
 
-Inside reading and writing functions such as write_csv() the main argument will be where is the file to be save to or taken from and we write this out with as a character string inside quotations. 
+Inside reading and writing functions such as write_csv() the main argument will be where is the file to be save to or taken from and we write this out as a character string inside quotations. 
 
 ```{r}
 
@@ -383,7 +400,7 @@ Excel spreadsheets (.xsl) have lots of added information that actually is not ne
 
 We can convert our spreadsheet in Excel to a .csv file, then we read in the .csv file with the base function read.csv() or even better the readr function read_csv().
 
-Again, inside reading and writing functions such as read_csv() the main argument will be where is the file and we write this out with as a character string inside quotations. 
+Again, inside reading and writing functions such as read_csv() the main argument will be where the file is. we write this out with a character string inside quotations. 
 
 To navigate up or down inside folders on your computer you use / to signify a folder, with the highest level folder on the far left
 
@@ -396,11 +413,11 @@ My_DF<-read_csv("NewFolderName/OurNewFile.csv")
 ```
 
 
-# Extra Resources Cheatsheets
+# Extra Resources: Cheatsheets
 
 For almost all popular and well used packages there are "cheatsheets" available that provide info on all their most used functions and how to use them.
 
-You can google them. However, as Packages update there be deprecated functions (not in use any more), but normally the package will tell you the name of the new function.
+You can google them. However, as Packages update there may be deprecated functions (not in use any more), but normally the package will tell you the name of the new function.
 
 Here is a short list of some of the packages we will use (these links were all found from googling so may break over time):
 

@@ -10,7 +10,7 @@ format:
 
 ## Overview of Data
 
-Packages often have their own example datasets within them, or a package can be used to store just data without functions etc.
+Packages often have their own example datasets within them, or sometimes a package can be used to store just data without functions etc.
 
 We will look at the palmer penguins dataset
 
@@ -70,7 +70,7 @@ In tidy data:
 
 - Every cell is a single value.
 
-## Enough Theory - Using dplyr and tidyr
+## Enough Theory - dplyr and tidyr
 
 For data manipulation and organisation we will rely heavily on the dplyr and tidyr packages, which have a suite of functions that can be used in isolation or combined to perform complex data manipulation and organisation.
 

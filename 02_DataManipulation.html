@@ -252,6 +252,7 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <li><p>Every row is an observation.</p></li>
 <li><p>Every cell is a single value.</p></li>
 </ul>
+<p>This may not seem that important or even intelligible now but when we start plotting data it becomes very important.</p>
 </section>
 <section id="enough-theory---dplyr-and-tidyr" class="level2">
 <h2 class="anchored" data-anchor-id="enough-theory---dplyr-and-tidyr">Enough Theory - dplyr and tidyr</h2>
@@ -286,10 +287,11 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p>In R there is an operator that allows you to pass the result from one function into the next function this I called the Native Pipe |&gt;</p>
 <p>Again we can check this creates the same thing with all.equal()</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>NativePipingingFunctions<span class="ot">&lt;-</span><span class="fu">subset</span>(df_with_enters, Column1<span class="sc">==</span><span class="fl">1.3</span>)<span class="sc">|&gt;</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(NestingFunctions,NativePipingingFunctions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>NativePipingingFunctions<span class="ot">&lt;-</span>df_with_enters<span class="sc">|&gt;</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(Column1<span class="sc">==</span><span class="fl">1.3</span>)<span class="sc">|&gt;</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(NestingFunctions,NativePipingingFunctions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
@@ -298,10 +300,11 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p>The magittr pipe %&gt;% (shift+cmd+m or shift+ctrl+m) was from a package called maggittr that is automatically loaded by any tidyverse packages.</p>
 <p>It works very similarly to the native pipe with some subtle changes, but again the use is easier to read when there are the differences.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>MaggittrPipingingFunctions<span class="ot">&lt;-</span><span class="fu">subset</span>(df_with_enters, Column1<span class="sc">==</span><span class="fl">1.3</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(MaggittrPipingingFunctions,NativePipingingFunctions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>MaggittrPipingingFunctions<span class="ot">&lt;-</span>df_with_enters <span class="sc">%&gt;%</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(Column1<span class="sc">==</span><span class="fl">1.3</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(MaggittrPipingingFunctions,NativePipingingFunctions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>

@@ -135,22 +135,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>This becomes a ‘promise’ of a data set, we have to do something with it to get it properly, lets take a look inside</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>
-Attaching package: 'dplyr'</code></pre>
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.2     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.2     ✔ tibble    3.2.1
+✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+✔ purrr     1.0.1     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 </div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:stats':
-
-    filter, lag</code></pre>
-</div>
-<div class="cell-output cell-output-stderr">
-<pre><code>The following objects are masked from 'package:base':
-
-    intersect, setdiff, setequal, union</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Rows: 344
 Columns: 8
@@ -167,7 +165,7 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p>This gives us two datasets in our global environment</p>
 <p>Using summary() we can see which columns have NAs and which don’t.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      species          island    bill_length_mm  bill_depth_mm  
  Adelie   :152   Biscoe   :168   Min.   :32.10   Min.   :13.10  
@@ -189,7 +187,7 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>The penguins data set is fairly well organised but we can still do a bit more with it if we want</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins_raw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins_raw)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  studyName         Sample Number      Species             Region         
  Length:344         Min.   :  1.00   Length:344         Length:344        
@@ -263,14 +261,14 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <p>This can be done by doing an enter/carriage return after a comma inside of a function between arguments.</p>
 <p>This technique changes nothing of how the function works (we can check if the two outputs are equal with all.equal())</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df_without_enters<span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="at">Column1=</span><span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>),<span class="at">Column2=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">7</span>))</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>df_with_enters<span class="ot">&lt;-</span><span class="fu">data.frame</span>(</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Column1=</span><span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>),</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">Column2=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">7</span>)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(df_without_enters,df_with_enters)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>df_without_enters<span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="at">Column1=</span><span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>),<span class="at">Column2=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">7</span>))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>df_with_enters<span class="ot">&lt;-</span><span class="fu">data.frame</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">Column1=</span><span class="fu">c</span>(<span class="fl">1.3</span>,<span class="fl">5.8</span>,<span class="fl">5.122</span>,<span class="fl">3.00</span>,<span class="fl">7.12</span>),</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">Column2=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">7</span>)</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(df_without_enters,df_with_enters)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
@@ -278,53 +276,56 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </section>
 <section id="piping-native-and-maggittr" class="level3">
 <h3 class="anchored" data-anchor-id="piping-native-and-maggittr">Piping (Native and maggittr)</h3>
-<p>What do we do when we want to apply multiple functions in a sequence but don’t want to create loads of objects in our global environment (where are stores temporarily saved objects)?</p>
-<p>One option is putting one function inside of another etc (Sometimes fine).</p>
+<p>What do we do when we want to apply multiple functions in a sequence but don’t want to create loads of objects in our global environment?</p>
+<p>One option is putting one function inside of another etc (Sometimes fine). This is called nesting.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>NestingFunctions<span class="ot">&lt;-</span><span class="fu">summary</span>(<span class="fu">subset</span>(df_with_enters, Column1<span class="sc">==</span><span class="fl">1.3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>NestingFunctions<span class="ot">&lt;-</span><span class="fu">summary</span>(<span class="fu">subset</span>(df_with_enters, Column1<span class="sc">==</span><span class="fl">1.3</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This can be okay but generally is hard to follow.</p>
-<p>In R there is an operator that allows you to pass the result from one function into the next function this I called the Native Pipe |&gt;</p>
+<p>This can be okay but generally is hard to follow, as the last function that is applied is the first one you read from left to right.</p>
+<p>In R there is an operator that allows you to pass the result from one function into the next function this is called the Native Pipe |&gt;</p>
 <p>Again we can check this creates the same thing with all.equal()</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>NativePipingingFunctions<span class="ot">&lt;-</span>df_with_enters<span class="sc">|&gt;</span></span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(Column1<span class="sc">==</span><span class="fl">1.3</span>)<span class="sc">|&gt;</span></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(NestingFunctions,NativePipingingFunctions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>NativePipingingFunctions<span class="ot">&lt;-</span>df_with_enters<span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(Column1<span class="sc">==</span><span class="fl">1.3</span>)<span class="sc">|&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(NestingFunctions,NativePipingingFunctions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
 </div>
 <p>This operator is actually quite new and was based on another commonly used pipe (and more superior in my mind).</p>
-<p>The magittr pipe %&gt;% (shift+cmd+m or shift+ctrl+m) was from a package called maggittr that is automatically loaded by any tidyverse packages.</p>
-<p>It works very similarly to the native pipe with some subtle changes, but again the use is easier to read when there are the differences.</p>
+<p>The magittr pipe %&gt;% (shift+cmd+m or shift+ctrl+m) was from a package called magittr that is automatically loaded by any tidyverse package.</p>
+<p>It works very similarly to the native pipe with some subtle changes.</p>
+<p>Again I feel the magittr pipe makes code that is easier to read.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>MaggittrPipingingFunctions<span class="ot">&lt;-</span>df_with_enters <span class="sc">%&gt;%</span> </span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(Column1<span class="sc">==</span><span class="fl">1.3</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(MaggittrPipingingFunctions,NativePipingingFunctions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>MaggittrPipingingFunctions<span class="ot">&lt;-</span>df_with_enters <span class="sc">%&gt;%</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">subset</span>(Column1<span class="sc">==</span><span class="fl">1.3</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summary</span>()</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(MaggittrPipingingFunctions,NativePipingingFunctions)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>
 </div>
+<p>The pipe can be thought of as “and then”</p>
+<p>So above, the df_with_enters is subset where Column1 is equal to 1.3 and then the summary function is used.</p>
 <p>When using one function it is not needed, but when using multiple functions in a row piping makes code a lot easier to read and understand what order functions have been carried out in.</p>
 <p>Again this readability has drawbacks in being slower (for small data of 100s of rows this may be 0.0001 of a second but big data 10000000000s of rows it might be a few seconds)</p>
+<p>Later on we will use pipes in long sequences of functions and it will become clearer how useful they are.</p>
 </section>
 <section id="filtering" class="level3">
 <h3 class="anchored" data-anchor-id="filtering">Filtering</h3>
-<p>filter() is a row wise subsetting based on a statement from the dataframe.</p>
+<p>The dplyr function filter() is a row wise subsetter, based on a statement from the dataframe.</p>
 <p>When we looked at the summary() of penguins we saw some NAs in the biometric columns and also in the sex column.</p>
-<p>So we only have to remove two rows to remove the NAs in the biometrics columns, there are more NA’s in the sex column.</p>
-<p>If we want to remove NA’s there are many ways, to be selective we can filter our dataset</p>
-<p>To subset data we can use the filter() function from the dplyr package, we create a logic clause that then filters the dataset by that clause/statement,</p>
-<p>For example if we want to select all rows of the data set where the data is from a female penguin we can do this by</p>
+<p>If we want to remove NA’s there are many ways, to be selective we can filter our dataset.</p>
+<p>To subset data, we create a logic clause that then filters the dataset by that clause/statement,</p>
+<p>For example if we want to select all rows of the data set where the data is from a female penguin we can do this by:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>female_penguins<span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sex<span class="sc">==</span><span class="st">"female"</span>)</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>female_penguins</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>female_penguins<span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(sex<span class="sc">==</span><span class="st">"female"</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>female_penguins</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 165 × 8
    species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
@@ -343,12 +344,14 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 # ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
 </div>
 </div>
-<p>or we might want all the penguins above 5 kg</p>
+<p>Notice there are two =’s!!</p>
+<p>This is used to create our clause/statement, we filter (keep) the rows of the pengiuns dataset if the sex column contains “females”, if just one equals (=) is used it won’t work.</p>
+<p>Or we might want all the penguins above 5 kg.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>heavier_penguins<span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(body_mass_g<span class="sc">&gt;=</span> <span class="dv">5000</span>)</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>heavier_penguins</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>heavier_penguins<span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(body_mass_g<span class="sc">&gt;=</span> <span class="dv">5000</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>heavier_penguins</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 67 × 8
    species island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
@@ -367,15 +370,15 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 # ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
 </div>
 </div>
-<p>There are a range of symbols we can use such as more than &gt;, less than &lt;, more than or equal to &gt;=, less than or equal to &lt;=, is equal to ==, and &amp;, or |.</p>
+<p>There are a range of symbols we can use such as more than (&gt;), less than (&lt;), more than or equal to (&gt;=), less than or equal to (&lt;=), is equal to (==), and (&amp;), or (|).</p>
 <p>We can even use multiple clauses or statements in one call to filter,</p>
 <p>So if we want all the heavier female penguins</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>heavier_female_penguins<span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(body_mass_g<span class="sc">&gt;=</span> <span class="dv">5000</span> <span class="sc">&amp;</span> sex<span class="sc">==</span><span class="st">"female"</span>)</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>heavier_female_penguins</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>heavier_female_penguins<span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(body_mass_g<span class="sc">&gt;=</span> <span class="dv">5000</span> <span class="sc">&amp;</span> sex<span class="sc">==</span><span class="st">"female"</span>)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>heavier_female_penguins</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 8 × 8
   species island bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
@@ -393,14 +396,14 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Sometimes we might want to filter with multiple answers of a categorical variable,</p>
 <p>For example if we wanted all penguins from Biscoe and Torgersen island</p>
-<p>To do this we can make a vector of the names we want, then filter by that vector</p>
+<p>To do this we can make a vector of the names we want, then filter by that vector (%in%).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>Islands_we_Want<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"Biscoe"</span>,<span class="st">"Torgersen"</span>)</span>
-<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>Biscoe_Torgersen_penguins<span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
-<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(island<span class="sc">%in%</span>Islands_we_Want)</span>
-<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>Biscoe_Torgersen_penguins</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>Islands_we_Want<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"Biscoe"</span>,<span class="st">"Torgersen"</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>Biscoe_Torgersen_penguins<span class="ot">&lt;-</span> penguins <span class="sc">%&gt;%</span> </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(island<span class="sc">%in%</span>Islands_we_Want)</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>Biscoe_Torgersen_penguins</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 220 × 8
    species island    bill_length_mm bill_depth_mm flipper_length_mm body_mass_g
@@ -419,24 +422,24 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 # ℹ 2 more variables: sex &lt;fct&gt;, year &lt;int&gt;</code></pre>
 </div>
 </div>
-<p>Here we will make use of ! this means the opposite of the clause (not this)</p>
-<p>We also use %in% which is used to tell filter there are more than one element</p>
-<p>or NAs that we want to get rid of as NA is not classed like normal data</p>
+<p>Here we will make use of !, this means the opposite of the clause (not this), a subtraction sign can also be used (-).</p>
+<p>We also use %in% which is used to tell filter there are more than one elements or we can use it for NAs that we want to get rid of as NA is not classed like normal data (It is a lack of data not a character or number).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>penguins_someNAs<span class="ot">&lt;-</span>penguins <span class="sc">%&gt;%</span> </span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>body_mass_g<span class="sc">%in%</span><span class="cn">NA</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>penguins_someNAs<span class="ot">&lt;-</span>penguins <span class="sc">%&gt;%</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>body_mass_g<span class="sc">%in%</span><span class="cn">NA</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>If we now look at the number of rows of the datasets we can see only two rows were removed. (not all the NAs)</p>
+<p>We just removed the rows with NA in the body_mass_g column.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 344</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(penguins_someNAs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(penguins_someNAs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 342</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins_someNAs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins_someNAs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      species          island    bill_length_mm  bill_depth_mm  
  Adelie   :151   Biscoe   :167   Min.   :32.10   Min.   :13.10  
@@ -456,10 +459,10 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </div>
 <p>Still 9 NAs in sex</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>penguins_noNAs<span class="ot">&lt;-</span>penguins_someNAs <span class="sc">%&gt;%</span> </span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>sex<span class="sc">%in%</span><span class="cn">NA</span>)</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins_noNAs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>penguins_noNAs<span class="ot">&lt;-</span>penguins_someNAs <span class="sc">%&gt;%</span> </span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>sex<span class="sc">%in%</span><span class="cn">NA</span>)</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(penguins_noNAs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>      species          island    bill_length_mm  bill_depth_mm  
  Adelie   :146   Biscoe   :163   Min.   :32.10   Min.   :13.10  
@@ -477,13 +480,22 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
  Max.   :231       Max.   :6300                Max.   :2009  </code></pre>
 </div>
 </div>
-<p>All sorted</p>
+<p>We might want to remove all rows where an NA is in any of the columns (not always advisable)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>penguins_noNAs_quickly<span class="ot">&lt;-</span>penguins <span class="sc">%&gt;%</span> </span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(penguins_noNAs,penguins_noNAs_quickly)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+</div>
 </section>
 <section id="selecting" class="level3">
 <h3 class="anchored" data-anchor-id="selecting">Selecting</h3>
-<p>select() is a column wise subsetting based on a statement of column names.</p>
-<p>So we can select or deselect a few named columns using select</p>
-<p>We can use - or ! to say not this column/statement.</p>
+<p>The dplyr function select() is a column wise subsetter based on a statement of column names.</p>
+<p>So we can select or deselect a few named columns using select.</p>
+<p>And as with filter we can use - or ! to say not this column/statement.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>Three_Columns<span class="ot">&lt;-</span>penguins_raw <span class="sc">%&gt;%</span> </span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(studyName,Species,Island)</span>
@@ -504,8 +516,8 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 [13] "Delta 13 C (o/oo)"   "Comments"           </code></pre>
 </div>
 </div>
-<p>We can also use a statement for consistencies across columns</p>
-<p>For example all columns that contain() an “s” or even combining a statement with other specific selections</p>
+<p>We can also use a statement for consistencies across columns (contains() or even starts_with() or ends_with())</p>
+<p>For example all columns that contains() an “s” or even combining a statement with other specific selections</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>S_Columns<span class="ot">&lt;-</span>penguins_raw <span class="sc">%&gt;%</span> </span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="fu">contains</span>(<span class="st">"s"</span>))</span>
@@ -597,7 +609,7 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <section id="mutating" class="level3">
 <h3 class="anchored" data-anchor-id="mutating">Mutating</h3>
 <p>We have data but maybe we want to transform that data and either replace the original column or create a new column.</p>
-<p>We can use mutate() to do this.</p>
+<p>We can use dplyr’s mutate() to do this.</p>
 <p>Lets convert the body mass column into a new column that is in kg.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>penguins_kgbodymass<span class="ot">&lt;-</span>penguins <span class="sc">%&gt;%</span> </span>
@@ -623,7 +635,7 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
  NA's   :2         NA's   :2                                  NA's   :2      </code></pre>
 </div>
 </div>
-<p>We can also paste information from other columns together into another</p>
+<p>We can also paste information from other columns together into another new column.</p>
 <p>We shall use the paste() function then we will put what character we want to separate each element by using the sep argument.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>penguins_ExtraInfo<span class="ot">&lt;-</span>penguins_noNAs <span class="sc">%&gt;%</span> </span>
@@ -638,28 +650,31 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
  [9] "Chinstrap_Dream_female"  "Chinstrap_Dream_male"   </code></pre>
 </div>
 </div>
-<p>We can even do calculations that are based on element in another column at the same row.</p>
+<p>We can even do calculations that are based on and element in another column at the same row.</p>
 <p>There are a few ways to do this, the simplest is an if_else() statement.</p>
-<p>with if_else() there are three arguments, the first argument is the statement (is it female), the second argument is what to do if the statement is true, and the third argument is what to do if the statement is false.</p>
+<p>With if_else() there are three arguments, the first argument is the statement (is it female), the second argument is what to do if the statement is true and the third argument is what to do if the statement is false.</p>
 <p>Lets pretend that when an Adelie penguin was studied they were incorrectly weighed by 200 g.</p>
 <p>We shall replace the old body_mass_g with new corrected weight, but only for Adelie penguins.</p>
 <p>To look at the change we will plot a histogram of body weights for both weights.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>penguins_if_else<span class="ot">&lt;-</span>penguins_noNAs <span class="sc">%&gt;%</span> </span>
-<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">body_mass_g=</span><span class="fu">if_else</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>,body_mass_g<span class="sc">+</span><span class="dv">200</span>,body_mass_g))</span>
-<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(penguins_noNAs<span class="sc">$</span>body_mass_g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">body_mass_g=</span><span class="fu">if_else</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>,</span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>                             body_mass_g<span class="sc">+</span><span class="dv">200</span>,</span>
+<span id="cb60-4"><a href="#cb60-4" aria-hidden="true" tabindex="-1"></a>                             body_mass_g))</span>
+<span id="cb60-5"><a href="#cb60-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb60-6"><a href="#cb60-6" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(penguins_noNAs<span class="sc">$</span>body_mass_g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="02_DataManipulation_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+<p><img src="02_DataManipulation_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(penguins_if_else<span class="sc">$</span>body_mass_g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="02_DataManipulation_files/figure-html/unnamed-chunk-22-2.png" class="img-fluid" width="672"></p>
+<p><img src="02_DataManipulation_files/figure-html/unnamed-chunk-23-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>While fine for one single statement, multiple if_else() statements can create horrible code,</p>
-<p>For this we can use case_when()</p>
-<p>Maybe Gentoos were also miss-measured but the other way round (too big)</p>
+<p>While fine for one single statement, multiple if_else() statements can create horrible code.</p>
+<p>For this we can use case_when(),</p>
+<p>Where we take a statement, then use ~ to say the new column value, then a comma before the next statement</p>
+<p>Maybe Gentoos were also miss-measured but the other way round (too big).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>penguins_case_when<span class="ot">&lt;-</span>penguins_noNAs <span class="sc">%&gt;%</span> </span>
 <span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">body_mass_g=</span><span class="fu">case_when</span>(species<span class="sc">==</span><span class="st">"Adelie"</span><span class="sc">~</span>body_mass_g<span class="sc">+</span><span class="dv">200</span>,</span>
@@ -668,23 +683,43 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 <span id="cb62-5"><a href="#cb62-5" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb62-6"><a href="#cb62-6" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(penguins_noNAs<span class="sc">$</span>body_mass_g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="02_DataManipulation_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
+<p><img src="02_DataManipulation_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(penguins_case_when<span class="sc">$</span>body_mass_g)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="02_DataManipulation_files/figure-html/unnamed-chunk-23-2.png" class="img-fluid" width="672"></p>
+<p><img src="02_DataManipulation_files/figure-html/unnamed-chunk-24-2.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>With case_when we have to be careful if all of our statements don’t cover all the data.</p>
+<p>If there is a condition not covered it will return NA values.</p>
+<p>To avoid this we can do a final statement with TRUE~Our_Default</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>penguins_case_when_Missing<span class="ot">&lt;-</span>penguins_noNAs <span class="sc">%&gt;%</span> </span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">body_mass_g=</span><span class="fu">case_when</span>(species<span class="sc">==</span><span class="st">"Adelie"</span><span class="sc">~</span>body_mass_g<span class="sc">+</span><span class="dv">200</span>,</span>
+<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>                               species<span class="sc">==</span><span class="st">"Gentoo"</span><span class="sc">~</span>body_mass_g<span class="dv">-200</span>))</span>
+<span id="cb64-4"><a href="#cb64-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-5"><a href="#cb64-5" aria-hidden="true" tabindex="-1"></a>penguins_case_when_TRUE<span class="ot">&lt;-</span>penguins_noNAs <span class="sc">%&gt;%</span> </span>
+<span id="cb64-6"><a href="#cb64-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">body_mass_g=</span><span class="fu">case_when</span>(species<span class="sc">==</span><span class="st">"Adelie"</span><span class="sc">~</span>body_mass_g<span class="sc">+</span><span class="dv">200</span>,</span>
+<span id="cb64-7"><a href="#cb64-7" aria-hidden="true" tabindex="-1"></a>                               species<span class="sc">==</span><span class="st">"Gentoo"</span><span class="sc">~</span>body_mass_g<span class="dv">-200</span>,</span>
+<span id="cb64-8"><a href="#cb64-8" aria-hidden="true" tabindex="-1"></a>                               <span class="cn">TRUE</span><span class="sc">~</span>body_mass_g))</span>
+<span id="cb64-9"><a href="#cb64-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb64-10"><a href="#cb64-10" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(penguins_case_when_TRUE,penguins_case_when_Missing)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "Component \"body_mass_g\": 'is.NA' value mismatch: 68 in current 0 in target"</code></pre>
+</div>
+</div>
+<p>This creates 68 NA values in our data, so need to be aware of this.</p>
+<p>But we could use it for bug checking.</p>
 </section>
 <section id="summarise-by-groups" class="level3">
 <h3 class="anchored" data-anchor-id="summarise-by-groups">Summarise by Groups</h3>
 <p>Often we will want to see summaries of data across groups, using a combination of group_by() and summarise() can give use these summary stats.</p>
-<p>we can group by one, two or many columns, the more groups the less data will summarised in each group.</p>
+<p>We can group by one, two or many columns, the more groups the less data will summarised in each group.</p>
 <p>If we don’t group by a column it will not be in the final dataset.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a>penguins_noNAs <span class="sc">%&gt;%</span> </span>
-<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span> </span>
-<span id="cb64-3"><a href="#cb64-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Mean_body_mass=</span><span class="fu">mean</span>(body_mass_g))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>penguins_noNAs <span class="sc">%&gt;%</span> </span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span> </span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Mean_body_mass=</span><span class="fu">mean</span>(body_mass_g))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 2
    year Mean_body_mass
@@ -693,9 +728,9 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 2  2008          4263.
 3  2009          4200.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a>penguins_noNAs <span class="sc">%&gt;%</span> </span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year,species) <span class="sc">%&gt;%</span> </span>
-<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Mean_body_mass=</span><span class="fu">mean</span>(body_mass_g))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a>penguins_noNAs <span class="sc">%&gt;%</span> </span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year,species) <span class="sc">%&gt;%</span> </span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Mean_body_mass=</span><span class="fu">mean</span>(body_mass_g))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by 'year'. You can override using the
 `.groups` argument.</code></pre>
@@ -715,9 +750,9 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 8  2009 Chinstrap          3725 
 9  2009 Gentoo             5157.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>penguins_noNAs <span class="sc">%&gt;%</span> </span>
-<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year,species, island) <span class="sc">%&gt;%</span> </span>
-<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Mean_body_mass=</span><span class="fu">mean</span>(body_mass_g))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>penguins_noNAs <span class="sc">%&gt;%</span> </span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year,species, island) <span class="sc">%&gt;%</span> </span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Mean_body_mass=</span><span class="fu">mean</span>(body_mass_g))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by 'year', 'species'. You can override using
 the `.groups` argument.</code></pre>
@@ -743,9 +778,9 @@ the `.groups` argument.</code></pre>
 14  2009 Chinstrap Dream              3725 
 15  2009 Gentoo    Biscoe             5157.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a>penguins_noNAs <span class="sc">%&gt;%</span> </span>
-<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year,species, island,sex) <span class="sc">%&gt;%</span> </span>
-<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Mean_body_mass=</span><span class="fu">mean</span>(body_mass_g))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb74"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb74-1"><a href="#cb74-1" aria-hidden="true" tabindex="-1"></a>penguins_noNAs <span class="sc">%&gt;%</span> </span>
+<span id="cb74-2"><a href="#cb74-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year,species, island,sex) <span class="sc">%&gt;%</span> </span>
+<span id="cb74-3"><a href="#cb74-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Mean_body_mass=</span><span class="fu">mean</span>(body_mass_g))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by 'year', 'species', 'island'. You can
 override using the `.groups` argument.</code></pre>
@@ -769,10 +804,11 @@ override using the `.groups` argument.</code></pre>
 </div>
 </div>
 <p>We can also use groups to count numbers of rows within each group.</p>
+<p>Although the table() function in base r does the same but it is harder to read and use when lots of columns selected.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a>penguins_noNAs <span class="sc">%&gt;%</span> </span>
-<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year,species,island,sex) <span class="sc">%&gt;%</span> </span>
-<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Number=</span><span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>penguins_noNAs <span class="sc">%&gt;%</span> </span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year,species,island,sex) <span class="sc">%&gt;%</span> </span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Number=</span><span class="fu">n</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by 'year', 'species', 'island'. You can
 override using the `.groups` argument.</code></pre>
@@ -794,6 +830,58 @@ override using the `.groups` argument.</code></pre>
 10  2007 Gentoo    Biscoe    male       17
 # ℹ 20 more rows</code></pre>
 </div>
+<div class="sourceCode cell-code" id="cb80"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb80-1"><a href="#cb80-1" aria-hidden="true" tabindex="-1"></a>penguins_noNAs <span class="sc">%&gt;%</span> </span>
+<span id="cb80-2"><a href="#cb80-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(year,species,island,sex) <span class="sc">%&gt;%</span> </span>
+<span id="cb80-3"><a href="#cb80-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">table</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>, , island = Biscoe, sex = female
+
+      species
+year   Adelie Chinstrap Gentoo
+  2007      5         0     16
+  2008      9         0     22
+  2009      8         0     20
+
+, , island = Dream, sex = female
+
+      species
+year   Adelie Chinstrap Gentoo
+  2007      9        13      0
+  2008      8         9      0
+  2009     10        12      0
+
+, , island = Torgersen, sex = female
+
+      species
+year   Adelie Chinstrap Gentoo
+  2007      8         0      0
+  2008      8         0      0
+  2009      8         0      0
+
+, , island = Biscoe, sex = male
+
+      species
+year   Adelie Chinstrap Gentoo
+  2007      5         0     17
+  2008      9         0     23
+  2009      8         0     21
+
+, , island = Dream, sex = male
+
+      species
+year   Adelie Chinstrap Gentoo
+  2007     10        13      0
+  2008      8         9      0
+  2009     10        12      0
+
+, , island = Torgersen, sex = male
+
+      species
+year   Adelie Chinstrap Gentoo
+  2007      7         0      0
+  2008      8         0      0
+  2009      8         0      0</code></pre>
+</div>
 </div>
 </section>
 <section id="wide-and-long-data" class="level3">
@@ -803,14 +891,14 @@ override using the `.groups` argument.</code></pre>
 <p>Lets take some of the summaries from above to create a wide database from our last summary which was hard to read because of its length.</p>
 <p>To go between wide and long data we will use pivot functions from tidyr, namely pivot_wider() and pivot_longer().</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb78"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb78-1"><a href="#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("tidyr")</span></span>
-<span id="cb78-2"><a href="#cb78-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb78-3"><a href="#cb78-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb78-4"><a href="#cb78-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb78-5"><a href="#cb78-5" aria-hidden="true" tabindex="-1"></a>penguins_noNAs <span class="sc">%&gt;%</span> </span>
-<span id="cb78-6"><a href="#cb78-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year,species, island,sex) <span class="sc">%&gt;%</span> </span>
-<span id="cb78-7"><a href="#cb78-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Mean_body_mass=</span><span class="fu">mean</span>(body_mass_g)) <span class="sc">%&gt;%</span> </span>
-<span id="cb78-8"><a href="#cb78-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> species, <span class="at">values_from =</span> Mean_body_mass)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("tidyr")</span></span>
+<span id="cb82-2"><a href="#cb82-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb82-3"><a href="#cb82-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb82-4"><a href="#cb82-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb82-5"><a href="#cb82-5" aria-hidden="true" tabindex="-1"></a>penguins_noNAs <span class="sc">%&gt;%</span> </span>
+<span id="cb82-6"><a href="#cb82-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year,species, island,sex) <span class="sc">%&gt;%</span> </span>
+<span id="cb82-7"><a href="#cb82-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Mean_body_mass=</span><span class="fu">mean</span>(body_mass_g)) <span class="sc">%&gt;%</span> </span>
+<span id="cb82-8"><a href="#cb82-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> species, <span class="at">values_from =</span> Mean_body_mass)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by 'year', 'species', 'island'. You can
 override using the `.groups` argument.</code></pre>
@@ -842,10 +930,10 @@ override using the `.groups` argument.</code></pre>
 </div>
 <p>It is still quite long but we could also add more info into the wider columns (e.g.&nbsp;year or sex)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>penguins_noNAs <span class="sc">%&gt;%</span> </span>
-<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year,species, island,sex) <span class="sc">%&gt;%</span> </span>
-<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Mean_body_mass=</span><span class="fu">mean</span>(body_mass_g)) <span class="sc">%&gt;%</span> </span>
-<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="fu">c</span>(species,year), <span class="at">values_from =</span> Mean_body_mass)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>penguins_noNAs <span class="sc">%&gt;%</span> </span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year,species, island,sex) <span class="sc">%&gt;%</span> </span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Mean_body_mass=</span><span class="fu">mean</span>(body_mass_g)) <span class="sc">%&gt;%</span> </span>
+<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="fu">c</span>(species,year), <span class="at">values_from =</span> Mean_body_mass)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by 'year', 'species', 'island'. You can
 override using the `.groups` argument.</code></pre>
@@ -864,10 +952,10 @@ override using the `.groups` argument.</code></pre>
 # ℹ 4 more variables: Gentoo_2008 &lt;dbl&gt;, Adelie_2009 &lt;dbl&gt;,
 #   Chinstrap_2009 &lt;dbl&gt;, Gentoo_2009 &lt;dbl&gt;</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a>penguins_noNAs <span class="sc">%&gt;%</span> </span>
-<span id="cb84-2"><a href="#cb84-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year,species, island,sex) <span class="sc">%&gt;%</span> </span>
-<span id="cb84-3"><a href="#cb84-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Mean_body_mass=</span><span class="fu">mean</span>(body_mass_g)) <span class="sc">%&gt;%</span> </span>
-<span id="cb84-4"><a href="#cb84-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="fu">c</span>(species,sex), <span class="at">values_from =</span> Mean_body_mass)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>penguins_noNAs <span class="sc">%&gt;%</span> </span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year,species, island,sex) <span class="sc">%&gt;%</span> </span>
+<span id="cb88-3"><a href="#cb88-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Mean_body_mass=</span><span class="fu">mean</span>(body_mass_g)) <span class="sc">%&gt;%</span> </span>
+<span id="cb88-4"><a href="#cb88-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> <span class="fu">c</span>(species,sex), <span class="at">values_from =</span> Mean_body_mass)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by 'year', 'species', 'island'. You can
 override using the `.groups` argument.</code></pre>
@@ -892,15 +980,15 @@ override using the `.groups` argument.</code></pre>
 <p>Often as ecologists we will be surveying a whole community and counting numbers of each different species at each site.</p>
 <p>This data often comes to us as wide data, our summary of counts could be turned into a wide df (we will fill NAs as 0s) and we can the convert it back to a long dataframe.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a>WideCounts<span class="ot">&lt;-</span>penguins_noNAs <span class="sc">%&gt;%</span> </span>
-<span id="cb87-2"><a href="#cb87-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year,species,island,sex) <span class="sc">%&gt;%</span> </span>
-<span id="cb87-3"><a href="#cb87-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Number=</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
-<span id="cb87-4"><a href="#cb87-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> species,<span class="at">values_from =</span> Number, <span class="at">values_fill =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>WideCounts<span class="ot">&lt;-</span>penguins_noNAs <span class="sc">%&gt;%</span> </span>
+<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(year,species,island,sex) <span class="sc">%&gt;%</span> </span>
+<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Number=</span><span class="fu">n</span>()) <span class="sc">%&gt;%</span> </span>
+<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(<span class="at">names_from =</span> species,<span class="at">values_from =</span> Number, <span class="at">values_fill =</span> <span class="dv">0</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>`summarise()` has grouped output by 'year', 'species', 'island'. You can
 override using the `.groups` argument.</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>WideCounts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb93"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb93-1"><a href="#cb93-1" aria-hidden="true" tabindex="-1"></a>WideCounts</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 18 × 6
 # Groups:   year, island [9]
@@ -930,38 +1018,38 @@ override using the `.groups` argument.</code></pre>
 <p>Lets make this data long, to do this we have to tell the function which columns are to be pivoted, and what we want to call the new columns.</p>
 <p>We can either tell it which columns should or should not be pivoted, or we can even say which position columns to use with numbers. (using the colon means from one thing to the other thing)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a>LongCounts_1<span class="ot">&lt;-</span>WideCounts <span class="sc">%&gt;%</span> </span>
-<span id="cb91-2"><a href="#cb91-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">c</span>(Adelie,Chinstrap,Gentoo),<span class="at">names_to =</span> <span class="st">"species"</span>,<span class="at">values_to =</span> <span class="st">"Number"</span>)</span>
-<span id="cb91-3"><a href="#cb91-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb91-4"><a href="#cb91-4" aria-hidden="true" tabindex="-1"></a>LongCounts_2<span class="ot">&lt;-</span>WideCounts <span class="sc">%&gt;%</span> </span>
-<span id="cb91-5"><a href="#cb91-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="fu">c</span>(year,island,sex),<span class="at">names_to =</span> <span class="st">"species"</span>,<span class="at">values_to =</span> <span class="st">"Number"</span>)</span>
-<span id="cb91-6"><a href="#cb91-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb91-7"><a href="#cb91-7" aria-hidden="true" tabindex="-1"></a>LongCounts_3<span class="ot">&lt;-</span>WideCounts <span class="sc">%&gt;%</span> </span>
-<span id="cb91-8"><a href="#cb91-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>,<span class="at">names_to =</span> <span class="st">"species"</span>,<span class="at">values_to =</span> <span class="st">"Number"</span>)</span>
-<span id="cb91-9"><a href="#cb91-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb91-10"><a href="#cb91-10" aria-hidden="true" tabindex="-1"></a>LongCounts_4<span class="ot">&lt;-</span>WideCounts <span class="sc">%&gt;%</span> </span>
-<span id="cb91-11"><a href="#cb91-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>),<span class="at">names_to =</span> <span class="st">"species"</span>,<span class="at">values_to =</span> <span class="st">"Number"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb95"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb95-1"><a href="#cb95-1" aria-hidden="true" tabindex="-1"></a>LongCounts_1<span class="ot">&lt;-</span>WideCounts <span class="sc">%&gt;%</span> </span>
+<span id="cb95-2"><a href="#cb95-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="fu">c</span>(Adelie,Chinstrap,Gentoo),<span class="at">names_to =</span> <span class="st">"species"</span>,<span class="at">values_to =</span> <span class="st">"Number"</span>)</span>
+<span id="cb95-3"><a href="#cb95-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-4"><a href="#cb95-4" aria-hidden="true" tabindex="-1"></a>LongCounts_2<span class="ot">&lt;-</span>WideCounts <span class="sc">%&gt;%</span> </span>
+<span id="cb95-5"><a href="#cb95-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="fu">c</span>(year,island,sex),<span class="at">names_to =</span> <span class="st">"species"</span>,<span class="at">values_to =</span> <span class="st">"Number"</span>)</span>
+<span id="cb95-6"><a href="#cb95-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-7"><a href="#cb95-7" aria-hidden="true" tabindex="-1"></a>LongCounts_3<span class="ot">&lt;-</span>WideCounts <span class="sc">%&gt;%</span> </span>
+<span id="cb95-8"><a href="#cb95-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>,<span class="at">names_to =</span> <span class="st">"species"</span>,<span class="at">values_to =</span> <span class="st">"Number"</span>)</span>
+<span id="cb95-9"><a href="#cb95-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-10"><a href="#cb95-10" aria-hidden="true" tabindex="-1"></a>LongCounts_4<span class="ot">&lt;-</span>WideCounts <span class="sc">%&gt;%</span> </span>
+<span id="cb95-11"><a href="#cb95-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>),<span class="at">names_to =</span> <span class="st">"species"</span>,<span class="at">values_to =</span> <span class="st">"Number"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Lets check they are all the same to finish off.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(</span>
-<span id="cb92-2"><a href="#cb92-2" aria-hidden="true" tabindex="-1"></a>  LongCounts_1,</span>
-<span id="cb92-3"><a href="#cb92-3" aria-hidden="true" tabindex="-1"></a>  LongCounts_2</span>
-<span id="cb92-4"><a href="#cb92-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] TRUE</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb94"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb94-1"><a href="#cb94-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(</span>
-<span id="cb94-2"><a href="#cb94-2" aria-hidden="true" tabindex="-1"></a>  LongCounts_3,</span>
-<span id="cb94-3"><a href="#cb94-3" aria-hidden="true" tabindex="-1"></a>  LongCounts_4</span>
-<span id="cb94-4"><a href="#cb94-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>[1] TRUE</code></pre>
-</div>
 <div class="sourceCode cell-code" id="cb96"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb96-1"><a href="#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(</span>
 <span id="cb96-2"><a href="#cb96-2" aria-hidden="true" tabindex="-1"></a>  LongCounts_1,</span>
-<span id="cb96-3"><a href="#cb96-3" aria-hidden="true" tabindex="-1"></a>  LongCounts_4</span>
+<span id="cb96-3"><a href="#cb96-3" aria-hidden="true" tabindex="-1"></a>  LongCounts_2</span>
 <span id="cb96-4"><a href="#cb96-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb98"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb98-1"><a href="#cb98-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(</span>
+<span id="cb98-2"><a href="#cb98-2" aria-hidden="true" tabindex="-1"></a>  LongCounts_3,</span>
+<span id="cb98-3"><a href="#cb98-3" aria-hidden="true" tabindex="-1"></a>  LongCounts_4</span>
+<span id="cb98-4"><a href="#cb98-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] TRUE</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb100"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb100-1"><a href="#cb100-1" aria-hidden="true" tabindex="-1"></a><span class="fu">all.equal</span>(</span>
+<span id="cb100-2"><a href="#cb100-2" aria-hidden="true" tabindex="-1"></a>  LongCounts_1,</span>
+<span id="cb100-3"><a href="#cb100-3" aria-hidden="true" tabindex="-1"></a>  LongCounts_4</span>
+<span id="cb100-4"><a href="#cb100-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] TRUE</code></pre>
 </div>

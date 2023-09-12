@@ -25,7 +25,7 @@ This becomes a 'promise' of a data set, we have to do something with it to get i
 
 ```{r}
 
-library(dplyr)
+library(tidyverse)
 glimpse(penguins)
 
 ```
@@ -98,9 +98,9 @@ all.equal(df_without_enters,df_with_enters)
 
 ### Piping (Native and maggittr)
 
-What do we do when we want to apply multiple functions in a sequence but don't want to create loads of objects in our global environment (where are stores temporarily saved objects)?
+What do we do when we want to apply multiple functions in a sequence but don't want to create loads of objects in our global environment?
 
-One option is putting one function inside of another etc (Sometimes fine). 
+One option is putting one function inside of another etc (Sometimes fine). This is called nesting.
 
 ```{r}
 
@@ -108,9 +108,9 @@ NestingFunctions<-summary(subset(df_with_enters, Column1==1.3))
 
 ```
 
-This can be okay but generally is hard to follow.
+This can be okay but generally is hard to follow, as the last function that is applied is the first one you read from left to right.
 
-In R there is an operator that allows you to pass the result from one function into the next function this I called the Native Pipe |> 
+In R there is an operator that allows you to pass the result from one function into the next function this is called the Native Pipe |> 
 
 Again we can check this creates the same thing with all.equal()
 
@@ -126,9 +126,11 @@ all.equal(NestingFunctions,NativePipingingFunctions)
 
 This operator is actually quite new and was based on another commonly used pipe (and more superior in my mind).
 
-The magittr pipe %>% (shift+cmd+m or shift+ctrl+m) was from a package called maggittr that is automatically loaded by any tidyverse packages.
+The magittr pipe %>% (shift+cmd+m or shift+ctrl+m) was from a package called magittr that is automatically loaded by any tidyverse package.
 
-It works very similarly to the native pipe with some subtle changes, but again the use is easier to read when there are the differences.
+It works very similarly to the native pipe with some subtle changes. 
+
+Again I feel the magittr pipe makes code that is easier to read.
 
 ```{r}
 
@@ -140,23 +142,27 @@ all.equal(MaggittrPipingingFunctions,NativePipingingFunctions)
 
 ```
 
+The pipe can be thought of as "and then"
+
+So above, the df_with_enters is subset where Column1 is equal to 1.3 and then the summary function is used.
+
 When using one function it is not needed, but when using multiple functions in a row piping makes code a lot easier to read and understand what order functions have been carried out in.
 
 Again this readability has drawbacks in being slower (for small data of 100s of rows this may be 0.0001 of a second but big data 10000000000s of rows it might be a few seconds)
 
+Later on we will use pipes in long sequences of functions and it will become clearer how useful they are.
+
 ### Filtering
 
-filter() is a row wise subsetting based on a statement from the dataframe.
+The dplyr function filter() is a row wise subsetter, based on a statement from the dataframe.
 
 When we looked at the summary() of penguins we saw some NAs in the biometric columns and also in the sex column.
 
-So we only have to remove two rows to remove the NAs in the biometrics columns, there are more NA's in the sex column.
+If we want to remove NA's there are many ways, to be selective we can filter our dataset. 
 
-If we want to remove NA's there are many ways, to be selective we can filter our dataset 
+To subset data, we create a logic clause that then filters the dataset by that clause/statement,
 
-To subset data we can use the filter() function from the dplyr package, we create a logic clause that then filters the dataset by that clause/statement,
-
-For example if we want to select all rows of the data set where the data is from a female penguin we can do this by
+For example if we want to select all rows of the data set where the data is from a female penguin we can do this by:
 
 ```{r}
 
@@ -167,7 +173,11 @@ female_penguins
 
 ```
 
-or we might want all the penguins above 5 kg
+Notice there are two ='s!! 
+
+This is used to create our clause/statement, we filter (keep) the rows of the pengiuns dataset if the sex column contains "females", if just one equals (=) is used it won't work.
+
+Or we might want all the penguins above 5 kg.
 
 ```{r}
 
@@ -178,7 +188,7 @@ heavier_penguins
 
 ```
 
-There are a range of symbols we can use such as more than >, less than <, more than or equal to >=, less than or equal to <=, is equal to ==, and &, or |.
+There are a range of symbols we can use such as more than (>), less than (<), more than or equal to (>=), less than or equal to (<=), is equal to (==), and (&), or (|).
 
 We can even use multiple clauses or statements in one call to filter, 
 
@@ -199,7 +209,7 @@ Sometimes we might want to filter with multiple answers of a categorical variabl
 
 For example if we wanted all penguins from Biscoe and Torgersen island
 
-To do this we can make a vector of the names we want, then filter by that vector 
+To do this we can make a vector of the names we want, then filter by that vector (%in%).
 
 
 ```{r}
@@ -214,11 +224,9 @@ Biscoe_Torgersen_penguins
 
 ```
 
-Here we will make use of ! this means the opposite of the clause (not this)
+Here we will make use of !, this means the opposite of the clause (not this), a subtraction sign can also be used (-).
 
-We also use %in% which is used to tell filter there are more than one element
-
-or NAs that we want to get rid of as NA is not classed like normal data
+We also use %in% which is used to tell filter there are more than one elements or we can use it for NAs that we want to get rid of as NA is not classed like normal data (It is a lack of data not a character or number).
 
 ```{r}
 penguins_someNAs<-penguins %>% 
@@ -226,6 +234,8 @@ penguins_someNAs<-penguins %>%
 ```
 
 If we now look at the number of rows of the datasets we can see only two rows were removed. (not all the NAs)
+
+We just removed the rows with NA in the body_mass_g column.
 
 ```{r}
 nrow(penguins)
@@ -243,15 +253,26 @@ penguins_noNAs<-penguins_someNAs %>%
 summary(penguins_noNAs)
 ```
 
-All sorted
+We might want to remove all rows where an NA is in any of the columns (not always advisable)
+
+```{r}
+
+penguins_noNAs_quickly<-penguins %>% 
+  drop_na()
+
+all.equal(penguins_noNAs,penguins_noNAs_quickly)
+
+
+```
+
 
 ### Selecting 
 
-select() is a column wise subsetting based on a statement of column names.
+The dplyr function select() is a column wise subsetter based on a statement of column names.
 
-So we can select or deselect a few named columns using select
+So we can select or deselect a few named columns using select.
 
-We can use - or ! to say not this column/statement.
+And as with filter we can use - or ! to say not this column/statement.
 
 ```{r}
 
@@ -266,9 +287,9 @@ names(All_But_Three_Columns)
 
 ```
 
-We can also use a statement for consistencies across columns
+We can also use a statement for consistencies across columns (contains() or even starts_with() or ends_with())
 
-For example all columns that contain() an "s" or even combining a statement with other specific selections
+For example all columns that contains() an "s" or even combining a statement with other specific selections
 
 ```{r}
 
@@ -330,7 +351,7 @@ names(Region_Then_Island_First)
 
 We have data but maybe we want to transform that data and either replace the original column or create a new column.
 
-We can use mutate() to do this. 
+We can use dplyr's mutate() to do this. 
 
 Lets convert the body mass column into a new column that is in kg.
 
@@ -342,7 +363,7 @@ summary(penguins_kgbodymass)
 
 ```
 
-We can also paste information from other columns together into another 
+We can also paste information from other columns together into another new column.
 
 We shall use the paste() function then we will put what character we want to separate each element by using the sep argument.
 
@@ -355,11 +376,11 @@ unique(penguins_ExtraInfo$Info)
 
 ```
 
-We can even do calculations that are based on element in another column at the same row. 
+We can even do calculations that are based on and element in another column at the same row. 
 
 There are a few ways to do this, the simplest is an if_else() statement.
 
-with if_else() there are three arguments, the first argument is the statement (is it female), the second argument is what to do if the statement is true, and the third argument is what to do if the statement is false.
+With if_else() there are three arguments, the first argument is the statement (is it female), the second argument is what to do if the statement is true and the third argument is what to do if the statement is false.
 
 Lets pretend that when an Adelie penguin was studied they were incorrectly weighed by 200 g.
 
@@ -369,7 +390,9 @@ To look at the change we will plot a histogram of body weights for both weights.
 
 ```{r}
 penguins_if_else<-penguins_noNAs %>% 
-  mutate(body_mass_g=if_else(species=="Adelie",body_mass_g+200,body_mass_g))
+  mutate(body_mass_g=if_else(species=="Adelie",
+                             body_mass_g+200,
+                             body_mass_g))
 
 hist(penguins_noNAs$body_mass_g)
 
@@ -377,11 +400,13 @@ hist(penguins_if_else$body_mass_g)
 
 ```
 
-While fine for one single statement, multiple if_else() statements can create horrible code, 
+While fine for one single statement, multiple if_else() statements can create horrible code. 
 
-For this we can use case_when()
+For this we can use case_when(),
 
-Maybe Gentoos were also miss-measured but the other way round (too big)
+Where we take a statement, then use ~ to say the new column value, then a comma before the next statement
+
+Maybe Gentoos were also miss-measured but the other way round (too big).
 
 ```{r}
 penguins_case_when<-penguins_noNAs %>% 
@@ -395,11 +420,37 @@ hist(penguins_case_when$body_mass_g)
 
 ```
 
+With case_when we have to be careful if all of our statements don't cover all the data.
+
+If there is a condition not covered it will return NA values. 
+
+To avoid this we can do a final statement with TRUE~Our_Default
+
+
+```{r}
+
+penguins_case_when_Missing<-penguins_noNAs %>% 
+  mutate(body_mass_g=case_when(species=="Adelie"~body_mass_g+200,
+                               species=="Gentoo"~body_mass_g-200))
+
+penguins_case_when_TRUE<-penguins_noNAs %>% 
+  mutate(body_mass_g=case_when(species=="Adelie"~body_mass_g+200,
+                               species=="Gentoo"~body_mass_g-200,
+                               TRUE~body_mass_g))
+
+all.equal(penguins_case_when_TRUE,penguins_case_when_Missing)
+
+```
+
+This creates 68 NA values in our data, so need to be aware of this.
+
+But we could use it for bug checking.
+
 ### Summarise by Groups
 
 Often we will want to see summaries of data across groups, using a combination of group_by() and summarise() can give use these summary stats.
 
-we can group by one, two or many columns, the more groups the less data will summarised in each group.
+We can group by one, two or many columns, the more groups the less data will summarised in each group.
 
 If we don't group by a column it will not be in the final dataset.
 
@@ -425,12 +476,18 @@ penguins_noNAs %>%
 
 We can also use groups to count numbers of rows within each group.
 
+Although the table() function in base r does the same but it is harder to read and use when lots of columns selected.
+
 ```{r}
 penguins_noNAs %>% 
   group_by(year,species,island,sex) %>% 
   summarise(Number=n())
-```
 
+penguins_noNAs %>% 
+  select(year,species,island,sex) %>% 
+  table()
+
+```
 
 
 ### Wide and Long Data

@@ -82,7 +82,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#visualisation" id="toc-visualisation" class="nav-link active" data-scroll-target="#visualisation">Visualisation</a>
   <ul class="collapse">
   <li><a href="#base" id="toc-base" class="nav-link" data-scroll-target="#base">Base</a></li>
-  <li><a href="#ggplot2" id="toc-ggplot2" class="nav-link" data-scroll-target="#ggplot2">ggplot2</a></li>
+  <li><a href="#ggplot2" id="toc-ggplot2" class="nav-link" data-scroll-target="#ggplot2">ggplot2</a>
+  <ul class="collapse">
+  <li><a href="#the-grammar-of-graphics" id="toc-the-grammar-of-graphics" class="nav-link" data-scroll-target="#the-grammar-of-graphics">The Grammar of Graphics</a></li>
+  <li><a href="#plotting" id="toc-plotting" class="nav-link" data-scroll-target="#plotting">Plotting</a></li>
+  <li><a href="#appearance" id="toc-appearance" class="nav-link" data-scroll-target="#appearance">Appearance</a></li>
+  </ul></li>
   </ul></li>
   </ul>
 </nav>
@@ -210,9 +215,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 3 × 3
   Treatment   MeanResponse SDResponse
   &lt;fct&gt;              &lt;dbl&gt;      &lt;dbl&gt;
-1 Control             121.       114.
-2 Treatment 1        -735.      1167.
-3 Treatment 2        1248.       859.</code></pre>
+1 Control             121.       120.
+2 Treatment 1        -659.      1107.
+3 Treatment 2        1299.       884.</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df_1_summary_year<span class="ot">&lt;-</span>df_1 <span class="sc">%&gt;%</span> </span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Treatment,Year) <span class="sc">%&gt;%</span> </span>
@@ -228,56 +233,76 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 # Groups:   Treatment [3]
    Treatment  Year MeanResponse SDResponse
    &lt;fct&gt;     &lt;dbl&gt;        &lt;dbl&gt;      &lt;dbl&gt;
- 1 Control    1950         4.81       20.7
- 2 Control    1951        21.4        32.3
- 3 Control    1952        31.0        36.1
- 4 Control    1953         5.16       34.5
- 5 Control    1954        28.1        27.8
- 6 Control    1955        27.2        40.5
- 7 Control    1956        44.9        46.5
- 8 Control    1957        48.7        50.5
- 9 Control    1958        29.8        28.8
-10 Control    1959        37.8        57.6
+ 1 Control    1950        14.7        28.1
+ 2 Control    1951         7.03       38.3
+ 3 Control    1952        12.8        41.5
+ 4 Control    1953        20.7        33.3
+ 5 Control    1954        16.3        44.4
+ 6 Control    1955        12.6        33.7
+ 7 Control    1956        28.5        32.5
+ 8 Control    1957        15.2        59.6
+ 9 Control    1958        19.6        38.4
+10 Control    1959        60.2        64.5
 # ℹ 212 more rows</code></pre>
 </div>
 </div>
 </section>
 <section id="ggplot2" class="level2">
 <h2 class="anchored" data-anchor-id="ggplot2">ggplot2</h2>
-<p>Now lets try and plot these data, for more complex plots ggplot2 is by far the best package</p>
-<p>we first make a blank ggplot saying what data we will include</p>
-<p>then we want to add layers to the plot for what we want to plot and how we want it to look</p>
-<p>for elements of the plot that change with data from the df we use the aes() function to show what column we want to map to what element (mapping=aes())</p>
+<section id="the-grammar-of-graphics" class="level3">
+<h3 class="anchored" data-anchor-id="the-grammar-of-graphics">The Grammar of Graphics</h3>
+<p>For more complex (and very simple) plots ggplot2 is by far the best package!</p>
+<p>The gg in ggplot2 and a lot of the associated packages stands for grammar of graphics, which is a very old framework for good visualisation.</p>
+<p>We don’t need to go far into it, but it effectively relies on three elements:</p>
+<ul>
+<li><p>Data</p></li>
+<li><p>Mapping</p></li>
+<li><p>Geometry</p></li>
+</ul>
+<p>In every plot we will want to plot Data, it may be 1 value, 1 dimensional, 2 dimensional…. all the way up to multi facetted and dimensional.</p>
+<p>We then want to assign some element of the data to elements of the plot, this is called mapping.</p>
+<p>This mapping will change based on the geometry (shape/style).</p>
+<p>For example earlier with base plot we Mapped a column (Data) to be the x axis and another to the y. (base plot assumed our geometry was a scatter plot)</p>
+</section>
+<section id="plotting" class="level3">
+<h3 class="anchored" data-anchor-id="plotting">Plotting</h3>
+<p>Using these principles we can build some very impressive and complicated plots.</p>
+<p>We first make a blank ggplot saying what data we will include using ggplot().</p>
+<p>For elements of the plot (aesthetics) that change with data from the df we use the aes() function to show what column we want to map to what element (mapping=aes()).</p>
+<p>Then we want to add layers (geometries) to the plot for what we want to plot and how we want it to look.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>df_1)<span class="sc">+</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>Response_updated,<span class="at">colour=</span>Treatment))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>df_1,</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y=</span>Response_updated,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                   <span class="at">colour=</span>Treatment))<span class="sc">+</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="03_DataVisualisation_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>This looks good but could be Nicer there are many geom types to dictate the type of plot</p>
-<p>different geom types have different required aesthetic elements, we could check by using ??geom_point for example</p>
-<p>generally we use, x, y, colour, fill and alpha (transparency)</p>
-<p>unlike base plotting ggplot creates a legend automatically, this becomes more complex as the plot becomes more complex but is generally a nice default</p>
+<p>This looks good but could be nicer! There are many geom types to dictate the type of plot.</p>
+<p>Different geom types have different required aesthetic elements, we could check by using ??geom_point for example</p>
+<p>Generally we use x, y, colour, fill and alpha (transparency). (Sometimes z or label or many others)</p>
+<p>Unlike base plotting ggplot creates a legend automatically, this becomes more complex as the plot becomes more complex but is generally a nice default.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_1)<span class="sc">+</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="fu">aes</span>(<span class="at">x=</span>Response_updated,<span class="at">colour=</span>Treatment))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_1,<span class="fu">aes</span>(<span class="at">x=</span>Response_updated,<span class="at">colour=</span>Treatment))<span class="sc">+</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="03_DataVisualisation_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_1)<span class="sc">+</span></span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>Response_updated,<span class="at">fill=</span>Treatment),<span class="at">alpha=</span><span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_1,<span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>Response_updated,<span class="at">fill=</span>Treatment))<span class="sc">+</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_col</span>(<span class="at">alpha=</span><span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="03_DataVisualisation_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_1)<span class="sc">+</span></span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>Treatment,<span class="at">y=</span>Response_updated,<span class="at">fill=</span>Treatment),<span class="at">alpha=</span><span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(df_1,<span class="fu">aes</span>(<span class="at">x=</span>Treatment,<span class="at">y=</span>Response_updated,<span class="at">fill=</span>Treatment))<span class="sc">+</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="at">alpha=</span><span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="03_DataVisualisation_files/figure-html/unnamed-chunk-10-3.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>We can also add new data into the same plot so we could use the summary data too, for this we add the data to the geom we want it used for</p>
-<p>Here we have both the fill and the colour with the same levels (Treatment), ggplot will automatically combine these in the legends</p>
+<p>We can also add new data into the same plot, so we could use the summary data too, for this we add the data to the geom (geometry) we want it used for.</p>
+<p>Here we have both the fill and the colour with the same levels (Treatment), ggplot will automatically combine these into one legend.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>df_1,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>Response_updated,<span class="at">colour=</span>Treatment),</span>
@@ -290,9 +315,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="03_DataVisualisation_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>We can now change the style and appearance, theme() is used to change appearances</p>
-<p>there are also some preset theme functions like theme_classic() or theme_bw()</p>
-<p>we can also define the colours or fill we want using the scale_colour_manual() and scale_fill_manual() functions</p>
+</section>
+<section id="appearance" class="level3">
+<h3 class="anchored" data-anchor-id="appearance">Appearance</h3>
+<p>We can now change the style and appearance of the whole plot with the function theme()</p>
+<p>There are also some preset theme functions like theme_classic() or theme_bw()</p>
+<p>We can also change the appearance with our mapping elements to define the colours or fill we want using the scale_colour_manual() and scale_fill_manual() functions. This is also true for all mapping, the x or y axis can be edited with scale_x/y_*() functions).</p>
+<p>There are many different scale functions within ggplot so we some times use a * to say that it could be any that we use.</p>
+<p>Maybe we want to set odd x breaks or flip the y axis upside down?</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>df_1,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>Response_updated,<span class="at">colour=</span>Treatment),</span>
@@ -303,8 +333,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>df_1_summary_year,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>Year,<span class="at">y=</span>MeanResponse,<span class="at">colour=</span>Treatment))<span class="sc">+</span></span>
 <span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
 <span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
-<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Year"</span>,<span class="at">y=</span><span class="st">"Response Variable"</span>)<span class="sc">+</span></span>
-<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">1955</span>,<span class="dv">1982</span>,<span class="dv">2010</span>,<span class="dv">2023</span>))<span class="sc">+</span> </span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>()<span class="sc">+</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Year"</span>,<span class="at">y=</span><span class="st">"Response Variable"</span>)<span class="sc">+</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="03_DataVisualisation_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -327,10 +359,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="03_DataVisualisation_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>We can add up different layers but also edit all elements of the plot using either the theme() or scale arguments</p>
+<p>We can add up different layers but also edit all elements of the plot using either the theme() or scale_*_() functions</p>
 <p>These are all the elements you can change within theme:</p>
 <p>theme( line, rect, text, title, aspect.ratio, axis.title, axis.title.x, axis.title.x.top, axis.title.x.bottom, axis.title.y, axis.title.y.left, axis.title.y.right, axis.text, axis.text.x, axis.text.x.top, axis.text.x.bottom, axis.text.y, axis.text.y.left, axis.text.y.right, axis.ticks, axis.ticks.x, axis.ticks.x.top, axis.ticks.x.bottom, axis.ticks.y, axis.ticks.y.left, axis.ticks.y.right, axis.ticks.length, axis.ticks.length.x, axis.ticks.length.x.top, axis.ticks.length.x.bottom, axis.ticks.length.y, axis.ticks.length.y.left, axis.ticks.length.y.right, axis.line, axis.line.x, axis.line.x.top, axis.line.x.bottom, axis.line.y, axis.line.y.left, axis.line.y.right, legend.background, legend.margin, legend.spacing, legend.spacing.x, legend.spacing.y, legend.key, legend.key.size, legend.key.height, legend.key.width, legend.text, legend.text.align, legend.title, legend.title.align, legend.position, legend.direction, legend.justification, legend.box, legend.box.just, legend.box.margin, legend.box.background, legend.box.spacing, panel.background, panel.border, panel.spacing, panel.spacing.x, panel.spacing.y, panel.grid, panel.grid.major, panel.grid.minor, panel.grid.major.x, panel.grid.major.y, panel.grid.minor.x, panel.grid.minor.y, panel.ontop, plot.background, plot.title, plot.title.position, plot.subtitle, plot.caption, plot.caption.position, plot.tag, plot.tag.position, plot.margin, strip.background, strip.background.x, strip.background.y, strip.clip, strip.placement, strip.text, strip.text.x, strip.text.x.bottom, strip.text.x.top, strip.text.y, strip.text.y.left, strip.text.y.right, strip.switch.pad.grid, strip.switch.pad.wrap )</p>
-<p>Each one can be edited by its own element, so for a background it is a rectangle so we might say (inside theme()) but for a grid line it is a grid line</p>
+<p>Each one can be edited by its own element, so for a background it is a rectangle so we might say (inside theme()) but for a grid line it is a line.</p>
 <p>plot.background=element_rect(fill=“grey80”) this will mean the rectangular element of the plot background will be filled with the colour grey80</p>
 <p>panel.grid.major.y= element_line(colour = “green”,linetype = “dotdash”,linewidth =2) this will mean the axis lines element of the panel background will be a green dotdashed line of linewidth 2 with the colour grey80</p>
 <p>We can add titles and subtitles or change the legend title inside the labs function (if we only change the fill title it will split the colour and fill legends),</p>
@@ -491,6 +523,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">"This_Is_Our_First_Saved_Plot.png"</span>, Plot_To_Save, <span class="at">width=</span><span class="dv">10</span>, <span class="at">height=</span><span class="dv">10</span>) <span class="co"># dont forget to put the file type at the end we will use .png</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+</section>
 </section>
 </section>
 

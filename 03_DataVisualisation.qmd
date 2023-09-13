@@ -195,6 +195,9 @@ ggplot()+
   geom_line(data=df_1_summary_year,mapping=aes(x=Year,y=MeanResponse,colour=Treatment))
 ```
 
+
+### Appearance
+
 We can now change the style and appearance of the whole plot with the function theme()
 
 There are also some preset theme functions like theme_classic() or theme_bw()
@@ -240,7 +243,7 @@ ggplot()+
   theme_classic()
 ```
 
-We can add up different layers but also edit all elements of the plot using either the theme() or scale arguments
+We can add up different layers but also edit all elements of the plot using either the theme() or scale_*_() functions
 
 These are all the elements you can change within theme:
 
@@ -344,7 +347,7 @@ theme(
   strip.switch.pad.wrap
 )
 
-Each one can be edited by its own element, so for a background it is a rectangle so we might say (inside theme()) but for a grid line it is a grid line
+Each one can be edited by its own element, so for a background it is a rectangle so we might say (inside theme()) but for a grid line it is a line.
 
 plot.background=element_rect(fill="grey80") this will mean the rectangular element of the plot background will be filled with the colour grey80
 

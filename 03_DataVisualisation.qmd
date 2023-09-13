@@ -46,7 +46,11 @@ It automatically does a scatter plot, maybe we want to colour different treatmen
 
 
 ```{r}
-plot(x=df$Year,y=df$Response,col=df$Treatment, xlab="Year",ylab="Response")
+plot(x=df$Year,
+     y=df$Response,
+     col=df$Treatment, 
+     xlab="Year",
+     ylab="Response")
 ```
 
 Some of the arguments in this function are well named but you need to know the names of the arguments to properly use a function best,
@@ -57,15 +61,21 @@ you can easily find documentation of what arguments are within a function by typ
 
 ??plot()
 
-# plot is a common function name so we have to go to the base::plot() section of the help
+# plot is a common function name 
+# so we have to go to the base::plot() section of the help
 
 ```
 
-With the points coloured we should add a legend to the plot, this is accomplished with another function run after the plot function
+With the points coloured we should add a legend to the plot, this is accomplished with another function run after the plot function.
 
 ```{r}
 
-plot(x=df$Year,y=df$Response,col=unique(df$Treatment), xlab="Year",ylab="Response",pch=19)
+plot(x=df$Year,
+     y=df$Response,
+     col=unique(df$Treatment), 
+     xlab="Year",
+     ylab="Response",
+     pch=19)
 legend(x = "topright",          # Position
        legend = unique(df$Treatment),  # Legend texts
        col = c(1,2, 3),           # point colors
@@ -73,17 +83,20 @@ legend(x = "topright",          # Position
 
 ```
 
-Here we can see that the response is totally random, regardless of treatment and year
+Here we can see that the response is totally random, regardless of treatment and year.
 
 For interesting plotting we can change this, we can add patterns and jitter (random noise) to our data based on its treatment. 
+
+We will use some of our data manipulation code to do this.
 
 ```{r}
 library(tidyverse)
 
 df_1<-df %>% 
-  mutate(Response_updated=case_when(Treatment=="Control"~jitter(Response)*((Year-1930)/5)-50,
-                                    Treatment=="Treatment 1"~jitter(Response)*((Year-1930)*-2)+1000,
-                                    Treatment=="Treatment 2"~jitter(Response)*((Year-1930)*1.5)-4))
+  mutate(Response_updated=case_when(
+    Treatment=="Control"~jitter(Response)*((Year-1930)/5)-50,
+    Treatment=="Treatment 1"~jitter(Response)*((Year-1930)*-2)+1000,
+    Treatment=="Treatment 2"~jitter(Response)*((Year-1930)*1.5)-4))
 
 ```
 
@@ -107,43 +120,70 @@ df_1_summary_year
 
 ## ggplot2
 
-Now lets try and plot these data, for more complex plots ggplot2 is by far the best package
+### The Grammar of Graphics
 
-we first make a blank ggplot saying what data we will include
+For more complex (and very simple) plots ggplot2 is by far the best package!
 
-then we want to add layers to the plot for what we want to plot and how we want it to look
+The gg in ggplot2 and a lot of the associated packages stands for grammar of graphics, which is a very old framework for good visualisation.
 
-for elements of the plot that change with data from the df we use the aes() function to show what column we want to map to what element (mapping=aes())
+We don't need to go far into it, but it effectively relies on three elements:
+
+- Data
+
+- Mapping
+
+- Geometry
+
+In every plot we will want to plot Data, it may be 1 value, 1 dimensional, 2 dimensional.... all the way up to multi facetted and dimensional.
+
+We then want to assign some element of the data to elements of the plot, this is called mapping. 
+
+This mapping will change based on the geometry (shape/style).
+
+For example earlier with base plot we Mapped a column (Data) to be the x axis and another to the y. (base plot assumed our geometry was a scatter plot)
+
+### Plotting
+
+Using these principles we can build some very impressive and complicated plots.
+
+We first make a blank ggplot saying what data we will include using ggplot(). 
+
+For elements of the plot (aesthetics) that change with data from the df we use the aes() function to show what column we want to map to what element (mapping=aes()).
+
+Then we want to add layers (geometries) to the plot for what we want to plot and how we want it to look.
 
 ```{r}
-ggplot(data=df_1)+
-  geom_point(mapping=aes(x=Year,y=Response_updated,colour=Treatment))
+ggplot(data=df_1,
+       mapping=aes(x=Year,
+                   y=Response_updated,
+                   colour=Treatment))+
+  geom_point()
 
 ```
 
-This looks good but could be Nicer there are many geom types to dictate the type of plot
+This looks good but could be nicer! There are many geom types to dictate the type of plot.
 
-different geom types have different required aesthetic elements, we could check by using ??geom_point for example
+Different geom types have different required aesthetic elements, we could check by using ??geom_point for example
 
-generally we use, x, y, colour, fill and alpha (transparency)
+Generally we use x, y, colour, fill and alpha (transparency). (Sometimes z or label or many others)
 
-unlike base plotting ggplot creates a legend automatically, this becomes more complex as the plot becomes more complex but is generally a nice default
+Unlike base plotting ggplot creates a legend automatically, this becomes more complex as the plot becomes more complex but is generally a nice default.
 
 ```{r}
-ggplot(df_1)+
-  geom_density(aes(x=Response_updated,colour=Treatment))
+ggplot(df_1,aes(x=Response_updated,colour=Treatment))+
+  geom_density()
 
-ggplot(df_1)+
-  geom_col(aes(x=Year,y=Response_updated,fill=Treatment),alpha=0.5)
+ggplot(df_1,aes(x=Year,y=Response_updated,fill=Treatment))+
+  geom_col(alpha=0.5)
 
-ggplot(df_1)+
-  geom_boxplot(aes(x=Treatment,y=Response_updated,fill=Treatment),alpha=0.5)
+ggplot(df_1,aes(x=Treatment,y=Response_updated,fill=Treatment))+
+  geom_boxplot(alpha=0.5)
 
 ```
 
-We can also add new data into the same plot so we could use the summary data too, for this we add the data to the geom we want it used for
+We can also add new data into the same plot, so we could use the summary data too, for this we add the data to the geom (geometry) we want it used for.
 
-Here we have both the fill and the colour with the same levels (Treatment), ggplot will automatically combine these in the legends
+Here we have both the fill and the colour with the same levels (Treatment), ggplot will automatically combine these into one legend.
 
 ```{r}
 ggplot()+
@@ -155,13 +195,15 @@ ggplot()+
   geom_line(data=df_1_summary_year,mapping=aes(x=Year,y=MeanResponse,colour=Treatment))
 ```
 
-We can now change the style and appearance, theme() is used to change appearances
+We can now change the style and appearance of the whole plot with the function theme()
 
-there are also some preset theme functions like theme_classic() or theme_bw()
+There are also some preset theme functions like theme_classic() or theme_bw()
 
-we can also define the colours or fill we want using the scale_colour_manual() and scale_fill_manual() functions
+We can also change the appearance with our mapping elements to define the colours or fill we want using the scale_colour_manual() and scale_fill_manual() functions. This is also true for all mapping, the x or y axis can be edited with scale_x/y_*() functions).
 
+There are many different scale functions within ggplot so we some times use a * to say that it could be any that we use.
 
+Maybe we want to set odd x breaks or flip the y axis upside down?
 
 ```{r}
 ggplot()+
@@ -173,8 +215,12 @@ ggplot()+
   geom_line(data=df_1_summary_year,mapping=aes(x=Year,y=MeanResponse,colour=Treatment))+
   scale_colour_manual(values=c("darkcyan","darkorange","grey30"))+
   scale_fill_manual(values=c("darkcyan","darkorange","grey30"))+
+  scale_x_continuous(breaks = c(1955,1982,2010,2023))+ 
+  scale_y_reverse()+
   labs(x="Year",y="Response Variable")+
   theme_classic()
+
+
 ```
 
 We could even separate plots by another column (facetting)

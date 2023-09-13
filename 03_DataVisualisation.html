@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -142,7 +142,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>It automatically does a scatter plot, maybe we want to colour different treatments differently? and perhaps some axis labels that are more clear?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x=</span>df<span class="sc">$</span>Year,<span class="at">y=</span>df<span class="sc">$</span>Response,<span class="at">col=</span>df<span class="sc">$</span>Treatment, <span class="at">xlab=</span><span class="st">"Year"</span>,<span class="at">ylab=</span><span class="st">"Response"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x=</span>df<span class="sc">$</span>Year,</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">y=</span>df<span class="sc">$</span>Response,</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span>df<span class="sc">$</span>Treatment, </span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Year"</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">"Response"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="03_DataVisualisation_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
@@ -152,21 +156,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>??<span class="fu">plot</span>()</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># plot is a common function name so we have to go to the base::plot() section of the help</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="co"># plot is a common function name </span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="co"># so we have to go to the base::plot() section of the help</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>With the points coloured we should add a legend to the plot, this is accomplished with another function run after the plot function</p>
+<p>With the points coloured we should add a legend to the plot, this is accomplished with another function run after the plot function.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x=</span>df<span class="sc">$</span>Year,<span class="at">y=</span>df<span class="sc">$</span>Response,<span class="at">col=</span><span class="fu">unique</span>(df<span class="sc">$</span>Treatment), <span class="at">xlab=</span><span class="st">"Year"</span>,<span class="at">ylab=</span><span class="st">"Response"</span>,<span class="at">pch=</span><span class="dv">19</span>)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="at">x =</span> <span class="st">"topright"</span>,          <span class="co"># Position</span></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">unique</span>(df<span class="sc">$</span>Treatment),  <span class="co"># Legend texts</span></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>, <span class="dv">3</span>),           <span class="co"># point colors</span></span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch=</span><span class="dv">19</span>)                    <span class="co"># point type</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(<span class="at">x=</span>df<span class="sc">$</span>Year,</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>     <span class="at">y=</span>df<span class="sc">$</span>Response,</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">col=</span><span class="fu">unique</span>(df<span class="sc">$</span>Treatment), </span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>     <span class="at">xlab=</span><span class="st">"Year"</span>,</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>     <span class="at">ylab=</span><span class="st">"Response"</span>,</span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>     <span class="at">pch=</span><span class="dv">19</span>)</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a><span class="fu">legend</span>(<span class="at">x =</span> <span class="st">"topright"</span>,          <span class="co"># Position</span></span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">legend =</span> <span class="fu">unique</span>(df<span class="sc">$</span>Treatment),  <span class="co"># Legend texts</span></span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">col =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>, <span class="dv">3</span>),           <span class="co"># point colors</span></span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">pch=</span><span class="dv">19</span>)                    <span class="co"># point type</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="03_DataVisualisation_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
-<p>Here we can see that the response is totally random, regardless of treatment and year</p>
+<p>Here we can see that the response is totally random, regardless of treatment and year.</p>
 <p>For interesting plotting we can change this, we can add patterns and jitter (random noise) to our data based on its treatment.</p>
+<p>We will use some of our data manipulation code to do this.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -182,9 +193,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>df_1<span class="ot">&lt;-</span>df <span class="sc">%&gt;%</span> </span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Response_updated=</span><span class="fu">case_when</span>(Treatment<span class="sc">==</span><span class="st">"Control"</span><span class="sc">~</span><span class="fu">jitter</span>(Response)<span class="sc">*</span>((Year<span class="dv">-1930</span>)<span class="sc">/</span><span class="dv">5</span>)<span class="sc">-</span><span class="dv">50</span>,</span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>                                    Treatment<span class="sc">==</span><span class="st">"Treatment 1"</span><span class="sc">~</span><span class="fu">jitter</span>(Response)<span class="sc">*</span>((Year<span class="dv">-1930</span>)<span class="sc">*-</span><span class="dv">2</span>)<span class="sc">+</span><span class="dv">1000</span>,</span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                                    Treatment<span class="sc">==</span><span class="st">"Treatment 2"</span><span class="sc">~</span><span class="fu">jitter</span>(Response)<span class="sc">*</span>((Year<span class="dv">-1930</span>)<span class="sc">*</span><span class="fl">1.5</span>)<span class="sc">-</span><span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Response_updated=</span><span class="fu">case_when</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    Treatment<span class="sc">==</span><span class="st">"Control"</span><span class="sc">~</span><span class="fu">jitter</span>(Response)<span class="sc">*</span>((Year<span class="dv">-1930</span>)<span class="sc">/</span><span class="dv">5</span>)<span class="sc">-</span><span class="dv">50</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>    Treatment<span class="sc">==</span><span class="st">"Treatment 1"</span><span class="sc">~</span><span class="fu">jitter</span>(Response)<span class="sc">*</span>((Year<span class="dv">-1930</span>)<span class="sc">*-</span><span class="dv">2</span>)<span class="sc">+</span><span class="dv">1000</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    Treatment<span class="sc">==</span><span class="st">"Treatment 2"</span><span class="sc">~</span><span class="fu">jitter</span>(Response)<span class="sc">*</span>((Year<span class="dv">-1930</span>)<span class="sc">*</span><span class="fl">1.5</span>)<span class="sc">-</span><span class="dv">4</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can now calculate some summary statistics such as mean or standard deviation using group_by and summarise</p>
 <div class="cell">
@@ -198,9 +210,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code># A tibble: 3 × 3
   Treatment   MeanResponse SDResponse
   &lt;fct&gt;              &lt;dbl&gt;      &lt;dbl&gt;
-1 Control             118.       122.
-2 Treatment 1        -717.      1221.
-3 Treatment 2        1308.       859.</code></pre>
+1 Control             121.       114.
+2 Treatment 1        -735.      1167.
+3 Treatment 2        1248.       859.</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>df_1_summary_year<span class="ot">&lt;-</span>df_1 <span class="sc">%&gt;%</span> </span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Treatment,Year) <span class="sc">%&gt;%</span> </span>
@@ -216,16 +228,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 # Groups:   Treatment [3]
    Treatment  Year MeanResponse SDResponse
    &lt;fct&gt;     &lt;dbl&gt;        &lt;dbl&gt;      &lt;dbl&gt;
- 1 Control    1950         6.01       33.7
- 2 Control    1951        -2.66       31.3
- 3 Control    1952        16.1        33.5
- 4 Control    1953        37.3        37.9
- 5 Control    1954        11.9        28.0
- 6 Control    1955        19.6        49.8
- 7 Control    1956        40.7        40.5
- 8 Control    1957        41.9        36.0
- 9 Control    1958        27.1        41.4
-10 Control    1959        46.3        41.5
+ 1 Control    1950         4.81       20.7
+ 2 Control    1951        21.4        32.3
+ 3 Control    1952        31.0        36.1
+ 4 Control    1953         5.16       34.5
+ 5 Control    1954        28.1        27.8
+ 6 Control    1955        27.2        40.5
+ 7 Control    1956        44.9        46.5
+ 8 Control    1957        48.7        50.5
+ 9 Control    1958        29.8        28.8
+10 Control    1959        37.8        57.6
 # ℹ 212 more rows</code></pre>
 </div>
 </div>

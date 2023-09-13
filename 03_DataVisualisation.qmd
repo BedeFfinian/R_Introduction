@@ -59,7 +59,7 @@ you can easily find documentation of what arguments are within a function by typ
 
 ```{r}
 
-??plot()
+?plot()
 
 # plot is a common function name 
 # so we have to go to the base::plot() section of the help
@@ -508,7 +508,7 @@ Plot_To_Save<-ggplot()+
   labs(x="Year",y="Response Variable")+
   theme_classic()
 
-ggsave("This_Is_Our_First_Saved_Plot.png", Plot_To_Save, width=10, height=10) # dont forget to put the file type at the end we will use .png
+ggsave("This_Is_Our_First_Saved_Plot.png", Plot_To_Save, width=10, height=10) # dont forget to put the file type at the end!!! we will use .png
 
 ```
 

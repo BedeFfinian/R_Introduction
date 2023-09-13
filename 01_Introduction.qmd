@@ -27,7 +27,7 @@ We can install RStudio from <https://posit.co/download/rstudio-desktop/>
 
 # Basics
 
-This tutorial will rely on using code written in RStudio and locations of things (Script, Console, Environment, Plots) will be RStudio specific but the code could be run in any GUI.
+This tutorial will rely on using code written in RStudio and locations of things (Script, Console, Environment, Plots/Help) will be RStudio specific but the code could be run in any GUI.
 
 Scripts are saved code that you are editing (What I am writing in currently), you then execute (run) the code in the 'console' (Normally located below the script window)
 
@@ -80,6 +80,13 @@ We can apply functions to an object
 ```{r}
 mean(b)
 ```
+
+If we want to check the documentation for a package we can go to the Help window, or type ? before the function name.
+
+```{r}
+?mean()
+```
+
 
 We can then perform different functions between objects
 
@@ -155,6 +162,17 @@ Vector_Character<- c("This","is","A","Character Vector")
 Vector_Factor<-as.factor(c("This","is","A","Character", "Vector")) # Notice how r automatically orders alphabetically if we don't tell it the order
 
 ```
+
+We can also change between types (even if they don't fit that description)
+
+```{r}
+
+Convert_Numbers_To_Characters<-as.character(Vector_Numeric)
+
+Convert_Numbers_To_Characters
+```
+
+Now our numbers are thought of as characters, so we can't apply numeric operations to them!
 
 ### Matrix
 

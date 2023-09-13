@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.433">
+<meta name="generator" content="quarto-1.3.450">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -68,6 +68,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="04_Modelling_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="04_Modelling_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -79,7 +81,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#gaussian-modelling" id="toc-gaussian-modelling" class="nav-link active" data-scroll-target="#gaussian-modelling">Gaussian Modelling</a>
+  <li><a href="#glms-and-glmms" id="toc-glms-and-glmms" class="nav-link active" data-scroll-target="#glms-and-glmms">GLMs and GLMMs</a>
+  <ul class="collapse">
+  <li><a href="#short-and-probably-biased-history" id="toc-short-and-probably-biased-history" class="nav-link" data-scroll-target="#short-and-probably-biased-history">Short and Probably Biased History</a></li>
+  <li><a href="#first-step-of-analysis---statistical-model-formulation" id="toc-first-step-of-analysis---statistical-model-formulation" class="nav-link" data-scroll-target="#first-step-of-analysis---statistical-model-formulation">First Step of Analysis - Statistical Model Formulation</a></li>
+  <li><a href="#second-step-of-analysis---response-variable-distribution" id="toc-second-step-of-analysis---response-variable-distribution" class="nav-link" data-scroll-target="#second-step-of-analysis---response-variable-distribution">Second Step of Analysis - Response Variable Distribution</a>
+  <ul class="collapse">
+  <li><a href="#distributions" id="toc-distributions" class="nav-link" data-scroll-target="#distributions">Distributions</a></li>
+  <li><a href="#numeric-or-categorical" id="toc-numeric-or-categorical" class="nav-link" data-scroll-target="#numeric-or-categorical">Numeric or Categorical</a></li>
+  <li><a href="#numeric-continuous-or-integer" id="toc-numeric-continuous-or-integer" class="nav-link" data-scroll-target="#numeric-continuous-or-integer">Numeric: Continuous or Integer</a></li>
+  <li><a href="#continuous-can-the-data-be-negative" id="toc-continuous-can-the-data-be-negative" class="nav-link" data-scroll-target="#continuous-can-the-data-be-negative">Continuous: Can the data be Negative?</a></li>
+  <li><a href="#continuous-are-the-data-bound-between-two-values" id="toc-continuous-are-the-data-bound-between-two-values" class="nav-link" data-scroll-target="#continuous-are-the-data-bound-between-two-values">Continuous: Are the data bound between two values?</a></li>
+  <li><a href="#integer-known-upper-limit-or-not" id="toc-integer-known-upper-limit-or-not" class="nav-link" data-scroll-target="#integer-known-upper-limit-or-not">Integer: Known upper limit or not?</a></li>
+  </ul></li>
+  </ul></li>
+  <li><a href="#gaussian-glm" id="toc-gaussian-glm" class="nav-link" data-scroll-target="#gaussian-glm">Gaussian GLM</a>
   <ul class="collapse">
   <li><a href="#modelling-with-categorical-predictor-variables" id="toc-modelling-with-categorical-predictor-variables" class="nav-link" data-scroll-target="#modelling-with-categorical-predictor-variables">Modelling with Categorical Predictor Variables</a></li>
   <li><a href="#modelling-continuous-predictor-variables" id="toc-modelling-continuous-predictor-variables" class="nav-link" data-scroll-target="#modelling-continuous-predictor-variables">Modelling Continuous Predictor Variables</a></li>
@@ -108,8 +124,76 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="gaussian-modelling" class="level1">
-<h1>Gaussian Modelling</h1>
+<section id="glms-and-glmms" class="level1">
+<h1>GLMs and GLMMs</h1>
+<p>Statistical analysis in r is very easy (on the whole) but needs a bit more background to fully understand. But for most of our situations we will want to use a group of models called General Linear Models (GLMs) or if more complex General Linear Mixed Effects Models (GLMMs). These modelling frameworks plus the additions/alterations from their defaults have lots of different names but in ecology and specifically r the names here are the most commonly used.</p>
+<section id="short-and-probably-biased-history" class="level2">
+<h2 class="anchored" data-anchor-id="short-and-probably-biased-history">Short and Probably Biased History</h2>
+<p>These modelling frameworks can be used to model almost all situations that will arise in our work. We are almost always using models to describe relationships. We can then use those models to predict future events but this is less common and more nuanced so we might use other tools for that.</p>
+<p>In more traditional “Fischer” style statistics there are a wealth of different tests for each different scenario such as (t-test, ANOVA, Kruskal-Wallis, Friedman, Mann-Whitney-U etc.). These tests were created, designed and developed from work by a researcher called Fischer, with many ecologists/researchers generally holding onto this style as it has been used and taught for decades. However, they were designed and created for very specific cases. This means that they are extremely powerful and useful in those situations but are almost always used in slightly different situations or scenarios and so lose their power.</p>
+<p>GLMs and GLMMs can be used in all the same cases as these older style tests as well as many many more, but with more consistency of terminology, higher flexibility and without the need to know, which different test to use.</p>
+<p>There are important options to chose within GLMs and GLMMs but as I mention they are more consistent and easier to check their assumptions.</p>
+</section>
+<section id="first-step-of-analysis---statistical-model-formulation" class="level2">
+<h2 class="anchored" data-anchor-id="first-step-of-analysis---statistical-model-formulation">First Step of Analysis - Statistical Model Formulation</h2>
+<p>Generally we will have a response variable (Dependent Variable) with some selection of one or more fixed effects (independent variables).</p>
+<p>Here I will discuss exclusively univariate modelling (where only one variable is the response variable) but multivariate analysis could follow the same framework just will be more complicated to implement.</p>
+<p>Our research question will dictate how we create our statistical model and then how we interpret that model.</p>
+<p>Many researchers like to draw out what is called a DAG, which diagramatically shows assumed influences of factors and how the direction of that influence. At first these are quite difficult to formulate until you have created a few. Therefore, the easiest way I can think to do this is saying some sort of hypothesis or statement in English then we can turn that statement into the Statistical model.</p>
+<p>For example: I hypothesise that the flipper length of a penguin is described primarily by the species of that penguin but also influenced by its sex. Effectively Flipper length changes with Species and Sex.</p>
+<p>Here our response variable is Flipper length (Dependant variable) and our fixed effects (Independent variables) are Species and Sex.</p>
+<p>In statistical notation we could write this in a couple ways depending on our assumptions:</p>
+<p>1). flipper_length_mm ~ sex * species</p>
+<p>2). flipper_length_mm ~ sex + species</p>
+<p>Firstly, we see on the left hand side of the ~ (tilde) we have our response variable, with our fixed effects on the other side.</p>
+<p>Secondly, we see that we either multiply or add these fixed effects. The difference between the two is subtle but important.</p>
+<p>Equation 1 is saying that flipper length is effected by species and by sexes but that the effect of sex is different depending on the species. (females always bigger in one species but males always bigger in another but one species is always much larger than the other).</p>
+<p>Equation 2 is saying that flipper length is effected by species and by sexes but that the effect of sex is the same or similar regardless of the species. (males always bigger across all species, but sizes different across species).</p>
+<p>We may think either equation is correct given our knowledge of penguins.</p>
+</section>
+<section id="second-step-of-analysis---response-variable-distribution" class="level2">
+<h2 class="anchored" data-anchor-id="second-step-of-analysis---response-variable-distribution">Second Step of Analysis - Response Variable Distribution</h2>
+<p>The next most important element is what type of data our response variable is. This is the step that is often carried out wrong and leads to most inaccuracies of analysis.</p>
+<p>When modelling we are using our sample to make inference about a population. Therefore, our model should be based on our assumptions of the population.</p>
+<p>The type of data your response variable comes from may not be exactly what your response variable data looks like! However, if we have sufficiently sampled the population and not introduced any selection or sampling bias (We should be aware of this when analysing data from specific geographies or demographics etc!!!) we should be okay saying our sample (response variable) comes from the distribution of the population.</p>
+<p>So we should be able to tell the type of response variable data before we even collect the samples themselves! WE SHOULD NOT LOOK AT A GRAPH OF OUR DATA AND CHOOSE THE DISTRIBUTION IT COMES FROM JUST BY THE SHAPE!!!! (Speaking from experience and errors made!)</p>
+<section id="distributions" class="level3">
+<h3 class="anchored" data-anchor-id="distributions">Distributions</h3>
+<p>There are a group of widely used distributions that will cover almost all situations.</p>
+<p>They are:</p>
+<ul>
+<li><p><strong>Gaussian</strong></p></li>
+<li><p><strong>Beta</strong></p></li>
+<li><p><strong>Gamma</strong></p></li>
+<li><p><strong>Poisson</strong></p></li>
+<li><p><strong>Binomial</strong>/<strong>Bernoulli</strong></p></li>
+</ul>
+<p>There are many, many, many others such as Student-t or Direchlet or Tweedie. All of which are very useful and utilised throughout science but we won’t go through them here.</p>
+</section>
+<section id="numeric-or-categorical" class="level3">
+<h3 class="anchored" data-anchor-id="numeric-or-categorical">Numeric or Categorical</h3>
+<p>So when deciding what type of model to run we can first think whether our data are numerica or categoric. We will only discuss numerical data (temperature or weight or numbers of fish) but sometimes we might have a categorical response variable, such as questionnaire answers. Within these types of model there might be order to the categories (Not likely, Somewhat likely, Very likely) or there is no logical order (green, blue, purple). There are mixed effects models for these that are widely used, such as Multinomial Logisitic Regression for non-ordered and Ordinal Logistic Regression for ordered categorical response variables, but again we won’t discuss them here.</p>
+</section>
+<section id="numeric-continuous-or-integer" class="level3">
+<h3 class="anchored" data-anchor-id="numeric-continuous-or-integer">Numeric: Continuous or Integer</h3>
+<p>Once we know our data are numeric, we need to choose what type: continuous or integers. This is quite an easy one, can you measure it in decimals or is it complete units. When studying nesting birds we don’t count half eggs; a nest will have 1, 2, 3 etc. eggs. But if we are measuring the width of a tree it might be 4 cm or 2.365441 m.</p>
+</section>
+<section id="continuous-can-the-data-be-negative" class="level3">
+<h3 class="anchored" data-anchor-id="continuous-can-the-data-be-negative">Continuous: Can the data be Negative?</h3>
+<p>Once we know our data are continuous numeric, we can think can the values be negative? A response variable that is continuous and can be negative is mostly modelled under the most common distribution: <strong>Gaussian</strong>. Examples of this could be temperature measured in <span class="math inline">\(^\circ\)</span>C or acceleration. A response variable that cannot be negative or even 0, would most correctly be: <strong>Gamma</strong>. However, Gaussian models are very often used for these models as a Guassian distribution is simpler computationally and mathematically, and only really causes issues when the values approach 0. This is actually most continuous values we measure, such as thickness of a stem, fish length, body mass or area of habitat.</p>
+</section>
+<section id="continuous-are-the-data-bound-between-two-values" class="level3">
+<h3 class="anchored" data-anchor-id="continuous-are-the-data-bound-between-two-values">Continuous: Are the data bound between two values?</h3>
+<p>If your response variable is continuous, and it may be negative or not, but is bound between an upper and lower known bound then it would most correctly be: <strong>Beta</strong>. For most practical terms Beta distribution is between 0 and 1. However, most data between bounds could be scaled to 0 and 1 and keep all of their characteristics. For example, percentage or proportional data are effectively between 0 and 1 and can be modelling using a <strong>Beta</strong> distribution.</p>
+</section>
+<section id="integer-known-upper-limit-or-not" class="level3">
+<h3 class="anchored" data-anchor-id="integer-known-upper-limit-or-not">Integer: Known upper limit or not?</h3>
+<p>We know our data are integers but do we know whether there is an upper limit? If our data could potentially be very big as counts then we will use the <strong>Poisson</strong> distribution. This is for response variables like number of eggs in a nest or abundance of fish or the number of different species found along a transect. If we know there is an upper limit to the integers we could get then we will use a <strong>Binomial</strong> model. This could be for the number of eggs inside a six egg carton. The most common version of this is when we have a binary response variable (either 1 or 0). Presence or absence of a rare species for example. This is binary <strong>Binomial</strong> but is sometimes referred to specifically as <strong>Bernoulli</strong>.</p>
+</section>
+</section>
+</section>
+<section id="gaussian-glm" class="level1">
+<h1>Gaussian GLM</h1>
 <p>As before lets use the Palmer penguins dataset and remove the NAs (as before don’t NAs should never be remove without considering why they are NAs but here we will remove them for ease)</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("palmerpenguins")</span></span>
@@ -256,7 +340,7 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins_noNAs)<span class="sc">+</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">y=</span>flipper_length_mm,<span class="at">fill=</span>sex))<span class="sc">+</span></span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>))<span class="sc">+</span></span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Sex"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
 <span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="04_Modelling_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="768"></p>
@@ -288,7 +372,7 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">width=</span><span class="fl">0.1</span>,</span>
 <span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="fl">0.8</span>))<span class="sc">+</span></span>
 <span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>))<span class="sc">+</span></span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Sex"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
 <span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="04_Modelling_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="768"></p>
@@ -305,7 +389,7 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>Plot1<span class="ot">&lt;-</span><span class="fu">ggplot</span>(penguins_noNAs)<span class="sc">+</span></span>
 <span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">y=</span>flipper_length_mm,<span class="at">fill=</span>sex))<span class="sc">+</span></span>
 <span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>))<span class="sc">+</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Sex"</span>,<span class="at">y=</span><span class="st">"Raw Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Raw Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
 <span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
 <span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
 <span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
@@ -317,7 +401,7 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">width=</span><span class="fl">0.1</span>,</span>
 <span id="cb13-18"><a href="#cb13-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="fl">0.8</span>))<span class="sc">+</span></span>
 <span id="cb13-19"><a href="#cb13-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>))<span class="sc">+</span></span>
-<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Sex"</span>,<span class="at">y=</span><span class="st">"Modelled Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
+<span id="cb13-20"><a href="#cb13-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Modelled Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
 <span id="cb13-21"><a href="#cb13-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
 <span id="cb13-22"><a href="#cb13-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-23"><a href="#cb13-23" aria-hidden="true" tabindex="-1"></a>Plot1<span class="sc">+</span>Plot2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -335,7 +419,7 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>Plot1<span class="ot">&lt;-</span><span class="fu">ggplot</span>(penguins_noNAs)<span class="sc">+</span></span>
 <span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">y=</span>flipper_length_mm,<span class="at">fill=</span>sex))<span class="sc">+</span></span>
 <span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>))<span class="sc">+</span></span>
-<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Sex"</span>,<span class="at">y=</span><span class="st">"Raw Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Raw Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
 <span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
 <span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">170</span>,<span class="dv">240</span>))<span class="sc">+</span></span>
 <span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
@@ -348,7 +432,7 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">width=</span><span class="fl">0.1</span>,</span>
 <span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>                <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="fl">0.8</span>))<span class="sc">+</span></span>
 <span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>))<span class="sc">+</span></span>
-<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Sex"</span>,<span class="at">y=</span><span class="st">"Modelled Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Modelled Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
 <span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">170</span>,<span class="dv">240</span>))<span class="sc">+</span></span>
 <span id="cb14-23"><a href="#cb14-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
 <span id="cb14-24"><a href="#cb14-24" aria-hidden="true" tabindex="-1"></a></span>
@@ -375,7 +459,7 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha=</span><span class="fl">0.3</span>,</span>
 <span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>             <span class="at">size=</span><span class="fl">0.5</span>)<span class="sc">+</span></span>
 <span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>))<span class="sc">+</span></span>
-<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Sex"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
 <span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="04_Modelling_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="768"></p>

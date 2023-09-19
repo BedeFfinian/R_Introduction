@@ -6,7 +6,7 @@ format:
     toc-location: left
 ---
 
-# GLMs and GLMMs - Background <img src='Images/logo.png' align="right" height="138.5" /></a>
+# GLMs - Background <img src='Images/logo.png' align="right" height="138.5" /></a>
 
 Statistical analysis in r is very easy (on the whole) but needs a bit more background to fully understand. But for most of our situations we will want to use a group of models called General Linear Models (GLMs) or if more complex General Linear Mixed Effects Models (GLMMs). These modelling frameworks plus the additions/alterations from their defaults have lots of different names but in ecology and specifically r the names here are the most commonly used. 
 
@@ -14,24 +14,24 @@ Statistical analysis in r is very easy (on the whole) but needs a bit more backg
 
 These modelling frameworks can be used to model almost all situations that will arise in our work. We are almost always using models to describe relationships. We can then use those models to predict future events but this is less common and more nuanced so we might use other tools for that. 
 
-In more traditional "Fischer" style statistics there are a wealth of different tests for each different scenario such as (t-test, ANOVA, Kruskal-Wallis, Friedman, Mann-Whitney-U etc.). These tests were created, designed and developed from work by a researcher called Fischer, with many ecologists/researchers generally holding onto this style as it has been used and taught for decades. However, they were designed and created for very specific cases. This means that they are extremely powerful and useful in those situations but are almost always used in slightly different situations or scenarios and so lose their power.
+In more traditional "Fischer" style statistics there are a wealth of different tests for each different scenario such as t-test, ANOVA, Kruskal-Wallis, Friedman, Mann-Whitney-U etc. These tests were created, designed and developed from work by a researcher called Fischer, with many ecologists/researchers generally holding onto this style as it has been used and taught for decades. However, they were designed and created for very specific cases. This means that they are extremely powerful and useful in those situations but are almost always used in slightly different situations or scenarios and so lose their power.
 
 ![Old Stats Test - Image from https://onishlab.colostate.edu/](Images/Fisher_Flowchart.png)
 
 
 GLMs and GLMMs can be used in all the same cases as these older style tests as well as many many more, but with more consistency of terminology, higher flexibility and without the need to know, which different test to use.
 
-There are important options to chose within GLMs and GLMMs but as I mention they are more consistent and easier to check/adhere to their assumptions.
+There are important options to chose within GLMs and GLMMs but as I mention they are more consistent and easier to check or adhere to their assumptions.
 
 ## First Step of Analysis - Statistical Model Formulation
 
-Generally we will have a response variable (Dependent Variable) with some selection of one or more fixed effects (independent variables). 
+Generally we will have a response variable (Dependent Variable) with one or more fixed effects (independent variables). 
 
-Here I will discuss exclusively univariate modelling (where only one variable is the response variable) but multivariate analysis could follow the same framework just will be more complicated to implement.
+Here I will discuss exclusively univariate modelling (where only one variable is the response variable) but multivariate analysis could follow the same framework, it is just more complicated to implement.
 
-Our research question will dictate how we create our statistical model and then how we interpret that model.
+Our research question will dictate how we create our scientific model, which dictates what statistical model to use and then how we interpret that statistical model.
 
-Many researchers like to draw out what is called a DAG, which diagramatically shows assumed influences of factors and how the direction of that influence. At first these are quite difficult to formulate until you have created a few. Therefore, the easiest way I can think to do this is saying some sort of hypothesis or statement in English then we can turn that statement into the Statistical model.
+Many researchers like to draw out what is called a DAG, which diagrammatically shows assumed influences of factors, and how the directionallity of that influence. At first these are quite difficult to formulate until you have created a few. Therefore, the easiest way I can think to do this is saying some sort of hypothesis or statement in English then we can turn that statement into the Statistical model.
 
 For example: 
 I hypothesise that the flipper length of a penguin is described primarily by the species of that penguin but also influenced by its sex. Effectively Flipper length changes with Species and Sex. 
@@ -40,7 +40,7 @@ I hypothesise that the flipper length of a penguin is described primarily by the
 
 Here our response variable is Flipper length (Dependant variable) and our fixed effects (Independent variables) are Species and Sex. 
 
-In statistical notation we could write this in a couple ways depending on our assumptions:
+In statistical notation we could write this in a couple of ways depending on our assumptions:
 
 1). flipper_length_mm ~ sex * species
 
@@ -58,11 +58,11 @@ We may think either equation is correct given our knowledge of penguins.
 
 ## Second Step of Analysis - Response Variable Distribution
 
-The next most important element is what type of data our response variable is. This is the step that is often carried out wrong and leads to most inaccuracies of analysis. 
+The next most important element is what type of data our response variable is. This is the step that is often carried out wrong and leads to many inaccuracies of analysis. 
 
-When modelling we are using our sample to make inference about a population. Therefore, our model should be based on our assumptions of the population. 
+When modelling we are using our sample to make inference about a population. Therefore, our model should be based on our assumptions of the population that we took the sample from. 
 
-The type of data your response variable comes from may not be exactly what your response variable data looks like! However, if we have sufficiently sampled the population and not introduced any selection or sampling bias (We should be aware of this when analysing data from specific geographies or demographics etc!!!) we should be okay saying our sample (response variable) comes from the distribution of the population.
+The type of data your response variable comes from may not be exactly what your response variable data looks like! However, if we have sufficiently sampled the population and not introduced any selection or sampling bias we should be confident in saying our sample (response variable) comes from the distribution of the population. We should be aware of this when analysing data from specific geographies or demographics etc!!!
 
 So we should be able to tell the type of response variable data before we even collect the samples themselves! WE SHOULD NOT LOOK AT A GRAPH OF OUR DATA AND CHOOSE THE DISTRIBUTION IT COMES FROM JUST BY THE SHAPE!!!! (Speaking from experience and errors made!)
 
@@ -91,180 +91,119 @@ There are many, many, many others such as Student-t or Direchlet or Tweedie. All
 ```{r}
 #| echo: false
 #| warning: false
-#| fig-height: 3
+#| fig-height: 10
+#| fig-width: 13
+#| out-width: "120%"
 
 
 #devtools::install_github("hrbrmstr/statebins")
-
+library(tidyverse)
+library(Utilities.Package)
 library(statebins)
 
-data <- tibble(x=c(0,250,300,400,0,100,-100,-200,200,275,350,200,0,-200,-350), 
-               y=c(185,175,200,175,150,125,125,100,100,125,100,75,100,75,100),
-               Type=c("Decision",
-                      "Decision",
-                      "Distribution",
-                      "Distribution",
-                      "Decision",
-                      "Decision",
-                      "Decision",
-                      "Decision",
-                      "Decision",
-                      "Distribution",
-                      "Distribution",
-                      "Distribution",
-                      "Distribution",
-                      "Distribution",
-                      "Distribution"),
+data <- tibble(x=c(0,265,265,450,0,100,-100,-180,190,275,-25,-180,-360), 
+               y=c(180,180,200,180,155,125,125,100,100,125,100,78,100),
+               Type=c("Question",
+                      "Question",
+                      "Categorical Distribution",
+                      "Categorical Distribution",
+                      "Question",
+                      "Question",
+                      "Question",
+                      "Question",
+                      "Integer Distribution",
+                      "Integer Distribution",
+                      "Continuous Distribution",
+                      "Continuous Distribution",
+                      "Continuous Distribution"),
                Label=c('Is the Response\nVariable Numeric\nor Categorical?',
-                       'Is the Categorical\nVariable Ordered?',
+                       'Is the Variable\nOrdered?',
                        'Multinomial',
                        'Ordinal',
-                       'Is the Numeric\nVariable Continuous\nor Integer?',
-                       'Is the Upper Limit\nKnown?',
-                       'Can the Variable be\nNon-Positive?\nZeros and Negatives?',
+                       'Is the Variable\nContinuous\nor Integer?',
+                       'Is there an\nUpper Limit?',
+                       'Can the Variable be\nNon-Positive?',
                        'Is the Variable\nBound Between\nTwo Values?',
-                       'Is the Upper\nLimit 1?',
+                       'Binomial/\nBernoulli',
                        'Poisson',
-                       'Binomial',
-                       'Bernoulli',
                        'Gamma',
                        'Gaussian',
-                       'Beta')) %>% 
-  dplyr::mutate(xbuffer=if_else(Type=="Decision",80,50),
-                ybuffer=if_else(Type=="Decision",10,7))
+                       'Beta'),
+               Box=c(1:13)) %>% 
+  dplyr::mutate(xbuffer=if_else(Type=="Question",87.5,50),
+                ybuffer=if_else(Type=="Question",9,5))
+
+Arrows<-data %>% 
+  dplyr::select(x,y,xbuffer,ybuffer,Box) %>% 
+  dplyr::mutate(Top_x=x,
+                Top_y=y+ybuffer,
+                Left_x=x-xbuffer,
+                Left_y=y,
+                Right_x=x+xbuffer,
+                Right_y=y,
+                Bottom_x=x,
+                Bottom_y=y-ybuffer) %>% 
+  dplyr::select(-c(x,y,xbuffer,ybuffer))%>% 
+  pivot_longer(Top_x:Bottom_y,names_to = "coord",values_to = "value") %>% 
+  separate(coord,c("Position","Axis"),sep="_") %>% 
+  pivot_wider(names_from = "Axis",values_from = "value")%>% 
+  dplyr::mutate(Selector=paste0(Position,"_",Box)) %>% 
+  dplyr::select(-c(Box,Position))
 
 
 
-data %>% 
-  ggplot(aes(x, y)) +
-  scale_x_continuous(limits=c(-400,450),
-                     minor_breaks = seq(-400, 450, 10)) +
-  scale_y_continuous(limits=c(60,215),
+ArrowStarts<-data.frame(Position=c("Right","Bottom","Top","Right","Bottom","Bottom","Bottom","Right","Bottom","Bottom","Bottom","Left"),
+                      Box=c(1,1,2,2,5,5,6,6,7,7,8,8)) %>% 
+  dplyr::mutate(Selector=paste0(Position,"_",Box),
+                ArrowN=1:nrow(.))
+
+ArrowEnds<-data.frame(Position=c("Left","Top","Bottom","Left","Top","Top","Top","Left","Top","Top","Top","Right"),
+                      Box=c(2,5,3,4,6,7,9,10,8,11,12,13)) %>% 
+  dplyr::mutate(Selector=paste0(Position,"_",Box),
+                ArrowN=1:nrow(.))
+
+
+
+CoordsStart<-Arrows %>% 
+  right_join(ArrowStarts,by="Selector")
+
+CoordsEnd<-Arrows %>% 
+  right_join(ArrowEnds,by="Selector")%>%  
+  dplyr::rename(xend=x,yend=y,Selectorend=Selector,Positionend=Position,Boxend=Box)
+
+
+CoordsArrows<-CoordsStart %>% 
+  right_join(CoordsEnd,by="ArrowN") %>% 
+  dplyr::select(Box,Boxend,x,xend,y,yend,everything()) %>% 
+  dplyr::mutate(text=c("Categorical","Numeric","No","Yes",
+                       "Integer","Continuous","No","Yes",
+                       "Yes","No","Yes","No"))
+
+
+  ggplot() +
+  scale_x_continuous(limits=c(-410,500),
+                     minor_breaks = seq(-400, 500, 10)) +
+  scale_y_continuous(limits=c(70,220),
                      minor_breaks = seq(0, 225, 10)) +
-  theme_linedraw() +
-  statebins:::geom_rrect(aes(xmin = x-xbuffer, xmax=x+xbuffer, ymin=y-ybuffer, ymax=y+ybuffer,
-            fill=Type), color='black', size=0.25) +
-  geom_text( aes(x= x, y=y,label= Label),
-             colour='white', size=4.5)
-    
-    
-    
-    
-    +
-  geom_segment(
-    x=50, xend=100, y=180, yend=170, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed")) +
-  geom_segment(
-    x=150, xend=100, y=180, yend=170, 
+  statebins:::geom_rrect(data,
+                         mapping=aes(xmin = x-xbuffer, 
+                                     xmax=x+xbuffer, 
+                                     ymin=y-ybuffer, 
+                                     ymax=y+ybuffer,
+            fill=Type), color='black', size=0.25,
+            alpha=0.85)+
+    scale_fill_Bede("SAS")+
+  geom_text(data, mapping=aes(x= x, y=y,label= Label),
+             colour='grey95', size=6)+
+  geom_segment(data=CoordsArrows,mapping=aes(x=x,y=y,xend=xend,yend=yend),
     size=0.15, linejoin = "mitre", lineend = "butt",
     arrow = arrow(length = unit(1, "mm"), type= "closed"))+
-  geom_segment(
-    x=100, xend=50, y=150, yend=145, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed")) +
-  geom_segment(
-    x=100, xend=150, y=150, yend=145, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
-  geom_segment(
-    x=50, xend=50, y=135, yend=130, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
-  geom_segment(
-    x=50, xend=50, y=120, yend=115, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed")) +
-  geom_segment(
-    x=50, xend=50, y=105, yend=100, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
-  geom_segment(
-    x=150, xend=125, y=135, yend=130, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
-  geom_segment(
-    x=125, xend=125, y=120, yend=115, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed")) +
-  geom_segment(
-    x=125, xend=125, y=105, yend=100, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
-  geom_segment(
-    x=150, xend=175, y=135, yend=130, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed")) +
-  geom_segment(
-    x=175, xend=175, y=105, yend=100, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
-  geom_segment(
-    x=50, xend=100, y=90, yend=85, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed")) +
-  geom_segment(
-    x=150, xend=100, y=90, yend=85, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
-  geom_segment(
-    x=100, xend=50, y=75, yend=70, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed")) +
-  geom_segment(
-    x=100, xend=150, y=75, yend=70, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed")) +
-  geom_segment(
-    x=210, xend=130, y=80, yend=80, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
-  geom_segment(
-    x=50, xend=50, y=60, yend=35, 
-    size=0.15)+
-  geom_segment(
-    x=50, xend=40, y=35, yend=40, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
-  geom_segment(
-    x=50, xend=40, y=35, yend=30, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
-  geom_segment(
-    x=50, xend=60, y=35, yend=40, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
-  geom_segment(
-    x=50, xend=60, y=35, yend=30, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
-  geom_segment(
-    x=150, xend=150, y=60, yend=25, 
-    size=0.15)+
-  geom_segment(
-    x=150, xend=140, y=25, yend=25, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
-  geom_segment(
-    x=150, xend=160, y=25, yend=25, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
-  geom_segment(
-    x=150, xend=140, y=25, yend=40, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
-  geom_segment(
-    x=150, xend=140, y=25, yend=10, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
-  geom_segment(
-    x=150, xend=160, y=25, yend=40, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
-  geom_segment(
-    x=150, xend=160, y=25, yend=10, 
-    size=0.15, linejoin = "mitre", lineend = "butt",
-    arrow = arrow(length = unit(1, "mm"), type= "closed"))+ theme_void())
+    geom_label(data=CoordsArrows,aes(x=(x+xend)/2,y=(y+yend)/2,label=text))+
+    geom_label(aes(x=-150,y=210,label="What Type of Distribution Does our Response\nVariable Come From?"),size=6)+
+    theme_void()+
+    theme(legend.position = c(0.2,0.6),
+          legend.title=element_text(size=20),
+          legend.text = element_text(size = 14))
 
 ```
 
@@ -277,13 +216,13 @@ So when deciding what type of model to run we can first think whether our data a
 Once we know our data are numeric, we need to choose what type: continuous or integers. This is quite an easy one, can you measure it in decimals or is it complete units. When studying nesting birds we don't count half eggs; a nest will have 1, 2, 3 etc. eggs. But if we are measuring the width of a tree it might be 4 cm or 2.365441 m. 
 
 
-::: {#fig-elephants layout-ncol=2}
+::: {layout-ncol=2}
 
 ![Nest - https://www.thespruce.com](Images/Eggs.jpeg)
 
 ![Tree - https://fennerschool-associated.anu.edu.au](Images/Tree.jpeg)
 
-Integer or Continous Numeric Data
+
 :::
 
 
@@ -297,6 +236,7 @@ Once we know our data are continuous numeric, we can think can the values be neg
 #| fig-height: 3
 
 library(tidyverse)
+library(ggridges)
 library(Utilities.Package)
 
 Temp<-data.frame(x=rnorm(100000,mean = 2,sd=3))
@@ -325,7 +265,7 @@ p2<-
   labs(x="Fish Length (mm)",
        y="",
        title = "Gamma")+
-  scale_x_continuous(limits = c(-2,max(Forklength$x)*1.1))
+  scale_x_continuous(limits = c(0,max(Forklength$x)*1.1))
 
 p1+p2
 
@@ -558,7 +498,7 @@ For the vast majority of GLM and GLMMs, there is an assumption that our residual
 p12<-ResidualsExample_df%>% 
   mutate(Residuals=(u-y)/sqrt(y))%>% 
   ggplot()+
-  geom_histogram(aes(x=Residuals,y=after_stat(density)),linewidth=1,fill="darkcyan",alpha=0.9,colour="black")+ 
+  geom_histogram(aes(x=Residuals,y=after_stat(density)),linewidth=0.6,fill="darkcyan",alpha=0.9,colour="black")+ 
   geom_density(aes(x=Residuals),fill="darkcyan",alpha=0.6,linewidth=0.5)+
   theme_Bede()+
   labs(x="Residuals",y="Density",

@@ -81,13 +81,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#glms-and-glmms---background" id="toc-glms-and-glmms---background" class="nav-link active" data-scroll-target="#glms-and-glmms---background">GLMs and GLMMs - Background <img src="Images/logo.png" align="right" height="138.5"></a>
+  <li><a href="#glms---background" id="toc-glms---background" class="nav-link active" data-scroll-target="#glms---background">GLMs - Background <img src="Images/logo.png" align="right" height="138.5"></a>
   <ul class="collapse">
   <li><a href="#short-and-probably-biased-history" id="toc-short-and-probably-biased-history" class="nav-link" data-scroll-target="#short-and-probably-biased-history">Short and Probably Biased History</a></li>
   <li><a href="#first-step-of-analysis---statistical-model-formulation" id="toc-first-step-of-analysis---statistical-model-formulation" class="nav-link" data-scroll-target="#first-step-of-analysis---statistical-model-formulation">First Step of Analysis - Statistical Model Formulation</a></li>
   <li><a href="#second-step-of-analysis---response-variable-distribution" id="toc-second-step-of-analysis---response-variable-distribution" class="nav-link" data-scroll-target="#second-step-of-analysis---response-variable-distribution">Second Step of Analysis - Response Variable Distribution</a>
   <ul class="collapse">
   <li><a href="#distributions" id="toc-distributions" class="nav-link" data-scroll-target="#distributions">Distributions</a></li>
+  <li><a href="#which-to-choose" id="toc-which-to-choose" class="nav-link" data-scroll-target="#which-to-choose">Which to Choose?</a></li>
   <li><a href="#numeric-or-categorical" id="toc-numeric-or-categorical" class="nav-link" data-scroll-target="#numeric-or-categorical">Numeric or Categorical</a></li>
   <li><a href="#numeric-continuous-or-integer" id="toc-numeric-continuous-or-integer" class="nav-link" data-scroll-target="#numeric-continuous-or-integer">Numeric: Continuous or Integer</a></li>
   <li><a href="#continuous-can-the-data-be-negative" id="toc-continuous-can-the-data-be-negative" class="nav-link" data-scroll-target="#continuous-can-the-data-be-negative">Continuous: Can the data be Negative?</a></li>
@@ -135,8 +136,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="glms-and-glmms---background" class="level1">
-<h1>GLMs and GLMMs - Background <img src="Images/logo.png" align="right" height="138.5"></h1>
+<section id="glms---background" class="level1">
+<h1>GLMs - Background <img src="Images/logo.png" align="right" height="138.5"></h1>
 <p>Statistical analysis in r is very easy (on the whole) but needs a bit more background to fully understand. But for most of our situations we will want to use a group of models called General Linear Models (GLMs) or if more complex General Linear Mixed Effects Models (GLMMs). These modelling frameworks plus the additions/alterations from their defaults have lots of different names but in ecology and specifically r the names here are the most commonly used.</p>
 <section id="short-and-probably-biased-history" class="level2">
 <h2 class="anchored" data-anchor-id="short-and-probably-biased-history">Short and Probably Biased History</h2>
@@ -149,14 +150,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 <p>GLMs and GLMMs can be used in all the same cases as these older style tests as well as many many more, but with more consistency of terminology, higher flexibility and without the need to know, which different test to use.</p>
-<p>There are important options to chose within GLMs and GLMMs but as I mention they are more consistent and easier to check/adhere to their assumptions.</p>
+<p>There are important options to chose within GLMs and GLMMs but as I mention they are more consistent and easier to check or adhere to their assumptions.</p>
 </section>
 <section id="first-step-of-analysis---statistical-model-formulation" class="level2">
 <h2 class="anchored" data-anchor-id="first-step-of-analysis---statistical-model-formulation">First Step of Analysis - Statistical Model Formulation</h2>
-<p>Generally we will have a response variable (Dependent Variable) with some selection of one or more fixed effects (independent variables).</p>
-<p>Here I will discuss exclusively univariate modelling (where only one variable is the response variable) but multivariate analysis could follow the same framework just will be more complicated to implement.</p>
-<p>Our research question will dictate how we create our statistical model and then how we interpret that model.</p>
-<p>Many researchers like to draw out what is called a DAG, which diagramatically shows assumed influences of factors and how the direction of that influence. At first these are quite difficult to formulate until you have created a few. Therefore, the easiest way I can think to do this is saying some sort of hypothesis or statement in English then we can turn that statement into the Statistical model.</p>
+<p>Generally we will have a response variable (Dependent Variable) with one or more fixed effects (independent variables).</p>
+<p>Here I will discuss exclusively univariate modelling (where only one variable is the response variable) but multivariate analysis could follow the same framework, it is just more complicated to implement.</p>
+<p>Our research question will dictate how we create our scientific model, which dictates what statistical model to use and then how we interpret that statistical model.</p>
+<p>Many researchers like to draw out what is called a DAG, which diagrammatically shows assumed influences of factors, and how the directionallity of that influence. At first these are quite difficult to formulate until you have created a few. Therefore, the easiest way I can think to do this is saying some sort of hypothesis or statement in English then we can turn that statement into the Statistical model.</p>
 <p>For example: I hypothesise that the flipper length of a penguin is described primarily by the species of that penguin but also influenced by its sex. Effectively Flipper length changes with Species and Sex.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
@@ -165,7 +166,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 <p>Here our response variable is Flipper length (Dependant variable) and our fixed effects (Independent variables) are Species and Sex.</p>
-<p>In statistical notation we could write this in a couple ways depending on our assumptions:</p>
+<p>In statistical notation we could write this in a couple of ways depending on our assumptions:</p>
 <p>1). flipper_length_mm ~ sex * species</p>
 <p>2). flipper_length_mm ~ sex + species</p>
 <p>Firstly, we see on the left hand side of the ~ (tilde) we have our response variable, with our fixed effects on the other side.</p>
@@ -176,9 +177,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="second-step-of-analysis---response-variable-distribution" class="level2">
 <h2 class="anchored" data-anchor-id="second-step-of-analysis---response-variable-distribution">Second Step of Analysis - Response Variable Distribution</h2>
-<p>The next most important element is what type of data our response variable is. This is the step that is often carried out wrong and leads to most inaccuracies of analysis.</p>
-<p>When modelling we are using our sample to make inference about a population. Therefore, our model should be based on our assumptions of the population.</p>
-<p>The type of data your response variable comes from may not be exactly what your response variable data looks like! However, if we have sufficiently sampled the population and not introduced any selection or sampling bias (We should be aware of this when analysing data from specific geographies or demographics etc!!!) we should be okay saying our sample (response variable) comes from the distribution of the population.</p>
+<p>The next most important element is what type of data our response variable is. This is the step that is often carried out wrong and leads to many inaccuracies of analysis.</p>
+<p>When modelling we are using our sample to make inference about a population. Therefore, our model should be based on our assumptions of the population that we took the sample from.</p>
+<p>The type of data your response variable comes from may not be exactly what your response variable data looks like! However, if we have sufficiently sampled the population and not introduced any selection or sampling bias we should be confident in saying our sample (response variable) comes from the distribution of the population. We should be aware of this when analysing data from specific geographies or demographics etc!!!</p>
 <p>So we should be able to tell the type of response variable data before we even collect the samples themselves! WE SHOULD NOT LOOK AT A GRAPH OF OUR DATA AND CHOOSE THE DISTRIBUTION IT COMES FROM JUST BY THE SHAPE!!!! (Speaking from experience and errors made!)</p>
 <section id="distributions" class="level3">
 <h3 class="anchored" data-anchor-id="distributions">Distributions</h3>
@@ -199,6 +200,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </figure>
 </div>
 </section>
+<section id="which-to-choose" class="level3">
+<h3 class="anchored" data-anchor-id="which-to-choose">Which to Choose?</h3>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" style="width:120.0%"></p>
+</div>
+</div>
+</section>
 <section id="numeric-or-categorical" class="level3">
 <h3 class="anchored" data-anchor-id="numeric-or-categorical">Numeric or Categorical</h3>
 <p>So when deciding what type of model to run we can first think whether our data are numerica or categoric. We will only discuss numerical data (temperature or weight or numbers of fish) but sometimes we might have a categorical response variable, such as questionnaire answers. Within these types of model there might be order to the categories (Not likely, Somewhat likely, Very likely) or there is no logical order (green, blue, purple). There are mixed effects models for these that are widely used, such as Multinomial Logisitic Regression for non-ordered and Ordinal Logistic Regression for ordered categorical response variables, but again we won’t discuss them here.</p>
@@ -206,8 +215,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="numeric-continuous-or-integer" class="level3">
 <h3 class="anchored" data-anchor-id="numeric-continuous-or-integer">Numeric: Continuous or Integer</h3>
 <p>Once we know our data are numeric, we need to choose what type: continuous or integers. This is quite an easy one, can you measure it in decimals or is it complete units. When studying nesting birds we don’t count half eggs; a nest will have 1, 2, 3 etc. eggs. But if we are measuring the width of a tree it might be 4 cm or 2.365441 m.</p>
-<div id="fig-elephants" class="quarto-layout-panel">
-<figure class="figure">
+<div class="quarto-layout-panel">
 <div class="quarto-layout-row quarto-layout-valign-top">
 <div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: center;">
 <div class="quarto-figure quarto-figure-center">
@@ -226,8 +234,6 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 </div>
-<p></p><figcaption class="figure-caption">Figure&nbsp;1: Integer or Continous Numeric Data</figcaption><p></p>
-</figure>
 </div>
 </section>
 <section id="continuous-can-the-data-be-negative" class="level3">
@@ -235,7 +241,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Once we know our data are continuous numeric, we can think can the values be negative? A response variable that is continuous and can be negative is mostly modelled under the most common distribution: <strong>Gaussian</strong>. Examples of this could be temperature measured in <span class="math inline">\(^\circ\)</span>C or acceleration. A response variable that cannot be negative or even 0, would most correctly be: <strong>Gamma</strong>. However, Gaussian models are very often used for these models as a Guassian distribution is simpler computationally and mathematically, and only really causes issues when the values approach 0. This is actually most continuous values we measure, such as thickness of a stem, fish length, body mass or area of habitat.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -244,7 +250,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>If your response variable is continuous, and it may be negative or not, but is bound between an upper and lower known bound then it would most correctly be: <strong>Beta</strong>. For most practical terms Beta distribution is between 0 and 1. However, most data between bounds could be scaled to 0 and 1 and keep all of their characteristics. For example, percentage or proportional data are effectively between 0 and 1 and can be modelling using a <strong>Beta</strong> distribution.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="672"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -253,7 +259,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>We know our data are integers but do we know whether there is an upper limit? If our data could potentially be very big as counts then we will use the <strong>Poisson</strong> distribution. This is for response variables like number of eggs in a nest or abundance of fish or the number of different species found along a transect. If we know there is an upper limit to the integers we could get then we will use a <strong>Binomial</strong> model. This could be for the number of eggs inside a six egg carton. The most common version of this is when we have a binary response variable (either 1 or 0). Presence or absence of a rare species for example. This is binary <strong>Binomial</strong> but is sometimes referred to specifically as <strong>Bernoulli</strong>.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -270,7 +276,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>For example for skewed data, if our fixed effect was based on population size with the nearest 2 km, we may have some seriously big values in cities and seriously small values in the countryside. For these data we may use a log transformation, or a square root.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ul>
@@ -279,7 +285,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>If our fixed effect was a really big value but actually we are interested in small changes we might consider it differently. For example we might look at Year, in our data that would be above 2000 generally but actually if we have 5 years of data we are looking at it would be easier for the model to convert our data to year 1, year 2, year 2 rather than 2020, 2021, 2022. Here we maintain the difference of 1 year between each value so change the scale.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <ul>
@@ -307,7 +313,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>If we see patterns in our Response Variable vs Residuals plots (not just a random cloud of points) this may mean we missed an important fixed effect in our model (Underlying structure of the system has been ignored), the data do not come from the assigned distribution, there are a high number of zeros in our data or the data do come from the correct distribution but we have been biased in our sampling method (There could be many other reasons but these are the main ones).</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -316,7 +322,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>For the vast majority of GLM and GLMMs, there is an assumption that our residuals are normally distributed. Basically this means that our residuals have a mean distance from the model and most of the values are around this mean. Then the likelihood or probability of having much larger or much smaller values than the mean becomes smaller and smaller. We can therefore plot our residuals as a histogram to see if it follows a generally normal or bell shaped distribution. We can also do what is called a Quantile-Quantile plot, which creates a theoretical distribution of values given the data range, then plots it against the empirical or true distribution. If the residual distribution are perfectly the same as the theoretical distribution it follows a 1 to 1 line (y=x). Again these are more qualitative checks where some variation and divergence from normality is fine.</p>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 </section>
@@ -352,16 +358,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lm2<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid" width="672"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-10-3.png" class="img-fluid" width="672"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-11-3.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-10-4.png" class="img-fluid" width="672"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-11-4.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>This is annoying as we have to press enter in the console to see all the plots</p>
@@ -373,7 +379,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(lm2<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="768"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>As we only have factors in our model we don’t see a ‘cloud’ of points, but the line is still flat and horizontal so this is good</p>
@@ -416,7 +422,7 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
 <span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="768"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>Now we can also see what the model believes about our data</p>
@@ -448,7 +454,7 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
 <span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="768"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>Lets look at both of these plots next to each other,</p>
@@ -479,7 +485,7 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>Plot1<span class="sc">+</span>Plot2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="768"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>At first look this is quite good, but maybe some polishing is needed, mostly the y axis range</p>
@@ -511,7 +517,7 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>Plot1<span class="sc">+</span>Plot2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="768"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>This is better, although we could actually plot both the modelled and raw data on one plot</p>
@@ -535,7 +541,7 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
 <span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="768"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </section>
@@ -553,7 +559,7 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Length (mm)"</span>,<span class="at">y=</span><span class="st">"Flipper Length (mm)"</span>)<span class="sc">+</span></span>
 <span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="768"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>We can see from the raw data that we will expect to find some strong linear relationships</p>
@@ -567,7 +573,7 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
   interaction terms.</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="768"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="768"></p>
 </div>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm3<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -667,7 +673,7 @@ F-statistic: 322.5 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Length (mm)"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
 <span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="768"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>This looks good but lets maybe add the raw data values onto the same figure as the model outputs as before</p>
@@ -687,7 +693,7 @@ F-statistic: 322.5 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Length (mm)"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
 <span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="768"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>Artwork of Penguins by <span class="citation" data-cites="allison_horst">@allison_horst</span></p>

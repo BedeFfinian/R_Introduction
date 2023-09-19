@@ -6,9 +6,9 @@ format:
     toc-location: left
 ---
 
-# Real World Data
+# Real World Data  <img src='Images/Tidyverse.png' align="right" height="138.5" /></a>
 
-## Overview of Data
+### Overview of Data
 
 Packages often have their own example datasets within them, or sometimes a package can be used to store just data without functions etc.
 
@@ -20,6 +20,9 @@ We will look at the palmer penguins dataset
 library(palmerpenguins)
 data(penguins)
 ```
+
+![Penguins Image by Allison Horst](Images/lter_penguins.png)
+
 
 This becomes a 'promise' of a data set, we have to do something with it to get it properly, lets take a look inside
 
@@ -48,6 +51,8 @@ The raw data has a lot of extra information that may or may not be important for
 
 # All Hail Hadley Wickham: tidyverse 
 
+<img src='Images/Tidyverse.png' align="right" height="138.5" /></a>
+
 For almost all basic tasks in r I prefer and would recommend using the tidyverse, but there are many other packages for data manipulation, organisation, visualisation and analysis
 
 Hadley Wickham is an amazing package writer and is heavily involved with creating the tidyverse, he is also amazing at explaining very complex things (Check out his Youtube).
@@ -74,6 +79,9 @@ This may not seem that important or even intelligible now but when we start plot
 
 ## Enough Theory - dplyr and tidyr
 
+<img src='Images/dplyr.jpeg' align="right" height="138.5" /></a>
+<img src='Images/Tidyr.png' align="left" height="138.5" /></a>
+
 For data manipulation and organisation we will rely heavily on the dplyr and tidyr packages, which have a suite of functions that can be used in isolation or combined to perform complex data manipulation and organisation.
 
 ### Easy to Read Code
@@ -97,6 +105,8 @@ all.equal(df_without_enters,df_with_enters)
 ```
 
 ### Piping (Native and maggittr)
+
+<img src='Images/Maggitr.png' align="right" height="138.5" /></a>
 
 What do we do when we want to apply multiple functions in a sequence but don't want to create loads of objects in our global environment?
 

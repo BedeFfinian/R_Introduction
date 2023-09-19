@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#real-world-data" id="toc-real-world-data" class="nav-link active" data-scroll-target="#real-world-data">Real World Data</a>
+  <li><a href="#real-world-data" id="toc-real-world-data" class="nav-link active" data-scroll-target="#real-world-data">Real World Data <img src="Images/Tidyverse.png" align="right" height="138.5"></a>
   <ul class="collapse">
   <li><a href="#overview-of-data" id="toc-overview-of-data" class="nav-link" data-scroll-target="#overview-of-data">Overview of Data</a></li>
   </ul></li>
@@ -122,9 +122,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 <section id="real-world-data" class="level1">
-<h1>Real World Data</h1>
-<section id="overview-of-data" class="level2">
-<h2 class="anchored" data-anchor-id="overview-of-data">Overview of Data</h2>
+<h1>Real World Data <img src="Images/Tidyverse.png" align="right" height="138.5"></h1>
+<section id="overview-of-data" class="level3">
+<h3 class="anchored" data-anchor-id="overview-of-data">Overview of Data</h3>
 <p>Packages often have their own example datasets within them, or sometimes a package can be used to store just data without functions etc.</p>
 <p>We will look at the palmer penguins dataset</p>
 <div class="cell">
@@ -133,6 +133,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(penguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Images/lter_penguins.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Penguins Image by Allison Horst</figcaption>
+</figure>
+</div>
 <p>This becomes a ‘promise’ of a data set, we have to do something with it to get it properly, lets take a look inside</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -140,7 +146,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
 ✔ dplyr     1.1.2     ✔ readr     2.1.4
 ✔ forcats   1.0.0     ✔ stringr   1.5.0
-✔ ggplot2   3.4.2     ✔ tibble    3.2.1
+✔ ggplot2   3.4.3     ✔ tibble    3.2.1
 ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
 ✔ purrr     1.0.1     
 ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
@@ -236,6 +242,7 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </section>
 <section id="all-hail-hadley-wickham-tidyverse" class="level1">
 <h1>All Hail Hadley Wickham: tidyverse</h1>
+<p><img src="Images/Tidyverse.png" align="right" height="138.5"></p>
 <p>For almost all basic tasks in r I prefer and would recommend using the tidyverse, but there are many other packages for data manipulation, organisation, visualisation and analysis</p>
 <p>Hadley Wickham is an amazing package writer and is heavily involved with creating the tidyverse, he is also amazing at explaining very complex things (Check out his Youtube).</p>
 <p>The main drawbacks of the tidyverse are to do with speed at scale, tidyverse code is less efficient with big data (10s of Gigabytes)</p>
@@ -254,6 +261,7 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </section>
 <section id="enough-theory---dplyr-and-tidyr" class="level2">
 <h2 class="anchored" data-anchor-id="enough-theory---dplyr-and-tidyr">Enough Theory - dplyr and tidyr</h2>
+<p><img src="Images/dplyr.jpeg" align="right" height="138.5"> <img src="Images/Tidyr.png" align="left" height="138.5"></p>
 <p>For data manipulation and organisation we will rely heavily on the dplyr and tidyr packages, which have a suite of functions that can be used in isolation or combined to perform complex data manipulation and organisation.</p>
 <section id="easy-to-read-code" class="level3">
 <h3 class="anchored" data-anchor-id="easy-to-read-code">Easy to Read Code</h3>
@@ -276,6 +284,7 @@ $ year              &lt;int&gt; 2007, 2007, 2007, 2007, 2007, 2007, 2007, 2007, 
 </section>
 <section id="piping-native-and-maggittr" class="level3">
 <h3 class="anchored" data-anchor-id="piping-native-and-maggittr">Piping (Native and maggittr)</h3>
+<p><img src="Images/Maggitr.png" align="right" height="138.5"></p>
 <p>What do we do when we want to apply multiple functions in a sequence but don’t want to create loads of objects in our global environment?</p>
 <p>One option is putting one function inside of another etc (Sometimes fine). This is called nesting.</p>
 <div class="cell">

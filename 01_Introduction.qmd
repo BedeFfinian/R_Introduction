@@ -6,9 +6,9 @@ format:
     toc-location: left
 ---
 
-# Installation
+# Installation  <img src='Images/R_logo.png' align="right" height="138.5" /></a>
 
-## R
+### R
 
 To install R we can install it from the internet by either googling or
 
@@ -18,7 +18,9 @@ For Mac: <https://cran.r-project.org/bin/macosx/>
 
 For Linux: <https://cran.r-project.org/bin/linux/>
 
-## RStudio
+### RStudio  
+
+<img src='Images/rstudio-stickers.jpg' align="right" height="138.5" /></a>
 
 R is an open source statistical programming language. It can be used through many Graphic User Interfaces (GUI) my preference is 
 to use RStudio but VSCode is good and you can also code in base R (as well as many others). 
@@ -26,6 +28,8 @@ to use RStudio but VSCode is good and you can also code in base R (as well as ma
 We can install RStudio from <https://posit.co/download/rstudio-desktop/>
 
 # Basics
+
+<img src='Images/R_logo.png' align="right" height="138.5" /></a>
 
 This tutorial will rely on using code written in RStudio and locations of things (Script, Console, Environment, Plots/Help) will be RStudio specific but the code could be run in any GUI.
 

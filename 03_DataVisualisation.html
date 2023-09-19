@@ -79,7 +79,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#visualisation" id="toc-visualisation" class="nav-link active" data-scroll-target="#visualisation">Visualisation</a>
+  <li><a href="#visualisation" id="toc-visualisation" class="nav-link active" data-scroll-target="#visualisation">Visualisation <img src="Images/ggplot2.png" align="right" height="138.5"></a>
   <ul class="collapse">
   <li><a href="#base" id="toc-base" class="nav-link" data-scroll-target="#base">Base</a></li>
   <li><a href="#ggplot2" id="toc-ggplot2" class="nav-link" data-scroll-target="#ggplot2">ggplot2</a>
@@ -114,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 <section id="visualisation" class="level1">
-<h1>Visualisation</h1>
+<h1>Visualisation <img src="Images/ggplot2.png" align="right" height="138.5"></h1>
 <p>Lets make some data as we did in the introduction</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>Year <span class="ot">&lt;-</span> <span class="fu">seq</span>(<span class="at">from=</span><span class="dv">1950</span>,<span class="at">to=</span><span class="dv">2023</span>,<span class="at">by=</span><span class="dv">1</span>)</span>
@@ -127,8 +127,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>df<span class="sc">$</span>Response<span class="ot">&lt;-</span>Response</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="base" class="level2">
-<h2 class="anchored" data-anchor-id="base">Base</h2>
+<section id="base" class="level3">
+<h3 class="anchored" data-anchor-id="base">Base</h3>
 <p>We can check the data we have using a base plot function</p>
 <p>The base plot() function will create a grid that is each column of the data set plotted against all the others, this is fine for continuous data (Such as bill_depth_mm)</p>
 <p>but it is hard to understand or read fully.</p>
@@ -198,7 +198,7 @@ Using the first match ...</code></pre>
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
 ✔ dplyr     1.1.2     ✔ readr     2.1.4
 ✔ forcats   1.0.0     ✔ stringr   1.5.0
-✔ ggplot2   3.4.2     ✔ tibble    3.2.1
+✔ ggplot2   3.4.3     ✔ tibble    3.2.1
 ✔ lubridate 1.9.2     ✔ tidyr     1.3.0
 ✔ purrr     1.0.1     
 ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
@@ -224,9 +224,9 @@ Using the first match ...</code></pre>
 <pre><code># A tibble: 3 × 3
   Treatment   MeanResponse SDResponse
   &lt;fct&gt;              &lt;dbl&gt;      &lt;dbl&gt;
-1 Control             122.       118.
-2 Treatment 1        -676.      1171.
-3 Treatment 2        1285.       878.</code></pre>
+1 Control             117.       112.
+2 Treatment 1        -706.      1123.
+3 Treatment 2        1261.       822.</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df_1_summary_year<span class="ot">&lt;-</span>df_1 <span class="sc">%&gt;%</span> </span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Treatment,Year) <span class="sc">%&gt;%</span> </span>
@@ -242,16 +242,16 @@ Using the first match ...</code></pre>
 # Groups:   Treatment [3]
    Treatment  Year MeanResponse SDResponse
    &lt;fct&gt;     &lt;dbl&gt;        &lt;dbl&gt;      &lt;dbl&gt;
- 1 Control    1950        10.9        29.7
- 2 Control    1951         3.38       44.1
- 3 Control    1952        25.2        41.2
- 4 Control    1953        17.1        39.1
- 5 Control    1954        41.6        42.8
- 6 Control    1955        28.6        38.5
- 7 Control    1956         1.20       42.2
- 8 Control    1957        28.9        28.8
- 9 Control    1958        27.2        46.5
-10 Control    1959        48.6        55.6
+ 1 Control    1950        16.2        37.7
+ 2 Control    1951        18.5        38.7
+ 3 Control    1952        10.5        36.8
+ 4 Control    1953         2.43       48.6
+ 5 Control    1954        17.3        38.8
+ 6 Control    1955        18.3        40.0
+ 7 Control    1956        45.8        33.3
+ 8 Control    1957        25.8        38.4
+ 9 Control    1958        27.2        52.3
+10 Control    1959        42.3        19.1
 # ℹ 212 more rows</code></pre>
 </div>
 </div>
@@ -260,6 +260,7 @@ Using the first match ...</code></pre>
 <h2 class="anchored" data-anchor-id="ggplot2">ggplot2</h2>
 <section id="the-grammar-of-graphics" class="level3">
 <h3 class="anchored" data-anchor-id="the-grammar-of-graphics">The Grammar of Graphics</h3>
+<p><img src="Images/ggplot2.png" align="right" height="138.5"></p>
 <p>For more complex (and very simple) plots ggplot2 is by far the best package!</p>
 <p>The gg in ggplot2 and a lot of the associated packages stands for grammar of graphics, which is a very old framework for good visualisation.</p>
 <p>We don’t need to go far into it, but it effectively relies on three elements:</p>

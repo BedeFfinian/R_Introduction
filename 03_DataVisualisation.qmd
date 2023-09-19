@@ -6,7 +6,7 @@ format:
     toc-location: left
 ---
 
-# Visualisation
+# Visualisation <img src='Images/ggplot2.png' align="right" height="138.5" /></a>
 
 Lets make some data as we did in the introduction
 
@@ -24,7 +24,7 @@ df$Response<-Response
 
 ```
 
-## Base
+### Base
 
 We can check the data we have using a base plot function
 
@@ -121,6 +121,8 @@ df_1_summary_year
 ## ggplot2
 
 ### The Grammar of Graphics
+
+<img src='Images/ggplot2.png' align="right" height="138.5" /></a>
 
 For more complex (and very simple) plots ggplot2 is by far the best package!
 

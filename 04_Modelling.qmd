@@ -86,6 +86,188 @@ There are many, many, many others such as Student-t or Direchlet or Tweedie. All
 
 ![Distributions - https://learnbyinsight.com/2020/09/27/probability-distribution-an-aid-to-know-the-data/](Images/Distributions.png)
 
+### Which to Choose?
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-height: 3
+
+
+#devtools::install_github("hrbrmstr/statebins")
+
+library(statebins)
+
+data <- tibble(x=c(0,250,300,400,0,100,-100,-200,200,275,350,200,0,-200,-350), 
+               y=c(185,175,200,175,150,125,125,100,100,125,100,75,100,75,100),
+               Type=c("Decision",
+                      "Decision",
+                      "Distribution",
+                      "Distribution",
+                      "Decision",
+                      "Decision",
+                      "Decision",
+                      "Decision",
+                      "Decision",
+                      "Distribution",
+                      "Distribution",
+                      "Distribution",
+                      "Distribution",
+                      "Distribution",
+                      "Distribution"),
+               Label=c('Is the Response\nVariable Numeric\nor Categorical?',
+                       'Is the Categorical\nVariable Ordered?',
+                       'Multinomial',
+                       'Ordinal',
+                       'Is the Numeric\nVariable Continuous\nor Integer?',
+                       'Is the Upper Limit\nKnown?',
+                       'Can the Variable be\nNon-Positive?\nZeros and Negatives?',
+                       'Is the Variable\nBound Between\nTwo Values?',
+                       'Is the Upper\nLimit 1?',
+                       'Poisson',
+                       'Binomial',
+                       'Bernoulli',
+                       'Gamma',
+                       'Gaussian',
+                       'Beta')) %>% 
+  dplyr::mutate(xbuffer=if_else(Type=="Decision",80,50),
+                ybuffer=if_else(Type=="Decision",10,7))
+
+
+
+data %>% 
+  ggplot(aes(x, y)) +
+  scale_x_continuous(limits=c(-400,450),
+                     minor_breaks = seq(-400, 450, 10)) +
+  scale_y_continuous(limits=c(60,215),
+                     minor_breaks = seq(0, 225, 10)) +
+  theme_linedraw() +
+  statebins:::geom_rrect(aes(xmin = x-xbuffer, xmax=x+xbuffer, ymin=y-ybuffer, ymax=y+ybuffer,
+            fill=Type), color='black', size=0.25) +
+  geom_text( aes(x= x, y=y,label= Label),
+             colour='white', size=4.5)
+    
+    
+    
+    
+    +
+  geom_segment(
+    x=50, xend=100, y=180, yend=170, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed")) +
+  geom_segment(
+    x=150, xend=100, y=180, yend=170, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
+  geom_segment(
+    x=100, xend=50, y=150, yend=145, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed")) +
+  geom_segment(
+    x=100, xend=150, y=150, yend=145, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
+  geom_segment(
+    x=50, xend=50, y=135, yend=130, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
+  geom_segment(
+    x=50, xend=50, y=120, yend=115, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed")) +
+  geom_segment(
+    x=50, xend=50, y=105, yend=100, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
+  geom_segment(
+    x=150, xend=125, y=135, yend=130, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
+  geom_segment(
+    x=125, xend=125, y=120, yend=115, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed")) +
+  geom_segment(
+    x=125, xend=125, y=105, yend=100, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
+  geom_segment(
+    x=150, xend=175, y=135, yend=130, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed")) +
+  geom_segment(
+    x=175, xend=175, y=105, yend=100, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
+  geom_segment(
+    x=50, xend=100, y=90, yend=85, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed")) +
+  geom_segment(
+    x=150, xend=100, y=90, yend=85, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
+  geom_segment(
+    x=100, xend=50, y=75, yend=70, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed")) +
+  geom_segment(
+    x=100, xend=150, y=75, yend=70, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed")) +
+  geom_segment(
+    x=210, xend=130, y=80, yend=80, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
+  geom_segment(
+    x=50, xend=50, y=60, yend=35, 
+    size=0.15)+
+  geom_segment(
+    x=50, xend=40, y=35, yend=40, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
+  geom_segment(
+    x=50, xend=40, y=35, yend=30, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
+  geom_segment(
+    x=50, xend=60, y=35, yend=40, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
+  geom_segment(
+    x=50, xend=60, y=35, yend=30, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
+  geom_segment(
+    x=150, xend=150, y=60, yend=25, 
+    size=0.15)+
+  geom_segment(
+    x=150, xend=140, y=25, yend=25, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
+  geom_segment(
+    x=150, xend=160, y=25, yend=25, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
+  geom_segment(
+    x=150, xend=140, y=25, yend=40, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
+  geom_segment(
+    x=150, xend=140, y=25, yend=10, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
+  geom_segment(
+    x=150, xend=160, y=25, yend=40, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed"))+
+  geom_segment(
+    x=150, xend=160, y=25, yend=10, 
+    size=0.15, linejoin = "mitre", lineend = "butt",
+    arrow = arrow(length = unit(1, "mm"), type= "closed"))+ theme_void())
+
+```
+
 ### Numeric or Categorical
 
 So when deciding what type of model to run we can first think whether our data are numerica or categoric. We will only discuss numerical data (temperature or weight or numbers of fish) but sometimes we might have a categorical response variable, such as questionnaire answers. Within these types of model there might be order to the categories (Not likely, Somewhat likely, Very likely) or there is no logical order (green, blue, purple). There are mixed effects models for these that are widely used, such as Multinomial Logisitic Regression for non-ordered and Ordinal Logistic Regression for ordered categorical response variables, but again we won't discuss them here.
@@ -219,6 +401,7 @@ p3+p4+p5
 
 ```
 
+
 ## Third Step of Analysis - Organising Fixed Effects
 
 We now know what distribution we will most likely use to analyse our response data, so the next step is organising our fixed effects so the model treats them how we would like them to be treated. Effectively fixed effects are either numeric or categorical variables. With GLMs there is no different name (nor changes in code) generally used for what combination of numeric or categorical variables are used. So we could have multiple numeric effects, multiple categorical factors or a mixture of both. 
@@ -301,6 +484,100 @@ Sometimes we may have a distribution of values that is 'nicely' distributed, wit
 
 Categorical factors can be less simple. R takes the first level of the categorical effect as the baseline or reference state, then compares all others to that one reference level. If you only have two levels then that is fine, the model will tell you the effect of changing from state 1 to state 2. This is directional. However, with more than two levels the results in r will only tell you the pairwise comparisons from state 1 to state 2, state 1 to state 3, state 1 to state 4 .... state 1 to state n. This is harder to interpret in the results table but if you plot the model it becomes easy. It does mean that we can make sure if there is a control or base level in our factor we can use that as our reference level. This is done by ordering our column so that our desired base level is first in the column. If the column is a character style data r will use the first level alphabetically as our reference data. Sometimes we won't care though, we just have to be aware that it is happening.
 
+## Fourth Step of Analysis - Assessing Model Functioning
+
+### GLM/GLMM Assumptions
+
+GLMs and GLMMs have some broad assumptions for them to be appropriately used. Regardless of the distribution type an Independence of sample is assumed as well as homoscedasticity and normality of residuals is assumed. 
+
+If we have created an appropriate statistical model that takes into consideration the heirarchy/structure of the data our samples should be independent. 
+
+So what are residuals and what is homoscedasticity? 
+
+### Homoscedasticity of Residuals - Fitted vs Residuals Plot
+
+To assess the assumptions of our models we can look at the residual distance between the model line and the points, these are called the residuals of the model.
+
+In its most basic version the residuals are the distance between the model and the raw data, then the plot of those residuals against the fitted values (or our response variable) can show how the sizes of residuals change across the fitted values. Homoscedasticity means homogeneity of variance or that the variance is consistent across the whole range of data. Therefore, ideally we want the residuals to represent a cloud of points with no clear patterns across the range of the response variable (fitted values), this is very subjective but a useful qualitative assessment of how good our model is. If our model was missing a clear pattern in the raw data then we would see a clear pattern in the residuals.
+
+If we see patterns in our Response Variable vs Residuals plots (not just a random cloud of points) this may mean we missed an important fixed effect in our model (Underlying structure of the system has been ignored), the data do not come from the assigned distribution, there are a high number of zeros in our data or the data do come from the correct distribution but we have been biased in our sampling method (There could be many other reasons but these are the main ones). 
+
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-height: 3
+
+n=100
+
+a=2
+
+b=2
+
+xGaus=seq(1,10,length.out=n)
+
+yGaus=a+b*xGaus
+
+o=2
+
+uGaus=rnorm(n,mean = yGaus,sd=o)
+
+ResidualsExample_df<-data.frame(y=yGaus,u=uGaus,x=xGaus)
+
+
+p10<-ggplot(data=ResidualsExample_df)+
+  geom_segment(aes(x=x,xend=x,y=y,yend=u),colour="red")+ 
+  geom_point(aes(x=x,y=u),size=1,colour="grey50")+
+  geom_line(aes(x=x,y=y),linewidth=1,colour="darkcyan",alpha=0.6)+ 
+  theme_Bede()+
+  labs(x="Fixed Effect",y="Response Variable",
+       title = "Residual Distances (Red Lines)\nBetween the Model (Blue Line)\nand Raw Data (Grey Points)")
+  
+
+p11<-ResidualsExample_df%>% 
+  mutate(Residuals=(u-y)/sqrt(y))%>% 
+  ggplot()+
+  geom_point(aes(x=y,y=Residuals),colour="red",alpha=0.7)+
+  theme_Bede()+
+  labs(x="Response Variable (Fitted Values)",y="Residuals",
+       title = "Response Variable vs Residuals")
+
+p10+p11
+
+```
+
+### Normality of Residuals - Quantile-Quantile Plot
+
+For the vast majority of GLM and GLMMs, there is an assumption that our residuals are normally distributed. Basically this means that our residuals have a mean distance from the model and most of the values are around this mean. Then the likelihood or probability of having much larger or much smaller values than the mean becomes smaller and smaller. We can therefore plot our residuals as a histogram to see if it follows a generally normal or bell shaped distribution. We can also do what is called a Quantile-Quantile plot, which creates a theoretical distribution of values given the data range, then plots it against the empirical or true distribution. If the residual distribution are perfectly the same as the theoretical distribution it follows a 1 to 1 line (y=x). Again these are more qualitative checks where some variation and divergence from normality is fine. 
+
+```{r}
+#| echo: false
+#| warning: false
+#| fig-height: 3
+
+p12<-ResidualsExample_df%>% 
+  mutate(Residuals=(u-y)/sqrt(y))%>% 
+  ggplot()+
+  geom_histogram(aes(x=Residuals,y=after_stat(density)),linewidth=1,fill="darkcyan",alpha=0.9,colour="black")+ 
+  geom_density(aes(x=Residuals),fill="darkcyan",alpha=0.6,linewidth=0.5)+
+  theme_Bede()+
+  labs(x="Residuals",y="Density",
+       title = "Distribution of Residual Distances")
+  
+
+p13<-ResidualsExample_df%>% 
+  mutate(Residuals=(u-y)/sqrt(y))%>% 
+  ggplot()+
+  geom_qq(aes(sample=Residuals),colour="red",alpha=0.7)+
+  geom_qq_line(aes(sample=Residuals))+
+  theme_Bede()+
+  labs(x="Theoretical Distribuion",y="Residual Distribution\n(Empirical)",
+       title = "Quantile-Quantile Plot")
+
+p12+p13
+
+```
+
 # Gaussian GLM 
 
 As before lets use the Palmer penguins dataset and remove the NAs (as before NAs should never be remove without considering why they are NAs but here we will remove them for ease).
@@ -338,59 +615,6 @@ lm2.1<-lm(flipper_length_mm~species*sex,data=penguins_noNAs)
 ```
 
 We could apply a linear model to almost all data but often it will not meet our assumptions,
-
-This isn't a statistics course so I won't go into full detail on theory and reasons when to and when not to use certain models,
-
-We will just apply some models that may or may not be correct to see how easy it is to apply such models in R, 
-
-To assess the assumptions of our models we can look at the residual distance between the model line and the points
-
-These are called the residuals of the model
-
-
-Here is a visualisation of what residuals are, 
-
-If we run this code we can see points (raw data in grey) and the distances (residuals in red) from the line (model in blue). 
-
-Then the plot of those residuals against the fitted values (or our response variable) can show how the sizes of residuals change across the fitted values
-
-Ideally we want this to represent a cloud of points with no clear patterns across the range of the fitted values, this is very subjective but a useful qualitative assessment of how good our model is.
-
-```{r}
-
-n=50
-
-a=2
-
-b=2
-
-xGaus=seq(1,10,length.out=n)
-
-yGaus=a+b*xGaus
-
-o=10
-
-uGaus=rnorm(n,mean = yGaus,sd=o)
-
-ResidualsExample_df<-data.frame(y=yGaus,u=uGaus,x=xGaus)
-
-
-ggplot(data=ResidualsExample_df)+
-  geom_line(aes(x=x,y=y),linewidth=2,colour="darkcyan",alpha=0.7)+ # Example model
-  geom_segment(aes(x=x,xend=x,y=y,yend=u),colour="red")+ # display residuals from raw data to the model
-  geom_point(aes(x=x,y=u),size=2,colour="grey50")+ # raw data
-    labs(y="Response Variable (Fitted Values)",x="Predictor") +
-  theme_classic()
-  
-
-ResidualsExample_df%>% 
-  mutate(Residuals=(u-y)/sqrt(y))%>% 
-  ggplot()+
-  geom_point(aes(x=y,y=Residuals),colour="red",alpha=0.7)+
-    labs(x="Fitted Values",y="Residuals")+
-  theme_classic()
-
-```
 
 We can now check visually the residuals from our model
 

@@ -99,6 +99,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#numeric-fixed-effects" id="toc-numeric-fixed-effects" class="nav-link" data-scroll-target="#numeric-fixed-effects">Numeric Fixed Effects</a></li>
   <li><a href="#categorical-fixed-effects" id="toc-categorical-fixed-effects" class="nav-link" data-scroll-target="#categorical-fixed-effects">Categorical Fixed Effects</a></li>
   </ul></li>
+  <li><a href="#fourth-step-of-analysis---assessing-model-functioning" id="toc-fourth-step-of-analysis---assessing-model-functioning" class="nav-link" data-scroll-target="#fourth-step-of-analysis---assessing-model-functioning">Fourth Step of Analysis - Assessing Model Functioning</a>
+  <ul class="collapse">
+  <li><a href="#glmglmm-assumptions" id="toc-glmglmm-assumptions" class="nav-link" data-scroll-target="#glmglmm-assumptions">GLM/GLMM Assumptions</a></li>
+  <li><a href="#homoscedasticity-of-residuals---fitted-vs-residuals-plot" id="toc-homoscedasticity-of-residuals---fitted-vs-residuals-plot" class="nav-link" data-scroll-target="#homoscedasticity-of-residuals---fitted-vs-residuals-plot">Homoscedasticity of Residuals - Fitted vs Residuals Plot</a></li>
+  <li><a href="#normality-of-residuals---quantile-quantile-plot" id="toc-normality-of-residuals---quantile-quantile-plot" class="nav-link" data-scroll-target="#normality-of-residuals---quantile-quantile-plot">Normality of Residuals - Quantile-Quantile Plot</a></li>
+  </ul></li>
   </ul></li>
   <li><a href="#gaussian-glm" id="toc-gaussian-glm" class="nav-link" data-scroll-target="#gaussian-glm">Gaussian GLM</a>
   <ul class="collapse">
@@ -286,6 +292,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Categorical factors can be less simple. R takes the first level of the categorical effect as the baseline or reference state, then compares all others to that one reference level. If you only have two levels then that is fine, the model will tell you the effect of changing from state 1 to state 2. This is directional. However, with more than two levels the results in r will only tell you the pairwise comparisons from state 1 to state 2, state 1 to state 3, state 1 to state 4 …. state 1 to state n.&nbsp;This is harder to interpret in the results table but if you plot the model it becomes easy. It does mean that we can make sure if there is a control or base level in our factor we can use that as our reference level. This is done by ordering our column so that our desired base level is first in the column. If the column is a character style data r will use the first level alphabetically as our reference data. Sometimes we won’t care though, we just have to be aware that it is happening.</p>
 </section>
 </section>
+<section id="fourth-step-of-analysis---assessing-model-functioning" class="level2">
+<h2 class="anchored" data-anchor-id="fourth-step-of-analysis---assessing-model-functioning">Fourth Step of Analysis - Assessing Model Functioning</h2>
+<section id="glmglmm-assumptions" class="level3">
+<h3 class="anchored" data-anchor-id="glmglmm-assumptions">GLM/GLMM Assumptions</h3>
+<p>GLMs and GLMMs have some broad assumptions for them to be appropriately used. Regardless of the distribution type an Independence of sample is assumed as well as homoscedasticity and normality of residuals is assumed.</p>
+<p>If we have created an appropriate statistical model that takes into consideration the heirarchy/structure of the data our samples should be independent.</p>
+<p>So what are residuals and what is homoscedasticity?</p>
+</section>
+<section id="homoscedasticity-of-residuals---fitted-vs-residuals-plot" class="level3">
+<h3 class="anchored" data-anchor-id="homoscedasticity-of-residuals---fitted-vs-residuals-plot">Homoscedasticity of Residuals - Fitted vs Residuals Plot</h3>
+<p>To assess the assumptions of our models we can look at the residual distance between the model line and the points, these are called the residuals of the model.</p>
+<p>In its most basic version the residuals are the distance between the model and the raw data, then the plot of those residuals against the fitted values (or our response variable) can show how the sizes of residuals change across the fitted values. Homoscedasticity means homogeneity of variance or that the variance is consistent across the whole range of data. Therefore, ideally we want the residuals to represent a cloud of points with no clear patterns across the range of the response variable (fitted values), this is very subjective but a useful qualitative assessment of how good our model is. If our model was missing a clear pattern in the raw data then we would see a clear pattern in the residuals.</p>
+<p>If we see patterns in our Response Variable vs Residuals plots (not just a random cloud of points) this may mean we missed an important fixed effect in our model (Underlying structure of the system has been ignored), the data do not come from the assigned distribution, there are a high number of zeros in our data or the data do come from the correct distribution but we have been biased in our sampling method (There could be many other reasons but these are the main ones).</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="normality-of-residuals---quantile-quantile-plot" class="level3">
+<h3 class="anchored" data-anchor-id="normality-of-residuals---quantile-quantile-plot">Normality of Residuals - Quantile-Quantile Plot</h3>
+<p>For the vast majority of GLM and GLMMs, there is an assumption that our residuals are normally distributed. Basically this means that our residuals have a mean distance from the model and most of the values are around this mean. Then the likelihood or probability of having much larger or much smaller values than the mean becomes smaller and smaller. We can therefore plot our residuals as a histogram to see if it follows a generally normal or bell shaped distribution. We can also do what is called a Quantile-Quantile plot, which creates a theoretical distribution of values given the data range, then plots it against the empirical or true distribution. If the residual distribution are perfectly the same as the theoretical distribution it follows a 1 to 1 line (y=x). Again these are more qualitative checks where some variation and divergence from normality is fine.</p>
+<div class="cell">
+<div class="cell-output-display">
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+</section>
 </section>
 <section id="gaussian-glm" class="level1">
 <h1>Gaussian GLM</h1>
@@ -310,86 +345,41 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>lm2<span class="fl">.1</span><span class="ot">&lt;-</span><span class="fu">lm</span>(flipper_length_mm<span class="sc">~</span>species<span class="sc">*</span>sex,<span class="at">data=</span>penguins_noNAs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We could apply a linear model to almost all data but often it will not meet our assumptions,</p>
-<p>This isn’t a statistics course so I won’t go into full detail on theory and reasons when to and when not to use certain models,</p>
-<p>We will just apply some models that may or may not be correct to see how easy it is to apply such models in R,</p>
-<p>To assess the assumptions of our models we can look at the residual distance between the model line and the points</p>
-<p>These are called the residuals of the model</p>
-<p>Here is a visualisation of what residuals are,</p>
-<p>If we run this code we can see points (raw data in grey) and the distances (residuals in red) from the line (model in blue).</p>
-<p>Then the plot of those residuals against the fitted values (or our response variable) can show how the sizes of residuals change across the fitted values</p>
-<p>Ideally we want this to represent a cloud of points with no clear patterns across the range of the fitted values, this is very subjective but a useful qualitative assessment of how good our model is.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>n<span class="ot">=</span><span class="dv">50</span></span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>a<span class="ot">=</span><span class="dv">2</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>b<span class="ot">=</span><span class="dv">2</span></span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>xGaus<span class="ot">=</span><span class="fu">seq</span>(<span class="dv">1</span>,<span class="dv">10</span>,<span class="at">length.out=</span>n)</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>yGaus<span class="ot">=</span>a<span class="sc">+</span>b<span class="sc">*</span>xGaus</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>o<span class="ot">=</span><span class="dv">10</span></span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>uGaus<span class="ot">=</span><span class="fu">rnorm</span>(n,<span class="at">mean =</span> yGaus,<span class="at">sd=</span>o)</span>
-<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>ResidualsExample_df<span class="ot">&lt;-</span><span class="fu">data.frame</span>(<span class="at">y=</span>yGaus,<span class="at">u=</span>uGaus,<span class="at">x=</span>xGaus)</span>
-<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data=</span>ResidualsExample_df)<span class="sc">+</span></span>
-<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>y),<span class="at">linewidth=</span><span class="dv">2</span>,<span class="at">colour=</span><span class="st">"darkcyan"</span>,<span class="at">alpha=</span><span class="fl">0.7</span>)<span class="sc">+</span> <span class="co"># Example model</span></span>
-<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">xend=</span>x,<span class="at">y=</span>y,<span class="at">yend=</span>u),<span class="at">colour=</span><span class="st">"red"</span>)<span class="sc">+</span> <span class="co"># display residuals from raw data to the model</span></span>
-<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>x,<span class="at">y=</span>u),<span class="at">size=</span><span class="dv">2</span>,<span class="at">colour=</span><span class="st">"grey50"</span>)<span class="sc">+</span> <span class="co"># raw data</span></span>
-<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">y=</span><span class="st">"Response Variable (Fitted Values)"</span>,<span class="at">x=</span><span class="st">"Predictor"</span>) <span class="sc">+</span></span>
-<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
-</div>
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ResidualsExample_df<span class="sc">%&gt;%</span> </span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Residuals=</span>(u<span class="sc">-</span>y)<span class="sc">/</span><span class="fu">sqrt</span>(y))<span class="sc">%&gt;%</span> </span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>()<span class="sc">+</span></span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>y,<span class="at">y=</span>Residuals),<span class="at">colour=</span><span class="st">"red"</span>,<span class="at">alpha=</span><span class="fl">0.7</span>)<span class="sc">+</span></span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Fitted Values"</span>,<span class="at">y=</span><span class="st">"Residuals"</span>)<span class="sc">+</span></span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid" width="672"></p>
-</div>
-</div>
 <p>We can now check visually the residuals from our model</p>
 <p>The Residuals vs Fitted data plot we want the data be evenly spread from right to left, meaning the difference between the model and the data (residuals) are not generally larger or smaller at higher values of the model.</p>
 <p>The next important plot is the qq plot, this is best if the points follow line of x=y which is the dotted line behind the points</p>
 <p>The next two plots are less important generally but can be used to find out what is wrong if the first two plots are not as we want them</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lm2<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lm2<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid" width="672"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-9-3.png" class="img-fluid" width="672"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-10-3.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-9-4.png" class="img-fluid" width="672"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-10-4.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>This is annoying as we have to press enter in the console to see all the plots</p>
 <p>We will install some packages from the easystats ecosystem of packages for this. There are other packages we could also use for this (including one of my own) but the performance package is good</p>
 <p>It displays the plots all together and gives hints of what you should look for in each plot</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("performance")</span></span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)</span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(lm2<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("performance")</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(lm2<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="768"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>As we only have factors in our model we don’t see a ‘cloud’ of points, but the line is still flat and horizontal so this is good</p>
 <p>As the diagnostics are good we can look at the results</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm2<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm2<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -420,13 +410,13 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>First lets replot the raw data, boxplots are probably the best for categorical factors</p>
 <p>We can re-use some of our code from the intro for appearance and colours</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins_noNAs)<span class="sc">+</span></span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">y=</span>flipper_length_mm,<span class="at">fill=</span>sex))<span class="sc">+</span></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>))<span class="sc">+</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins_noNAs)<span class="sc">+</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">y=</span>flipper_length_mm,<span class="at">fill=</span>sex))<span class="sc">+</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>))<span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="768"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>Now we can also see what the model believes about our data</p>
@@ -437,115 +427,115 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>The model then predicts the average Flipper length in mm based on those species and sexes.</p>
 <p>We can also tell the Predict function to predict error (Standard Error here)</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>NewData<span class="ot">&lt;-</span><span class="fu">expand.grid</span>(<span class="at">sex=</span><span class="fu">c</span>(<span class="st">"female"</span>,<span class="st">"male"</span>),</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">species=</span><span class="fu">c</span>(<span class="st">"Adelie"</span>,<span class="st">"Chinstrap"</span>,<span class="st">"Gentoo"</span>))</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>Pred<span class="ot">&lt;-</span><span class="fu">predict</span>(lm2<span class="fl">.1</span>,NewData,<span class="at">se.fit=</span><span class="cn">TRUE</span>)</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>NewData<span class="sc">$</span>response<span class="ot">&lt;-</span>Pred<span class="sc">$</span>fit</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>NewData<span class="sc">$</span>se.fit<span class="ot">&lt;-</span>Pred<span class="sc">$</span>se.fit</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(NewData)<span class="sc">+</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">y=</span>response,<span class="at">colour=</span>sex),</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="fl">0.8</span>))<span class="sc">+</span></span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">ymax=</span>response<span class="sc">+</span>se.fit,</span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymin=</span>response<span class="sc">-</span>se.fit,<span class="at">colour=</span>sex),</span>
-<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">width=</span><span class="fl">0.1</span>,</span>
-<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="fl">0.8</span>))<span class="sc">+</span></span>
-<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>))<span class="sc">+</span></span>
-<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
-<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>NewData<span class="ot">&lt;-</span><span class="fu">expand.grid</span>(<span class="at">sex=</span><span class="fu">c</span>(<span class="st">"female"</span>,<span class="st">"male"</span>),</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">species=</span><span class="fu">c</span>(<span class="st">"Adelie"</span>,<span class="st">"Chinstrap"</span>,<span class="st">"Gentoo"</span>))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>Pred<span class="ot">&lt;-</span><span class="fu">predict</span>(lm2<span class="fl">.1</span>,NewData,<span class="at">se.fit=</span><span class="cn">TRUE</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>NewData<span class="sc">$</span>response<span class="ot">&lt;-</span>Pred<span class="sc">$</span>fit</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>NewData<span class="sc">$</span>se.fit<span class="ot">&lt;-</span>Pred<span class="sc">$</span>se.fit</span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(NewData)<span class="sc">+</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">y=</span>response,<span class="at">colour=</span>sex),</span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a>             <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="fl">0.8</span>))<span class="sc">+</span></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">ymax=</span>response<span class="sc">+</span>se.fit,</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymin=</span>response<span class="sc">-</span>se.fit,<span class="at">colour=</span>sex),</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>                <span class="at">width=</span><span class="fl">0.1</span>,</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="fl">0.8</span>))<span class="sc">+</span></span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>))<span class="sc">+</span></span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="768"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>Lets look at both of these plots next to each other,</p>
 <p>The best way to do this (in my opinion) is using the patchwork package that can combine the plots</p>
 <p>First we save both the raw data boxplot as one object and the predicted plot as another then we plot them side by side</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("patchwork")</span></span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>Plot1<span class="ot">&lt;-</span><span class="fu">ggplot</span>(penguins_noNAs)<span class="sc">+</span></span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">y=</span>flipper_length_mm,<span class="at">fill=</span>sex))<span class="sc">+</span></span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>))<span class="sc">+</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Raw Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>Plot2<span class="ot">&lt;-</span><span class="fu">ggplot</span>(NewData)<span class="sc">+</span></span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">y=</span>response,<span class="at">colour=</span>sex),</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>             <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="fl">0.8</span>))<span class="sc">+</span></span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">ymax=</span>response<span class="sc">+</span>se.fit,</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymin=</span>response<span class="sc">-</span>se.fit,<span class="at">colour=</span>sex),</span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">width=</span><span class="fl">0.1</span>,</span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="fl">0.8</span>))<span class="sc">+</span></span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>))<span class="sc">+</span></span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Modelled Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>Plot1<span class="sc">+</span>Plot2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("patchwork")</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>Plot1<span class="ot">&lt;-</span><span class="fu">ggplot</span>(penguins_noNAs)<span class="sc">+</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">y=</span>flipper_length_mm,<span class="at">fill=</span>sex))<span class="sc">+</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>))<span class="sc">+</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Raw Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>Plot2<span class="ot">&lt;-</span><span class="fu">ggplot</span>(NewData)<span class="sc">+</span></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">y=</span>response,<span class="at">colour=</span>sex),</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a>             <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="fl">0.8</span>))<span class="sc">+</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">ymax=</span>response<span class="sc">+</span>se.fit,</span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymin=</span>response<span class="sc">-</span>se.fit,<span class="at">colour=</span>sex),</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>                <span class="at">width=</span><span class="fl">0.1</span>,</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="fl">0.8</span>))<span class="sc">+</span></span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>))<span class="sc">+</span></span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Modelled Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>Plot1<span class="sc">+</span>Plot2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="768"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>At first look this is quite good, but maybe some polishing is needed, mostly the y axis range</p>
 <p>There are multiple ways to change this for example setting them both to the same range with scale_y_continuous()</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("patchwork")</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>Plot1<span class="ot">&lt;-</span><span class="fu">ggplot</span>(penguins_noNAs)<span class="sc">+</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">y=</span>flipper_length_mm,<span class="at">fill=</span>sex))<span class="sc">+</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>))<span class="sc">+</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Raw Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">170</span>,<span class="dv">240</span>))<span class="sc">+</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>Plot2<span class="ot">&lt;-</span><span class="fu">ggplot</span>(NewData)<span class="sc">+</span></span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">y=</span>response,<span class="at">colour=</span>sex),</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>             <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="fl">0.8</span>))<span class="sc">+</span></span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">ymax=</span>response<span class="sc">+</span>se.fit,</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymin=</span>response<span class="sc">-</span>se.fit,<span class="at">colour=</span>sex),</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">width=</span><span class="fl">0.1</span>,</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>                <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="fl">0.8</span>))<span class="sc">+</span></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>))<span class="sc">+</span></span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Modelled Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
-<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">170</span>,<span class="dv">240</span>))<span class="sc">+</span></span>
-<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
-<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>Plot1<span class="sc">+</span>Plot2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("patchwork")</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>Plot1<span class="ot">&lt;-</span><span class="fu">ggplot</span>(penguins_noNAs)<span class="sc">+</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">y=</span>flipper_length_mm,<span class="at">fill=</span>sex))<span class="sc">+</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>))<span class="sc">+</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Raw Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">170</span>,<span class="dv">240</span>))<span class="sc">+</span></span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"none"</span>)</span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>Plot2<span class="ot">&lt;-</span><span class="fu">ggplot</span>(NewData)<span class="sc">+</span></span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">y=</span>response,<span class="at">colour=</span>sex),</span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>             <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="fl">0.8</span>))<span class="sc">+</span></span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">ymax=</span>response<span class="sc">+</span>se.fit,</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymin=</span>response<span class="sc">-</span>se.fit,<span class="at">colour=</span>sex),</span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a>                <span class="at">width=</span><span class="fl">0.1</span>,</span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>                <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="fl">0.8</span>))<span class="sc">+</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>))<span class="sc">+</span></span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Modelled Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>    <span class="fu">scale_y_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">170</span>,<span class="dv">240</span>))<span class="sc">+</span></span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>Plot1<span class="sc">+</span>Plot2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="768"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>This is better, although we could actually plot both the modelled and raw data on one plot</p>
 <p>We can use a position=position_jitterdodge() to have the raw data not all in one line above their species</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(NewData)<span class="sc">+</span></span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">y=</span>response,<span class="at">colour=</span>sex),</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="fl">0.8</span>))<span class="sc">+</span></span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">ymax=</span>response<span class="sc">+</span>se.fit,</span>
-<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymin=</span>response<span class="sc">-</span>se.fit,<span class="at">colour=</span>sex),</span>
-<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">width=</span><span class="fl">0.1</span>,</span>
-<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="fl">0.8</span>))<span class="sc">+</span></span>
-<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>penguins_noNAs,<span class="fu">aes</span>(<span class="at">x=</span>species,</span>
-<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">y=</span>flipper_length_mm,</span>
-<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">colour=</span>sex),</span>
-<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">position=</span><span class="fu">position_jitterdodge</span>(<span class="at">jitter.width =</span> <span class="fl">0.4</span>,</span>
-<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">dodge.width =</span> <span class="fl">0.8</span>),</span>
-<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha=</span><span class="fl">0.3</span>,</span>
-<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>             <span class="at">size=</span><span class="fl">0.5</span>)<span class="sc">+</span></span>
-<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>))<span class="sc">+</span></span>
-<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
-<span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(NewData)<span class="sc">+</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">y=</span>response,<span class="at">colour=</span>sex),</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>             <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="fl">0.8</span>))<span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="fu">aes</span>(<span class="at">x=</span>species,<span class="at">ymax=</span>response<span class="sc">+</span>se.fit,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>                    <span class="at">ymin=</span>response<span class="sc">-</span>se.fit,<span class="at">colour=</span>sex),</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>                <span class="at">width=</span><span class="fl">0.1</span>,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>                <span class="at">position=</span><span class="fu">position_dodge</span>(<span class="fl">0.8</span>))<span class="sc">+</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>penguins_noNAs,<span class="fu">aes</span>(<span class="at">x=</span>species,</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">y=</span>flipper_length_mm,</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>                                      <span class="at">colour=</span>sex),</span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>                <span class="at">position=</span><span class="fu">position_jitterdodge</span>(<span class="at">jitter.width =</span> <span class="fl">0.4</span>,</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">dodge.width =</span> <span class="fl">0.8</span>),</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha=</span><span class="fl">0.3</span>,</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>             <span class="at">size=</span><span class="fl">0.5</span>)<span class="sc">+</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>))<span class="sc">+</span></span>
+<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
+<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="768"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </section>
@@ -557,29 +547,29 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>As Males always tend to be larger lets just assess species differences in their flipper to bill relationship</p>
 <p>Lets plot the raw data first</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins_noNAs)<span class="sc">+</span></span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>bill_length_mm,<span class="at">y=</span>flipper_length_mm,<span class="at">colour=</span>species))<span class="sc">+</span></span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
-<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Length (mm)"</span>,<span class="at">y=</span><span class="st">"Flipper Length (mm)"</span>)<span class="sc">+</span></span>
-<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins_noNAs)<span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x=</span>bill_length_mm,<span class="at">y=</span>flipper_length_mm,<span class="at">colour=</span>species))<span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Length (mm)"</span>,<span class="at">y=</span><span class="st">"Flipper Length (mm)"</span>)<span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="768"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>We can see from the raw data that we will expect to find some strong linear relationships</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>lm3<span class="fl">.1</span><span class="ot">&lt;-</span><span class="fu">lm</span>(flipper_length_mm<span class="sc">~</span>species<span class="sc">*</span>bill_length_mm,<span class="at">data=</span>penguins_noNAs)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(lm3<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>lm3<span class="fl">.1</span><span class="ot">&lt;-</span><span class="fu">lm</span>(flipper_length_mm<span class="sc">~</span>species<span class="sc">*</span>bill_length_mm,<span class="at">data=</span>penguins_noNAs)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(lm3<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Model has interaction terms. VIFs might be inflated.
   You may check multicollinearity among predictors of a model without
   interaction terms.</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="768"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="768"></p>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm3<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm3<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -613,10 +603,10 @@ F-statistic: 322.5 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Here we will use the seq() function again that creates a sequence of values from your first number to your last number</p>
 <p>And you can chose the length of the vector it creates or the distance between each individual value</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>NewData_<span class="ot">&lt;-</span><span class="fu">expand.grid</span>(<span class="at">bill_length_mm=</span><span class="fu">seq</span>(<span class="at">from=</span><span class="fu">min</span>(penguins_noNAs<span class="sc">$</span>bill_length_mm),</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">to=</span><span class="fu">max</span>(penguins_noNAs<span class="sc">$</span>bill_length_mm),</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">length.out=</span><span class="dv">1000</span>),</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">species=</span><span class="fu">c</span>(<span class="st">"Adelie"</span>,<span class="st">"Chinstrap"</span>,<span class="st">"Gentoo"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>NewData_<span class="ot">&lt;-</span><span class="fu">expand.grid</span>(<span class="at">bill_length_mm=</span><span class="fu">seq</span>(<span class="at">from=</span><span class="fu">min</span>(penguins_noNAs<span class="sc">$</span>bill_length_mm),</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">to=</span><span class="fu">max</span>(penguins_noNAs<span class="sc">$</span>bill_length_mm),</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">length.out=</span><span class="dv">1000</span>),</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">species=</span><span class="fu">c</span>(<span class="st">"Adelie"</span>,<span class="st">"Chinstrap"</span>,<span class="st">"Gentoo"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>As the different species won’t be across all of these bill length ranges</p>
 <p>We should also remove values outside of each species range</p>
@@ -626,78 +616,78 @@ F-statistic: 322.5 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Then we use case_when (a more sophisticated version of if_else()) to create a new column in our new df that either says Good or it will have NAs</p>
 <p>We then filter all rows that have NAs in them, thus removing bill lengths outside of each species’ range.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>Gentoo_Range<span class="ot">&lt;-</span>penguins_noNAs <span class="sc">%&gt;%</span> </span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Gentoo"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">min=</span><span class="fu">min</span>(bill_length_mm),</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">max=</span><span class="fu">max</span>(bill_length_mm))</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>Adelie_Range<span class="ot">&lt;-</span>penguins_noNAs <span class="sc">%&gt;%</span> </span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">min=</span><span class="fu">min</span>(bill_length_mm),</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">max=</span><span class="fu">max</span>(bill_length_mm))</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>Chinstrap_Range<span class="ot">&lt;-</span>penguins_noNAs <span class="sc">%&gt;%</span> </span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Chinstrap"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">min=</span><span class="fu">min</span>(bill_length_mm),</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">max=</span><span class="fu">max</span>(bill_length_mm))</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>NewData_2<span class="ot">&lt;-</span>NewData_ <span class="sc">%&gt;%</span> </span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Range=</span><span class="fu">case_when</span>(species<span class="sc">==</span><span class="st">"Gentoo"</span> <span class="sc">&amp;</span></span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>                              bill_length_mm<span class="sc">&gt;=</span>Gentoo_Range<span class="sc">$</span>min <span class="sc">&amp;</span></span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>                              bill_length_mm<span class="sc">&lt;=</span>Gentoo_Range<span class="sc">$</span>max<span class="sc">~</span><span class="st">"Good"</span>,</span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>                         species<span class="sc">==</span><span class="st">"Adelie"</span> <span class="sc">&amp;</span></span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>                           bill_length_mm<span class="sc">&gt;=</span>Adelie_Range<span class="sc">$</span>min <span class="sc">&amp;</span></span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>                           bill_length_mm<span class="sc">&lt;=</span>Adelie_Range<span class="sc">$</span>max<span class="sc">~</span><span class="st">"Good"</span>,</span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>                         species<span class="sc">==</span><span class="st">"Chinstrap"</span> <span class="sc">&amp;</span></span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>                           bill_length_mm<span class="sc">&gt;=</span>Chinstrap_Range<span class="sc">$</span>min <span class="sc">&amp;</span></span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>                           bill_length_mm<span class="sc">&lt;=</span>Chinstrap_Range<span class="sc">$</span>max<span class="sc">~</span><span class="st">"Good"</span></span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span> </span>
-<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>Range<span class="sc">%in%</span><span class="cn">NA</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Range)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>Gentoo_Range<span class="ot">&lt;-</span>penguins_noNAs <span class="sc">%&gt;%</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Gentoo"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">min=</span><span class="fu">min</span>(bill_length_mm),</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">max=</span><span class="fu">max</span>(bill_length_mm))</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>Adelie_Range<span class="ot">&lt;-</span>penguins_noNAs <span class="sc">%&gt;%</span> </span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">min=</span><span class="fu">min</span>(bill_length_mm),</span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">max=</span><span class="fu">max</span>(bill_length_mm))</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a>Chinstrap_Range<span class="ot">&lt;-</span>penguins_noNAs <span class="sc">%&gt;%</span> </span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Chinstrap"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">min=</span><span class="fu">min</span>(bill_length_mm),</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">max=</span><span class="fu">max</span>(bill_length_mm))</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>NewData_2<span class="ot">&lt;-</span>NewData_ <span class="sc">%&gt;%</span> </span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Range=</span><span class="fu">case_when</span>(species<span class="sc">==</span><span class="st">"Gentoo"</span> <span class="sc">&amp;</span></span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>                              bill_length_mm<span class="sc">&gt;=</span>Gentoo_Range<span class="sc">$</span>min <span class="sc">&amp;</span></span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>                              bill_length_mm<span class="sc">&lt;=</span>Gentoo_Range<span class="sc">$</span>max<span class="sc">~</span><span class="st">"Good"</span>,</span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a>                         species<span class="sc">==</span><span class="st">"Adelie"</span> <span class="sc">&amp;</span></span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>                           bill_length_mm<span class="sc">&gt;=</span>Adelie_Range<span class="sc">$</span>min <span class="sc">&amp;</span></span>
+<span id="cb18-23"><a href="#cb18-23" aria-hidden="true" tabindex="-1"></a>                           bill_length_mm<span class="sc">&lt;=</span>Adelie_Range<span class="sc">$</span>max<span class="sc">~</span><span class="st">"Good"</span>,</span>
+<span id="cb18-24"><a href="#cb18-24" aria-hidden="true" tabindex="-1"></a>                         species<span class="sc">==</span><span class="st">"Chinstrap"</span> <span class="sc">&amp;</span></span>
+<span id="cb18-25"><a href="#cb18-25" aria-hidden="true" tabindex="-1"></a>                           bill_length_mm<span class="sc">&gt;=</span>Chinstrap_Range<span class="sc">$</span>min <span class="sc">&amp;</span></span>
+<span id="cb18-26"><a href="#cb18-26" aria-hidden="true" tabindex="-1"></a>                           bill_length_mm<span class="sc">&lt;=</span>Chinstrap_Range<span class="sc">$</span>max<span class="sc">~</span><span class="st">"Good"</span></span>
+<span id="cb18-27"><a href="#cb18-27" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-28"><a href="#cb18-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>Range<span class="sc">%in%</span><span class="cn">NA</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-29"><a href="#cb18-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Range)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>After bad range values are filtered out we use the select function to remove the “Range” column, we do this with the - operator.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>Pred_2<span class="ot">&lt;-</span><span class="fu">predict</span>(lm3<span class="fl">.1</span>,NewData_2,<span class="at">se.fit=</span><span class="cn">TRUE</span>)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>NewData_2<span class="sc">$</span>response<span class="ot">&lt;-</span>Pred_2<span class="sc">$</span>fit</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>NewData_2<span class="sc">$</span>se.fit<span class="ot">&lt;-</span>Pred_2<span class="sc">$</span>se.fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>Pred_2<span class="ot">&lt;-</span><span class="fu">predict</span>(lm3<span class="fl">.1</span>,NewData_2,<span class="at">se.fit=</span><span class="cn">TRUE</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>NewData_2<span class="sc">$</span>response<span class="ot">&lt;-</span>Pred_2<span class="sc">$</span>fit</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>NewData_2<span class="sc">$</span>se.fit<span class="ot">&lt;-</span>Pred_2<span class="sc">$</span>se.fit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>So now we have many data points that can be used to draw the linear model outputs</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data=</span>NewData_2,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>bill_length_mm,<span class="at">ymax=</span>response<span class="sc">+</span>se.fit,</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">ymin=</span>response<span class="sc">-</span>se.fit,<span class="at">fill=</span>species),</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>NewData_2,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>bill_length_mm,<span class="at">y=</span>response,<span class="at">colour=</span>species),</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Length (mm)"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data=</span>NewData_2,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>bill_length_mm,<span class="at">ymax=</span>response<span class="sc">+</span>se.fit,</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">ymin=</span>response<span class="sc">-</span>se.fit,<span class="at">fill=</span>species),</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>NewData_2,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>bill_length_mm,<span class="at">y=</span>response,<span class="at">colour=</span>species),</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Length (mm)"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="768"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>This looks good but lets maybe add the raw data values onto the same figure as the model outputs as before</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>penguins_noNAs,<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span>bill_length_mm,</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">y=</span>flipper_length_mm,</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">colour=</span>species),</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha=</span><span class="fl">0.4</span>,<span class="at">size=</span><span class="fl">0.8</span>)<span class="sc">+</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data=</span>NewData_2,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>bill_length_mm,<span class="at">ymax=</span>response<span class="sc">+</span>se.fit,</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">ymin=</span>response<span class="sc">-</span>se.fit,<span class="at">fill=</span>species),</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>NewData_2,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>bill_length_mm,<span class="at">y=</span>response,<span class="at">colour=</span>species),</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Length (mm)"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>penguins_noNAs,<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span>bill_length_mm,</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">y=</span>flipper_length_mm,</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">colour=</span>species),</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha=</span><span class="fl">0.4</span>,<span class="at">size=</span><span class="fl">0.8</span>)<span class="sc">+</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data=</span>NewData_2,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>bill_length_mm,<span class="at">ymax=</span>response<span class="sc">+</span>se.fit,</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">ymin=</span>response<span class="sc">-</span>se.fit,<span class="at">fill=</span>species),</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>NewData_2,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>bill_length_mm,<span class="at">y=</span>response,<span class="at">colour=</span>species),</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Length (mm)"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="04_Modelling_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="768"></p>
+<p><img src="04_Modelling_files/figure-html/unnamed-chunk-24-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>Artwork of Penguins by <span class="citation" data-cites="allison_horst">@allison_horst</span></p>

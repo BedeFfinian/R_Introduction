@@ -79,7 +79,7 @@ This may not seem that important or even intelligible now but when we start plot
 
 ## Enough Theory - dplyr and tidyr
 
-<img src='Images/dplyr.jpeg' align="right" height="138.5" /></a>
+<img src='Images/dplyr.png' align="right" height="138.5" /></a>
 <img src='Images/Tidyr.png' align="left" height="138.5" /></a>
 
 For data manipulation and organisation we will rely heavily on the dplyr and tidyr packages, which have a suite of functions that can be used in isolation or combined to perform complex data manipulation and organisation.

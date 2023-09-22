@@ -48,6 +48,9 @@ As you probably guessed from the title we will be using a Gaussian Distribution.
 
 Thankfully both sex and species are already factors in the dataset so we don't have any organising to do!
 
+So lets apply our model. lm() is a function in base r that allows us to create a Gaussian GLM object. There is also a glm() function where we would need to define the distribution but lm() is easier to use for gaussian models. We will create a model object then we can inspect and use this model.
+
+
 ```{r}
 #| fig.width: 8
 #| fig.height: 8
@@ -58,21 +61,22 @@ lm2.1<-lm(flipper_length_mm~species*sex,data=penguins_noNAs)
 
 ## Fourth Step of Analysis - Assessing Model Functioning
 
-We could apply a linear model to almost all data but often it will not meet our assumptions,
+We could apply a linear model to almost all data but often it will not meet our assumptions.
 
-We can now check visually the residuals from our model
+We can now check visually the residuals from our model.
+
+
+By using the base plot function in 4 we get 4 plots. The first two are the ones we are most interested in generally. The next two plots are less important generally but can be used to find out what is wrong if the first two plots are not as we want them.
 
 For the Residuals vs Fitted plot we want the data to be evenly spread from right to left, meaning the difference between the model and the data (residuals) are not generally larger or smaller at higher or lower values of the model.
 
 The next important plot is the qq plot, this is best if the points follow line of x=y, which is the dotted line behind the points.
 
-By using the base plot function in 4 we get 4 plots. The first two are the ones we are most interested in generally. The next two plots are less important generally but can be used to find out what is wrong if the first two plots are not as we want them.
-
 ```{r}
 plot(lm2.1)
 ```
 
-This is annoying as we have to press enter in the console to see all the plots
+This is annoying as we have to press enter in the console to see all the plots.
 
 We will install some packages from the easystats ecosystem of packages for this. There are other packages we could also use for this (including one of my own) but the performance package is aesthetically pleasing, plots all plots together and provides info on what we want our diagnostics plots to look like.
 
@@ -96,21 +100,50 @@ summary(lm2.1)
 
 Okay there are a lot of numbers here but what does it actually mean?
 
-I find the best way to interpret a model output is to plot the model results 
+I find the best way to interpret a model output is to plot the model results. 
 
-First lets replot the raw data, boxplots are probably the best for categorical factors
+First lets re-plot the raw data, boxplots are probably the best for categorical factors but we could also use a half eye distribution plot. Lets look at both.
+
+The best way to do this (in my opinion) is using the patchwork package that can combine the plots
+
+We create a plot for each, then plot them side by side. Patchwork is a very simple way of combining ggplots together.
 
 We can re-use some of our code from the intro for appearance and colours
 
 ```{r}
 #| fig.width: 8
-#| fig.height: 8
+#| fig.height: 4
 
-ggplot(penguins_noNAs)+
-  geom_boxplot(aes(x=species,y=flipper_length_mm,fill=sex))+
+#install.packages("ggdist")
+#install.packages("patchwork")
+
+library(patchwork)
+
+p_box<-ggplot(penguins_noNAs)+
+  geom_boxplot(aes(x=species,
+                   y=flipper_length_mm,
+                   fill=sex))+
   scale_fill_manual(values=c("darkcyan","darkorange"))+
   labs(x="Species",y="Response Variable (Flipper Length (mm))")+
   theme_classic()
+
+p_cloud<-ggplot(penguins_noNAs,
+                aes(x=species,
+                    y=flipper_length_mm,
+                    fill=sex,colour=sex))+ 
+  ggdist::stat_halfeye(adjust = .5,
+                       width = .6, 
+                       .width = c(.5, .95),
+                       alpha=0.7,
+                       position = position_dodge()) +
+  scale_fill_manual(values=c("darkcyan","darkorange"))+
+  scale_colour_manual(values=c("darkcyan","darkorange"))+
+  labs(x="Species",y="Response Variable (Flipper Length (mm))")+
+  theme_classic()
+
+
+p_box+p_cloud
+
 ```
 
 Now we can also see what the model believes about our data 
@@ -125,28 +158,32 @@ Therefore, we make a data set with just sex and species the same as our original
 
 The model then predicts the average Flipper length in mm based on those species and sexes. 
 
-We can also tell the Predict function to predict error (Standard Error here)
-
+We can also tell the Predict function to predict error (Standard Error here that we then convert to an approximation of the 95% confidence interval)
 
 ```{r}
 #| fig.width: 8
 #| fig.height: 8
 
-NewData<-expand.grid(sex=c("female","male"),
+NewData_1<-expand.grid(sex=c("female","male"),
                      species=c("Adelie","Chinstrap","Gentoo"))
 
-Pred<-predict(lm2.1,NewData,se.fit=TRUE)
+Pred<-predict(lm2.1,NewData_1,se.fit=TRUE)
 
-NewData$response<-Pred$fit
-
-NewData$se.fit<-Pred$se.fit
-
+NewData<-NewData_1 %>% 
+  mutate(response=Pred$fit,
+         se.fit=Pred$se.fit,
+         Upr=response+(se.fit*1.96),
+         Lwr=response-(se.fit*1.96))
 
 ggplot(NewData)+
-  geom_point(aes(x=species,y=response,colour=sex),
+  geom_point(aes(x=species,
+                 y=response,
+                 colour=sex),
              position=position_dodge(0.8))+
-  geom_errorbar(aes(x=species,ymax=response+se.fit,
-                    ymin=response-se.fit,colour=sex),
+  geom_errorbar(aes(x=species,
+                    ymax=Upr,
+                    ymin=Lwr,
+                    colour=sex),
                 width=0.1,
                 position=position_dodge(0.8))+
   scale_colour_manual(values=c("darkcyan","darkorange"))+
@@ -156,30 +193,34 @@ ggplot(NewData)+
 
 Lets look at both of these plots next to each other, 
 
-The best way to do this (in my opinion) is using the patchwork package that can combine the plots
-
 First we save both the raw data boxplot as one object and the predicted plot as another then we plot them side by side
 
 ```{r}
 #| fig.width: 8
-#| fig.height: 8
- 
-#install.packages("patchwork")
+#| fig.height: 4
 
-library(patchwork)
 
-Plot1<-ggplot(penguins_noNAs)+
-  geom_boxplot(aes(x=species,y=flipper_length_mm,fill=sex))+
+Plot1<-ggplot(penguins_noNAs,
+                aes(x=species,
+                    y=flipper_length_mm,
+                    fill=sex,
+                    colour=sex))+ 
+  ggdist::stat_halfeye(adjust = .5,
+                       width = .6, 
+                       .width = c(.5, .95),
+                       alpha=0.7,
+                       position = position_dodge()) +
   scale_fill_manual(values=c("darkcyan","darkorange"))+
-  labs(x="Species",y="Raw Response Variable (Flipper Length (mm))")+
+  scale_colour_manual(values=c("darkcyan","darkorange"))+
+  labs(x="Species",y="Response Variable (Flipper Length (mm))")+
   theme_classic()+
   theme(legend.position = "none")
 
 Plot2<-ggplot(NewData)+
   geom_point(aes(x=species,y=response,colour=sex),
              position=position_dodge(0.8))+
-  geom_errorbar(aes(x=species,ymax=response+se.fit,
-                    ymin=response-se.fit,colour=sex),
+  geom_errorbar(aes(x=species,ymax=Upr,
+                    ymin=Lwr,colour=sex),
                 width=0.1,
                 position=position_dodge(0.8))+
   scale_colour_manual(values=c("darkcyan","darkorange"))+
@@ -196,16 +237,20 @@ There are multiple ways to change this for example setting them both to the same
 
 ```{r}
 #| fig.width: 8
-#| fig.height: 8
- 
-#install.packages("patchwork")
+#| fig.height: 4
 
-library(patchwork)
-
-Plot1<-ggplot(penguins_noNAs)+
-  geom_boxplot(aes(x=species,y=flipper_length_mm,fill=sex))+
+Plot1<-ggplot(penguins_noNAs,
+                aes(x=species,
+                    y=flipper_length_mm,
+                    fill=sex,colour=sex))+ 
+  ggdist::stat_halfeye(adjust = .5,
+                       width = .6, 
+                       .width = c(.5, .95),
+                       alpha=0.7,
+                       position = position_dodge()) +
   scale_fill_manual(values=c("darkcyan","darkorange"))+
-  labs(x="Species",y="Raw Response Variable (Flipper Length (mm))")+
+  scale_colour_manual(values=c("darkcyan","darkorange"))+
+  labs(x="Species",y="Response Variable (Flipper Length (mm))")+
   theme_classic()+
   scale_y_continuous(limits=c(170,240))+
   theme(legend.position = "none")
@@ -213,8 +258,8 @@ Plot1<-ggplot(penguins_noNAs)+
 Plot2<-ggplot(NewData)+
   geom_point(aes(x=species,y=response,colour=sex),
              position=position_dodge(0.8))+
-  geom_errorbar(aes(x=species,ymax=response+se.fit,
-                    ymin=response-se.fit,colour=sex),
+  geom_errorbar(aes(x=species,ymax=Upr,
+                    ymin=Lwr,colour=sex),
                 width=0.1,
                 position=position_dodge(0.8))+
   scale_colour_manual(values=c("darkcyan","darkorange"))+
@@ -236,8 +281,8 @@ We can use a position=position_jitterdodge() to have the raw data not all in one
 ggplot(NewData)+
   geom_point(aes(x=species,y=response,colour=sex),
              position=position_dodge(0.8))+
-  geom_errorbar(aes(x=species,ymax=response+se.fit,
-                    ymin=response-se.fit,colour=sex),
+  geom_errorbar(aes(x=species,ymax=Upr,
+                    ymin=Lwr,colour=sex),
                 width=0.1,
                 position=position_dodge(0.8))+
   geom_point(data=penguins_noNAs,aes(x=species,
@@ -343,7 +388,7 @@ Chinstrap_Range<-penguins_noNAs %>%
             max=max(bill_length_mm))
 
 
-NewData_2<-NewData_ %>% 
+NewData_3<-NewData_ %>% 
   mutate(Range=case_when(species=="Gentoo" &
                               bill_length_mm>=Gentoo_Range$min &
                               bill_length_mm<=Gentoo_Range$max~"Good",
@@ -360,13 +405,15 @@ NewData_2<-NewData_ %>%
 
 After bad range values are filtered out we use the select function to remove the "Range" column, we do this with the - operator.
 
-
 ```{r}
-Pred_2<-predict(lm3.1,NewData_2,se.fit=TRUE)
+Pred_2<-predict(lm3.1,NewData_3,se.fit=TRUE)
 
-NewData_2$response<-Pred_2$fit
+NewData_2<-NewData_3 %>% 
+  mutate(response=Pred_2$fit,
+         se.fit=Pred_2$se.fit,
+         Upr=response+(se.fit*1.96),
+         Lwr=response-(se.fit*1.96))
 
-NewData_2$se.fit<-Pred_2$se.fit
 ```
 
 So now we have many data points that can be used to draw the linear model outputs
@@ -376,8 +423,8 @@ So now we have many data points that can be used to draw the linear model output
 #| fig.height: 8
 
 ggplot()+
-  geom_ribbon(data=NewData_2,mapping=aes(x=bill_length_mm,ymax=response+se.fit,
-                                                 ymin=response-se.fit,fill=species),
+  geom_ribbon(data=NewData_2,mapping=aes(x=bill_length_mm,ymax=Upr,
+                                                 ymin=Lwr,fill=species),
               alpha=0.4)+
   geom_line(data=NewData_2,mapping=aes(x=bill_length_mm,y=response,colour=species),
              alpha=0.4)+
@@ -398,8 +445,8 @@ ggplot()+
                                                y=flipper_length_mm,
                                                colour=species),
              alpha=0.4,size=0.8)+
-  geom_ribbon(data=NewData_2,mapping=aes(x=bill_length_mm,ymax=response+se.fit,
-                                         ymin=response-se.fit,fill=species),
+  geom_ribbon(data=NewData_2,mapping=aes(x=bill_length_mm,ymax=Upr,
+                                         ymin=Lwr,fill=species),
               alpha=0.4)+
   geom_line(data=NewData_2,mapping=aes(x=bill_length_mm,y=response,colour=species),
             alpha=0.4)+

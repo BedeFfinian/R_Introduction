@@ -33,7 +33,7 @@ Effectively General Linear Models are ways of creating generalising lines or lin
 
 We can summarise most with three equations. We have the linear equation $y = \beta x + c$ and how that relates to the data we sample ($s$) $s = Distribution(y,\sigma)$ . 
 
-This will often be written as: 
+This will often be written generally as: 
 
 $$s = Distribution(y',\sigma)$$
 
@@ -41,7 +41,7 @@ $$y'=f(y)$$
 
 $$y = \beta x + c$$
 
-The first of these equations is saying that the data we recorded ($s$) comes from a some distribution (We will define this later) with a mean of $y'$ and a standard deviation of $\sigma$. $y$ is the result of an effect ($\beta$) multiplied by some fixed effect ($x$) and an intercept value ($c$). Between these two equations we have a link function ($f()$). This converts $y$ into a value that the distribution function will accept $y'$, again we will define what these elements are later. The elements that we want our GLM to tell us is the effect of x ($\beta$) and the intercept ($c$). 
+The first of these equations is saying that the data we recorded ($s$) comes from a some distribution (We will define this later) with a mean of $y'$ and a standard deviation of $\sigma$. $y$ is the result of an effect ($\beta$) multiplied by some fixed effect ($x$) and an intercept value ($c$). Between these two equations we have a link function ($f()$). This converts $y$ into a value that the distribution function will accept $y'$, again we will define what these elements are later. The elements that we want our GLM to tell us is the effect of x ($\beta$) and the intercept ($c$). We don't have to do maths at all for GLMs but it can help some people understand what the model is telling us. (If you don't like equations/maths ignore this bit - But we will discuss link functions later on).
 
 ## First Step of Analysis - Statistical Model Formulation
 

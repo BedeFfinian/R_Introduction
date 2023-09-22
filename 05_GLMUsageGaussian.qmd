@@ -6,11 +6,15 @@ format:
     toc-location: left
 ---
 
-# Using GLMs <img src='Images/logo.png' align="right" height="138.5" /></a>
+# Using Gaussian GLMs <img src='Images/logo.png' align="right" height="138.5" /></a>
 
-## Gaussian GLM 
+## Linear Model? or General Linear Model with Gaussian Distribution? or ANOVA? or ANCOVA? 
 
-As before lets use the Palmer penguins dataset and remove the NAs (as before NAs should never be remove without considering why they are NAs but here we will remove them for ease).
+There are many names for this type of model, they all effectively mean the same thing. I am going to stick to calling it a Gaussian GLM because then there isn't a new name for every different test. If you don't like that, use whatever term you like, but the code and interpretation will be the same.
+
+## Data Loading
+
+As before lets use the Palmer penguins dataset and remove the NAs (as before NAs should never be remove without considering why there are NAs but here we will remove them for ease).
 
 ```{r}
 #install.packages("palmerpenguins")
@@ -30,11 +34,19 @@ penguins_noNAs<-penguins%>%
 
 So now we will try prove the obvious
 
-Does the flipper length of penguins change between species and between sexes
+Does the flipper length of penguins change between species and between sexes?
 
-Whether we use an interaction or not depends on if our scientific thought 
+#### Step one - Scienctific Model to Stats Model
 
-believes the relationship of Species to flipper length is different between sexes (sexual dimorphism may not be consistent across species)
+Whether we use an interaction or not depends on if our scientific thought believes the relationship of Species to flipper length is different between sexes (sexual dimorphism may not be consistent across species). We shall use an interaction here as we might expect some sexual dimorphism in some species while less, no or opposite sexual dimorphism in other species. If we had good reason to expect the same sexual dimorphism across these species we would not use an interaction term. 
+
+### Step Two - Resonse Variable Distribution
+
+As you probably guessed from the title we will be using a Gaussian Distribution. However, flipper length would more technically be a Gamma distribution. It is Numeric, Continuous but cannot be Zero or Negative! Using a Gaussian distribution in this situation is okay as flipper length will not approach 0, so issues of modelling near the zero will not be a problem. This is due to our sampling and just the fact that you won't ever be able to measure a penguins foot that is 1 mm. or probably less than 25 mm! Our lowest value is 174 in the data. One method could be to centre and scale the flipper_length_mm and model it with a Gamma distribution but this would be a lot of converting back and forth, especially when a Gaussian model will perform equally as well.
+
+### Step Three - Organising Fixed Effects 
+
+Thankfully both sex and species are already factors in the dataset so we don't have any organising to do!
 
 ```{r}
 #| fig.width: 8
@@ -44,15 +56,17 @@ lm2.1<-lm(flipper_length_mm~species*sex,data=penguins_noNAs)
 
 ```
 
+## Fourth Step of Analysis - Assessing Model Functioning
+
 We could apply a linear model to almost all data but often it will not meet our assumptions,
 
 We can now check visually the residuals from our model
 
-The Residuals vs Fitted data plot we want the data be evenly spread from right to left, meaning the difference between the model and the data (residuals) are not generally larger or smaller at higher values of the model.
+For the Residuals vs Fitted plot we want the data to be evenly spread from right to left, meaning the difference between the model and the data (residuals) are not generally larger or smaller at higher or lower values of the model.
 
-The next important plot is the qq plot, this is best if the points follow line of x=y which is the dotted line behind the points
+The next important plot is the qq plot, this is best if the points follow line of x=y, which is the dotted line behind the points.
 
-The next two plots are less important generally but can be used to find out what is wrong if the first two plots are not as we want them
+By using the base plot function in 4 we get 4 plots. The first two are the ones we are most interested in generally. The next two plots are less important generally but can be used to find out what is wrong if the first two plots are not as we want them.
 
 ```{r}
 plot(lm2.1)
@@ -60,9 +74,7 @@ plot(lm2.1)
 
 This is annoying as we have to press enter in the console to see all the plots
 
-We will install some packages from the easystats ecosystem of packages for this. There are other packages we could also use for this (including one of my own) but the performance package is good
-
-It displays the plots all together and gives hints of what you should look for in each plot
+We will install some packages from the easystats ecosystem of packages for this. There are other packages we could also use for this (including one of my own) but the performance package is aesthetically pleasing, plots all plots together and provides info on what we want our diagnostics plots to look like.
 
 ```{r}
 #| fig.width: 8
@@ -74,8 +86,7 @@ library(performance)
 check_model(lm2.1)
 ```
 
-
-As we only have factors in our model we don't see a 'cloud' of points, but the line is still flat and horizontal so this is good
+As we only have factors in our model we don't see a 'cloud' of points, but the line is still flat and horizontal so this is good. 
 
 As the diagnostics are good we can look at the results
 
@@ -83,7 +94,7 @@ As the diagnostics are good we can look at the results
 summary(lm2.1)
 ```
 
-Okay there are a lot of numbers here but what does it actually mean,
+Okay there are a lot of numbers here but what does it actually mean?
 
 I find the best way to interpret a model output is to plot the model results 
 

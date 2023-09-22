@@ -50,6 +50,8 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#glms---background" id="toc-glms---background" class="nav-link active" data-scroll-target="#glms---background">GLMs - Background <img src="Images/logo.png" align="right" height="138.5"></a>
   <ul class="collapse">
   <li><a href="#short-and-probably-biased-history" id="toc-short-and-probably-biased-history" class="nav-link" data-scroll-target="#short-and-probably-biased-history">Short and Probably Biased History</a></li>
+  <li><a href="#side-note---bayesfrequentistwho-cares" id="toc-side-note---bayesfrequentistwho-cares" class="nav-link" data-scroll-target="#side-note---bayesfrequentistwho-cares">Side Note - Bayes/Frequentist/Who Cares</a></li>
+  <li><a href="#what-are-glms" id="toc-what-are-glms" class="nav-link" data-scroll-target="#what-are-glms">What are GLMs?</a></li>
   <li><a href="#first-step-of-analysis---statistical-model-formulation" id="toc-first-step-of-analysis---statistical-model-formulation" class="nav-link" data-scroll-target="#first-step-of-analysis---statistical-model-formulation">First Step of Analysis - Statistical Model Formulation</a></li>
   <li><a href="#second-step-of-analysis---response-variable-distribution" id="toc-second-step-of-analysis---response-variable-distribution" class="nav-link" data-scroll-target="#second-step-of-analysis---response-variable-distribution">Second Step of Analysis - Response Variable Distribution</a>
   <ul class="collapse">
@@ -110,8 +112,27 @@ ul.task-list li input[type="checkbox"] {
 <figcaption class="figure-caption">Old Stats Test - Image from https://onishlab.colostate.edu/</figcaption>
 </figure>
 </div>
-<p>GLMs and GLMMs can be used in all the same cases as these older style tests as well as many many more, but with more consistency of terminology, higher flexibility and without the need to know, which different test to use.</p>
-<p>There are important options to chose within GLMs and GLMMs but as I mention they are more consistent and easier to check or adhere to their assumptions.</p>
+<p>GLMs and GLMMs can be used in all the same cases as these older style tests as well as many many more. GLMs and by extension GLMMs have the advantage of being more consistency with terminology, have higher flexibility and you do not need to know 1000 different tests to use them. There are important options to chose within GLMs and GLMMs but as I mention they are more consistent and easier to check or adhere to their assumptions.</p>
+</section>
+<section id="side-note---bayesfrequentistwho-cares" class="level2">
+<h2 class="anchored" data-anchor-id="side-note---bayesfrequentistwho-cares">Side Note - Bayes/Frequentist/Who Cares</h2>
+<p>Discussion, examples and code here about GLMs and GLMMs will be carried out and more aimed at Frequentist methods of analysis. However, as Richard McElreath points out amazingly in his Statistical Rethinking Course (GO CHECK IT OUT IT IS AMAZING AND FREE!! <a href="https://www.youtube.com/@rmcelreath" class="uri">https://www.youtube.com/@rmcelreath</a> or <a href="https://github.com/rmcelreath" class="uri">https://github.com/rmcelreath</a>), the general principles are the same between Frequentist and Bayesian methods, the important part is interpretation and building scientific and statistical models to allow Causal Inference! (i.e.&nbsp;does the model actually provide us with evidence of a cause and if so what is that cause.)</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Images/Meme.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Bayes vs Frequentists Killed by Doge - Flagrantly stolen from <a href="https://github.com/rmcelreath" class="uri">https://github.com/rmcelreath</a></figcaption>
+</figure>
+</div>
+</section>
+<section id="what-are-glms" class="level2">
+<h2 class="anchored" data-anchor-id="what-are-glms">What are GLMs?</h2>
+<p>Effectively General Linear Models are ways of creating generalising lines or linear equations that best describe the data we put into them given some equation of interest.</p>
+<p>We can summarise most with three equations. We have the linear equation <span class="math inline">\(y = \beta x + c\)</span> and how that relates to the data we sample (<span class="math inline">\(s\)</span>) <span class="math inline">\(s = Distribution(y,\sigma)\)</span> .</p>
+<p>This will often be written as:</p>
+<p><span class="math display">\[s = Distribution(y',\sigma)\]</span></p>
+<p><span class="math display">\[y'=f(y)\]</span></p>
+<p><span class="math display">\[y = \beta x + c\]</span></p>
+<p>The first of these equations is saying that the data we recorded (<span class="math inline">\(s\)</span>) comes from a some distribution (We will define this later) with a mean of <span class="math inline">\(y'\)</span> and a standard deviation of <span class="math inline">\(\sigma\)</span>. <span class="math inline">\(y\)</span> is the result of an effect (<span class="math inline">\(\beta\)</span>) multiplied by some fixed effect (<span class="math inline">\(x\)</span>) and an intercept value (<span class="math inline">\(c\)</span>). Between these two equations we have a link function (<span class="math inline">\(f()\)</span>). This converts <span class="math inline">\(y\)</span> into a value that the distribution function will accept <span class="math inline">\(y'\)</span>, again we will define what these elements are later. The elements that we want our GLM to tell us is the effect of x (<span class="math inline">\(\beta\)</span>) and the intercept (<span class="math inline">\(c\)</span>).</p>
 </section>
 <section id="first-step-of-analysis---statistical-model-formulation" class="level2">
 <h2 class="anchored" data-anchor-id="first-step-of-analysis---statistical-model-formulation">First Step of Analysis - Statistical Model Formulation</h2>

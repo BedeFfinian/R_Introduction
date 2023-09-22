@@ -57,16 +57,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </style>
 
 
-<script src="05_GLMUsage_files/libs/clipboard/clipboard.min.js"></script>
-<script src="05_GLMUsage_files/libs/quarto-html/quarto.js"></script>
-<script src="05_GLMUsage_files/libs/quarto-html/popper.min.js"></script>
-<script src="05_GLMUsage_files/libs/quarto-html/tippy.umd.min.js"></script>
-<script src="05_GLMUsage_files/libs/quarto-html/anchor.min.js"></script>
-<link href="05_GLMUsage_files/libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="05_GLMUsage_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="05_GLMUsage_files/libs/bootstrap/bootstrap.min.js"></script>
-<link href="05_GLMUsage_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="05_GLMUsage_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="05_GLMUsageGaussian_files/libs/clipboard/clipboard.min.js"></script>
+<script src="05_GLMUsageGaussian_files/libs/quarto-html/quarto.js"></script>
+<script src="05_GLMUsageGaussian_files/libs/quarto-html/popper.min.js"></script>
+<script src="05_GLMUsageGaussian_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="05_GLMUsageGaussian_files/libs/quarto-html/anchor.min.js"></script>
+<link href="05_GLMUsageGaussian_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="05_GLMUsageGaussian_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="05_GLMUsageGaussian_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="05_GLMUsageGaussian_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="05_GLMUsageGaussian_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
 
 </head>
@@ -79,9 +79,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#using-glms" id="toc-using-glms" class="nav-link active" data-scroll-target="#using-glms">Using GLMs <img src="Images/logo.png" align="right" height="138.5"></a>
+  <li><a href="#using-gaussian-glms" id="toc-using-gaussian-glms" class="nav-link active" data-scroll-target="#using-gaussian-glms">Using Gaussian GLMs <img src="Images/logo.png" align="right" height="138.5"></a>
   <ul class="collapse">
-  <li><a href="#gaussian-glm" id="toc-gaussian-glm" class="nav-link" data-scroll-target="#gaussian-glm">Gaussian GLM</a>
+  <li><a href="#linear-model-or-general-linear-model-with-gaussian-distribution-or-anova-or-ancova" id="toc-linear-model-or-general-linear-model-with-gaussian-distribution-or-anova-or-ancova" class="nav-link" data-scroll-target="#linear-model-or-general-linear-model-with-gaussian-distribution-or-anova-or-ancova">Linear Model? or General Linear Model with Gaussian Distribution? or ANOVA? or ANCOVA?</a></li>
+  <li><a href="#data-loading" id="toc-data-loading" class="nav-link" data-scroll-target="#data-loading">Data Loading</a>
   <ul class="collapse">
   <li><a href="#modelling-with-categorical-predictor-variables" id="toc-modelling-with-categorical-predictor-variables" class="nav-link" data-scroll-target="#modelling-with-categorical-predictor-variables">Modelling with Categorical Predictor Variables</a></li>
   <li><a href="#modelling-continuous-predictor-variables" id="toc-modelling-continuous-predictor-variables" class="nav-link" data-scroll-target="#modelling-continuous-predictor-variables">Modelling Continuous Predictor Variables</a></li>
@@ -111,11 +112,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="using-glms" class="level1">
-<h1>Using GLMs <img src="Images/logo.png" align="right" height="138.5"></h1>
-<section id="gaussian-glm" class="level2">
-<h2 class="anchored" data-anchor-id="gaussian-glm">Gaussian GLM</h2>
-<p>As before lets use the Palmer penguins dataset and remove the NAs (as before NAs should never be remove without considering why they are NAs but here we will remove them for ease).</p>
+<section id="using-gaussian-glms" class="level1">
+<h1>Using Gaussian GLMs <img src="Images/logo.png" align="right" height="138.5"></h1>
+<section id="linear-model-or-general-linear-model-with-gaussian-distribution-or-anova-or-ancova" class="level2">
+<h2 class="anchored" data-anchor-id="linear-model-or-general-linear-model-with-gaussian-distribution-or-anova-or-ancova">Linear Model? or General Linear Model with Gaussian Distribution? or ANOVA? or ANCOVA?</h2>
+<p>There are many names for this type of model, they all effectively mean the same thing. I am going to stick to calling it a Gaussian GLM because then there isn’t a new name for every different test. If you don’t like that, use whatever term you like, but the code and interpretation will be the same.</p>
+</section>
+<section id="data-loading" class="level2">
+<h2 class="anchored" data-anchor-id="data-loading">Data Loading</h2>
+<p>As before lets use the Palmer penguins dataset and remove the NAs (as before NAs should never be remove without considering why there are NAs but here we will remove them for ease).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("palmerpenguins")</span></span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
@@ -155,16 +160,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(lm2<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="05_GLMUsage_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
+<p><img src="05_GLMUsageGaussian_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display">
-<p><img src="05_GLMUsage_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid" width="672"></p>
+<p><img src="05_GLMUsageGaussian_files/figure-html/unnamed-chunk-3-2.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display">
-<p><img src="05_GLMUsage_files/figure-html/unnamed-chunk-3-3.png" class="img-fluid" width="672"></p>
+<p><img src="05_GLMUsageGaussian_files/figure-html/unnamed-chunk-3-3.png" class="img-fluid" width="672"></p>
 </div>
 <div class="cell-output-display">
-<p><img src="05_GLMUsage_files/figure-html/unnamed-chunk-3-4.png" class="img-fluid" width="672"></p>
+<p><img src="05_GLMUsageGaussian_files/figure-html/unnamed-chunk-3-4.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>This is annoying as we have to press enter in the console to see all the plots</p>
@@ -176,7 +181,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(lm2<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="05_GLMUsage_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="768"></p>
+<p><img src="05_GLMUsageGaussian_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>As we only have factors in our model we don’t see a ‘cloud’ of points, but the line is still flat and horizontal so this is good</p>
@@ -219,7 +224,7 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
 <span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="05_GLMUsage_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="768"></p>
+<p><img src="05_GLMUsageGaussian_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>Now we can also see what the model believes about our data</p>
@@ -251,7 +256,7 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
 <span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="05_GLMUsage_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="768"></p>
+<p><img src="05_GLMUsageGaussian_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>Lets look at both of these plots next to each other,</p>
@@ -282,7 +287,7 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>Plot1<span class="sc">+</span>Plot2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="05_GLMUsage_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="768"></p>
+<p><img src="05_GLMUsageGaussian_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>At first look this is quite good, but maybe some polishing is needed, mostly the y axis range</p>
@@ -314,7 +319,7 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>Plot1<span class="sc">+</span>Plot2</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="05_GLMUsage_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="768"></p>
+<p><img src="05_GLMUsageGaussian_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>This is better, although we could actually plot both the modelled and raw data on one plot</p>
@@ -338,7 +343,7 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Species"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
 <span id="cb13-17"><a href="#cb13-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="05_GLMUsage_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="768"></p>
+<p><img src="05_GLMUsageGaussian_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </section>
@@ -356,7 +361,7 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Length (mm)"</span>,<span class="at">y=</span><span class="st">"Flipper Length (mm)"</span>)<span class="sc">+</span></span>
 <span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="05_GLMUsage_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="768"></p>
+<p><img src="05_GLMUsageGaussian_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>We can see from the raw data that we will expect to find some strong linear relationships</p>
@@ -370,7 +375,7 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
   interaction terms.</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="05_GLMUsage_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="768"></p>
+<p><img src="05_GLMUsageGaussian_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="768"></p>
 </div>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm3<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -470,7 +475,7 @@ F-statistic: 322.5 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Length (mm)"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
 <span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="05_GLMUsage_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="768"></p>
+<p><img src="05_GLMUsageGaussian_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>This looks good but lets maybe add the raw data values onto the same figure as the model outputs as before</p>
@@ -490,7 +495,7 @@ F-statistic: 322.5 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Length (mm)"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
 <span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="05_GLMUsage_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="768"></p>
+<p><img src="05_GLMUsageGaussian_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </section>

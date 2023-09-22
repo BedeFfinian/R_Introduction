@@ -19,9 +19,29 @@ In more traditional "Fischer" style statistics there are a wealth of different t
 ![Old Stats Test - Image from https://onishlab.colostate.edu/](Images/Fisher_Flowchart.png)
 
 
-GLMs and GLMMs can be used in all the same cases as these older style tests as well as many many more, but with more consistency of terminology, higher flexibility and without the need to know, which different test to use.
+GLMs and GLMMs can be used in all the same cases as these older style tests as well as many many more. GLMs and by extension GLMMs have the advantage of being more consistency with terminology, have higher flexibility and you do not need to know 1000 different tests to use them. There are important options to chose within GLMs and GLMMs but as I mention they are more consistent and easier to check or adhere to their assumptions.
 
-There are important options to chose within GLMs and GLMMs but as I mention they are more consistent and easier to check or adhere to their assumptions.
+## Side Note - Bayes/Frequentist/Who Cares
+
+Discussion, examples and code here about GLMs and GLMMs will be carried out and more aimed at Frequentist methods of analysis. However, as Richard McElreath points out amazingly in his Statistical Rethinking Course (GO CHECK IT OUT IT IS AMAZING AND FREE!! <https://www.youtube.com/@rmcelreath> or <https://github.com/rmcelreath>), the general principles are the same between Frequentist and Bayesian methods, the important part is interpretation and building scientific and statistical models to allow Causal Inference! (i.e. does the model actually provide us with evidence of a cause and if so what is that cause.)
+
+![Bayes vs Frequentists Killed by Doge - Flagrantly stolen from <https://github.com/rmcelreath>](Images/Meme.png)
+
+## What are GLMs?
+
+Effectively General Linear Models are ways of creating generalising lines or linear equations that best describe the data we put into them given some equation of interest. 
+
+We can summarise most with three equations. We have the linear equation $y = \beta x + c$ and how that relates to the data we sample ($s$) $s = Distribution(y,\sigma)$ . 
+
+This will often be written as: 
+
+$$s = Distribution(y',\sigma)$$
+
+$$y'=f(y)$$
+
+$$y = \beta x + c$$
+
+The first of these equations is saying that the data we recorded ($s$) comes from a some distribution (We will define this later) with a mean of $y'$ and a standard deviation of $\sigma$. $y$ is the result of an effect ($\beta$) multiplied by some fixed effect ($x$) and an intercept value ($c$). Between these two equations we have a link function ($f()$). This converts $y$ into a value that the distribution function will accept $y'$, again we will define what these elements are later. The elements that we want our GLM to tell us is the effect of x ($\beta$) and the intercept ($c$). 
 
 ## First Step of Analysis - Statistical Model Formulation
 
@@ -340,7 +360,6 @@ p5<-
 p3+p4+p5
 
 ```
-
 
 ## Third Step of Analysis - Organising Fixed Effects
 

@@ -91,6 +91,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#step-two---resonse-variable-distribution" id="toc-step-two---resonse-variable-distribution" class="nav-link" data-scroll-target="#step-two---resonse-variable-distribution">Step Two - Resonse Variable Distribution</a></li>
   <li><a href="#step-three---organising-fixed-effects" id="toc-step-three---organising-fixed-effects" class="nav-link" data-scroll-target="#step-three---organising-fixed-effects">Step Three - Organising Fixed Effects</a></li>
   <li><a href="#step-four---assessing-model-functioning" id="toc-step-four---assessing-model-functioning" class="nav-link" data-scroll-target="#step-four---assessing-model-functioning">Step Four - Assessing Model Functioning</a></li>
+  <li><a href="#step-five---model-interpretation" id="toc-step-five---model-interpretation" class="nav-link" data-scroll-target="#step-five---model-interpretation">Step Five - Model Interpretation</a></li>
   </ul></li>
   <li><a href="#modelling-continuous-predictor-variables" id="toc-modelling-continuous-predictor-variables" class="nav-link" data-scroll-target="#modelling-continuous-predictor-variables">Modelling Continuous Predictor Variables</a>
   <ul class="collapse">
@@ -98,6 +99,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#step-two---resonse-variable-distribution-1" id="toc-step-two---resonse-variable-distribution-1" class="nav-link" data-scroll-target="#step-two---resonse-variable-distribution-1">Step Two - Resonse Variable Distribution</a></li>
   <li><a href="#step-three---organising-fixed-effects-1" id="toc-step-three---organising-fixed-effects-1" class="nav-link" data-scroll-target="#step-three---organising-fixed-effects-1">Step Three - Organising Fixed Effects</a></li>
   <li><a href="#step-four---assessing-model-functioning-1" id="toc-step-four---assessing-model-functioning-1" class="nav-link" data-scroll-target="#step-four---assessing-model-functioning-1">Step Four - Assessing Model Functioning</a></li>
+  <li><a href="#step-five---model-interpretation-1" id="toc-step-five---model-interpretation-1" class="nav-link" data-scroll-target="#step-five---model-interpretation-1">Step Five - Model Interpretation</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -298,6 +300,9 @@ y = \beta_{1} sex(female-male):species(Adelie-Chinstrap) \\
 \]</span></p>
 <p>As the Gaussian distribution has no data restrictions for the mean value the link function is nothing. Seems silly to include here, and many people wouldn’t, but it will keep consistency for later when we do have a link function.</p>
 <p>When we plot the estimates into this equation, this should be similar to our raw data but not identical. Remember we are creating a model to Generalise the patterns of the raw data, not copy them!</p>
+</section>
+<section id="step-five---model-interpretation" class="level3">
+<h3 class="anchored" data-anchor-id="step-five---model-interpretation">Step Five - Model Interpretation</h3>
 <p>Thankfully we don’t have to extract each <span class="math inline">\(\beta\)</span> parameter from the summary table as R has useful functions that can do this for us! To do this we make simulated raw data with the same predictor variables in.</p>
 <p>We then use the model to predict() the response variable based on those predictor variables.</p>
 <p>Therefore, we make a data set with just sex and species the same as our original data (be careful of spelling and capitalisation, R wants it identical).</p>
@@ -505,6 +510,9 @@ F-statistic: 322.5 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>As we hypothesised before modelling that there would be different bill to flipper relationships between species</p>
 <p>The interaction model follows our scientific assumptions.</p>
 <p>Therefore, it would be incorrect to use lower complexity models (without the interaction for example)</p>
+</section>
+<section id="step-five---model-interpretation-1" class="level3">
+<h3 class="anchored" data-anchor-id="step-five---model-interpretation-1">Step Five - Model Interpretation</h3>
 <p>To predict again we want to create lines for each species.</p>
 <p>To do this we want to create fake bill length data over the same range for each species</p>
 <p>Here we will use the seq() function again that creates a sequence of values from your first number to your last number</p>

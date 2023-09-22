@@ -30,13 +30,13 @@ penguins_noNAs<-penguins%>%
 
 ```
 
-### Modelling with Categorical Predictor Variables
+## Modelling with Categorical Predictor Variables
 
 So now we will try prove the obvious
 
 Does the flipper length of penguins change between species and between sexes?
 
-#### Step one - Scienctific Model to Stats Model
+### Step One - Scienctific Model to Stats Model
 
 Whether we use an interaction or not depends on if our scientific thought believes the relationship of Species to flipper length is different between sexes (sexual dimorphism may not be consistent across species). We shall use an interaction here as we might expect some sexual dimorphism in some species while less, no or opposite sexual dimorphism in other species. If we had good reason to expect the same sexual dimorphism across these species we would not use an interaction term. 
 
@@ -59,7 +59,7 @@ lm2.1<-lm(flipper_length_mm~species*sex,data=penguins_noNAs)
 
 ```
 
-## Fourth Step of Analysis - Assessing Model Functioning
+### Step Four - Assessing Model Functioning
 
 We could apply a linear model to almost all data but often it will not meet our assumptions.
 
@@ -148,17 +148,41 @@ p_box+p_cloud
 
 Now we can also see what the model believes about our data 
 
-This should be similar to our raw data but not identical
+The model has estimated parameters of a linear model. 
 
-To do this we make simulated raw data with this same predictor variables in
+If we wanted to we could write out our model as this:
 
-We then use the model to predict the response variable based on those predictor variables
+$$FlipperLength = Gaussian(y',\sigma)$$
 
-Therefore, we make a data set with just sex and species the same as our original data (be careful of spelling and capitalisation, R wants it identical)
+$$y'=y$$
+
+$$
+\begin{aligned}
+y = \beta_{1} sex(female-male):species(Adelie-Chinstrap) \\
++  \\
+\beta_{2} sex(female-male):species(Adelie-Gentoo) \\
++  \\
+\beta_{3} sex(female-male) \\
++  \\
+\beta_{4} species(Adelie-Chinstrap) \\
++  \\
+\beta_{5} species(Adelie-Gentoo) + Intercept 
+\end{aligned}
+$$
+
+As the Gaussian distribution has no data restrictions for the mean value the link function is nothing. Seems silly to include here, and many people wouldn't, but it will keep consistency for later when we do have a link function.
+
+When we plot the estimates into this equation, this should be similar to our raw data but not identical. Remember we are creating a model to Generalise the patterns of the raw data, not copy them!
+
+Thankfully we don't have to extract each $\beta$ parameter from the summary table as R has useful functions that can do this for us! To do this we make simulated raw data with the same predictor variables in.
+
+We then use the model to predict() the response variable based on those predictor variables.
+
+Therefore, we make a data set with just sex and species the same as our original data (be careful of spelling and capitalisation, R wants it identical).
 
 The model then predicts the average Flipper length in mm based on those species and sexes. 
 
-We can also tell the Predict function to predict error (Standard Error here that we then convert to an approximation of the 95% confidence interval)
+We can also tell the predict function to predict error (Standard Error here that we then convert to an approximation of the 95% confidence interval)
 
 ```{r}
 #| fig.width: 8
@@ -271,7 +295,7 @@ Plot1+Plot2
 
 ```
 
-This is better, although we could actually plot both the modelled and raw data on one plot 
+This is better, although we could actually plot both the modelled and raw data on one plot. 
 
 We can use a position=position_jitterdodge() to have the raw data not all in one line above their species
 
@@ -297,19 +321,21 @@ ggplot(NewData)+
   theme_classic()
 ```
 
-### Modelling Continuous Predictor Variables
+## Modelling Continuous Predictor Variables
 
-Okay that is what we do with linear models of categorical factors
+Okay that is what we do with linear models of categorical factors.
 
-But what if we want to see the relationship between flipper_length_mm and bill_length_mm
+But what if we want to see the relationship between flipper_length_mm and bill_length_mm.
 
-But we know there are species differences and sexual differences in flipper length
+### Step one - Scienctific Model to Stats Model
 
-As Males always tend to be larger lets just assess species differences in their flipper to bill relationship
+We know there are species differences and sexual differences in flipper length.
 
+As males always tend to be larger lets just assess species differences in their flipper to bill relationship.
+
+flipper_length_mm~species*bill_length_mm
 
 Lets plot the raw data first 
-
 
 ```{r}
 #| fig.width: 8
@@ -322,26 +348,44 @@ ggplot(penguins_noNAs)+
   theme_classic()
 ```
 
-We can see from the raw data that we will expect to find some strong linear relationships
+We can see from the raw data that we will expect to find some interesting relationships
+
+### Step Two - Resonse Variable Distribution
+
+Nothing has changed from above, so lets stick to Gaussian 
+
+
+### Step Three - Organising Fixed Effects 
+
+The fixed effects again need little to no prep so lets apply the model.
+
 
 ```{r}
 #| fig.width: 8
 #| fig.height: 8
 
 lm3.1<-lm(flipper_length_mm~species*bill_length_mm,data=penguins_noNAs)
+```
+
+### Step Four - Assessing Model Functioning
+
+Lets check the plots and then the model summary.
+
+```{r}
 
 check_model(lm3.1)
 
 summary(lm3.1)
+
 ```
 
 As we hypothesised before modelling that there would be different bill to flipper relationships between species
 
-The interaction model follows our scientific assumptions
+The interaction model follows our scientific assumptions.
 
 Therefore, it would be incorrect to use lower complexity models (without the interaction for example)
 
-To predict again we want to create lines for each species
+To predict again we want to create lines for each species.
 
 To do this we want to create fake bill length data over the same range for each species
 

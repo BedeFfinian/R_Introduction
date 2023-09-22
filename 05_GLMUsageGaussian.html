@@ -68,6 +68,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="05_GLMUsageGaussian_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
 <link href="05_GLMUsageGaussian_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 </head>
 
@@ -82,15 +84,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#using-gaussian-glms" id="toc-using-gaussian-glms" class="nav-link active" data-scroll-target="#using-gaussian-glms">Using Gaussian GLMs <img src="Images/logo.png" align="right" height="138.5"></a>
   <ul class="collapse">
   <li><a href="#linear-model-or-general-linear-model-with-gaussian-distribution-or-anova-or-ancova" id="toc-linear-model-or-general-linear-model-with-gaussian-distribution-or-anova-or-ancova" class="nav-link" data-scroll-target="#linear-model-or-general-linear-model-with-gaussian-distribution-or-anova-or-ancova">Linear Model? or General Linear Model with Gaussian Distribution? or ANOVA? or ANCOVA?</a></li>
-  <li><a href="#data-loading" id="toc-data-loading" class="nav-link" data-scroll-target="#data-loading">Data Loading</a>
+  <li><a href="#data-loading" id="toc-data-loading" class="nav-link" data-scroll-target="#data-loading">Data Loading</a></li>
+  <li><a href="#modelling-with-categorical-predictor-variables" id="toc-modelling-with-categorical-predictor-variables" class="nav-link" data-scroll-target="#modelling-with-categorical-predictor-variables">Modelling with Categorical Predictor Variables</a>
   <ul class="collapse">
-  <li><a href="#modelling-with-categorical-predictor-variables" id="toc-modelling-with-categorical-predictor-variables" class="nav-link" data-scroll-target="#modelling-with-categorical-predictor-variables">Modelling with Categorical Predictor Variables</a></li>
+  <li><a href="#step-one---scienctific-model-to-stats-model" id="toc-step-one---scienctific-model-to-stats-model" class="nav-link" data-scroll-target="#step-one---scienctific-model-to-stats-model">Step One - Scienctific Model to Stats Model</a></li>
   <li><a href="#step-two---resonse-variable-distribution" id="toc-step-two---resonse-variable-distribution" class="nav-link" data-scroll-target="#step-two---resonse-variable-distribution">Step Two - Resonse Variable Distribution</a></li>
   <li><a href="#step-three---organising-fixed-effects" id="toc-step-three---organising-fixed-effects" class="nav-link" data-scroll-target="#step-three---organising-fixed-effects">Step Three - Organising Fixed Effects</a></li>
+  <li><a href="#step-four---assessing-model-functioning" id="toc-step-four---assessing-model-functioning" class="nav-link" data-scroll-target="#step-four---assessing-model-functioning">Step Four - Assessing Model Functioning</a></li>
   </ul></li>
-  <li><a href="#fourth-step-of-analysis---assessing-model-functioning" id="toc-fourth-step-of-analysis---assessing-model-functioning" class="nav-link" data-scroll-target="#fourth-step-of-analysis---assessing-model-functioning">Fourth Step of Analysis - Assessing Model Functioning</a>
+  <li><a href="#modelling-continuous-predictor-variables" id="toc-modelling-continuous-predictor-variables" class="nav-link" data-scroll-target="#modelling-continuous-predictor-variables">Modelling Continuous Predictor Variables</a>
   <ul class="collapse">
-  <li><a href="#modelling-continuous-predictor-variables" id="toc-modelling-continuous-predictor-variables" class="nav-link" data-scroll-target="#modelling-continuous-predictor-variables">Modelling Continuous Predictor Variables</a></li>
+  <li><a href="#step-one---scienctific-model-to-stats-model-1" id="toc-step-one---scienctific-model-to-stats-model-1" class="nav-link" data-scroll-target="#step-one---scienctific-model-to-stats-model-1">Step one - Scienctific Model to Stats Model</a></li>
+  <li><a href="#step-two---resonse-variable-distribution-1" id="toc-step-two---resonse-variable-distribution-1" class="nav-link" data-scroll-target="#step-two---resonse-variable-distribution-1">Step Two - Resonse Variable Distribution</a></li>
+  <li><a href="#step-three---organising-fixed-effects-1" id="toc-step-three---organising-fixed-effects-1" class="nav-link" data-scroll-target="#step-three---organising-fixed-effects-1">Step Three - Organising Fixed Effects</a></li>
+  <li><a href="#step-four---assessing-model-functioning-1" id="toc-step-four---assessing-model-functioning-1" class="nav-link" data-scroll-target="#step-four---assessing-model-functioning-1">Step Four - Assessing Model Functioning</a></li>
   </ul></li>
   </ul></li>
   </ul>
@@ -148,14 +155,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>penguins_noNAs<span class="ot">&lt;-</span>penguins<span class="sc">%&gt;%</span> </span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<section id="modelling-with-categorical-predictor-variables" class="level3">
-<h3 class="anchored" data-anchor-id="modelling-with-categorical-predictor-variables">Modelling with Categorical Predictor Variables</h3>
+</section>
+<section id="modelling-with-categorical-predictor-variables" class="level2">
+<h2 class="anchored" data-anchor-id="modelling-with-categorical-predictor-variables">Modelling with Categorical Predictor Variables</h2>
 <p>So now we will try prove the obvious</p>
 <p>Does the flipper length of penguins change between species and between sexes?</p>
-<section id="step-one---scienctific-model-to-stats-model" class="level4">
-<h4 class="anchored" data-anchor-id="step-one---scienctific-model-to-stats-model">Step one - Scienctific Model to Stats Model</h4>
+<section id="step-one---scienctific-model-to-stats-model" class="level3">
+<h3 class="anchored" data-anchor-id="step-one---scienctific-model-to-stats-model">Step One - Scienctific Model to Stats Model</h3>
 <p>Whether we use an interaction or not depends on if our scientific thought believes the relationship of Species to flipper length is different between sexes (sexual dimorphism may not be consistent across species). We shall use an interaction here as we might expect some sexual dimorphism in some species while less, no or opposite sexual dimorphism in other species. If we had good reason to expect the same sexual dimorphism across these species we would not use an interaction term.</p>
-</section>
 </section>
 <section id="step-two---resonse-variable-distribution" class="level3">
 <h3 class="anchored" data-anchor-id="step-two---resonse-variable-distribution">Step Two - Resonse Variable Distribution</h3>
@@ -169,9 +176,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>lm2<span class="fl">.1</span><span class="ot">&lt;-</span><span class="fu">lm</span>(flipper_length_mm<span class="sc">~</span>species<span class="sc">*</span>sex,<span class="at">data=</span>penguins_noNAs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-</section>
-<section id="fourth-step-of-analysis---assessing-model-functioning" class="level2">
-<h2 class="anchored" data-anchor-id="fourth-step-of-analysis---assessing-model-functioning">Fourth Step of Analysis - Assessing Model Functioning</h2>
+<section id="step-four---assessing-model-functioning" class="level3">
+<h3 class="anchored" data-anchor-id="step-four---assessing-model-functioning">Step Four - Assessing Model Functioning</h3>
 <p>We could apply a linear model to almost all data but often it will not meet our assumptions.</p>
 <p>We can now check visually the residuals from our model.</p>
 <p>By using the base plot function in 4 we get 4 plots. The first two are the ones we are most interested in generally. The next two plots are less important generally but can be used to find out what is wrong if the first two plots are not as we want them.</p>
@@ -273,12 +279,30 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <p>Now we can also see what the model believes about our data</p>
-<p>This should be similar to our raw data but not identical</p>
-<p>To do this we make simulated raw data with this same predictor variables in</p>
-<p>We then use the model to predict the response variable based on those predictor variables</p>
-<p>Therefore, we make a data set with just sex and species the same as our original data (be careful of spelling and capitalisation, R wants it identical)</p>
+<p>The model has estimated parameters of a linear model.</p>
+<p>If we wanted to we could write out our model as this:</p>
+<p><span class="math display">\[FlipperLength = Gaussian(y',\sigma)\]</span></p>
+<p><span class="math display">\[y'=y\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+y = \beta_{1} sex(female-male):species(Adelie-Chinstrap) \\
++  \\
+\beta_{2} sex(female-male):species(Adelie-Gentoo) \\
++  \\
+\beta_{3} sex(female-male) \\
++  \\
+\beta_{4} species(Adelie-Chinstrap) \\
++  \\
+\beta_{5} species(Adelie-Gentoo) + Intercept
+\end{aligned}
+\]</span></p>
+<p>As the Gaussian distribution has no data restrictions for the mean value the link function is nothing. Seems silly to include here, and many people wouldn’t, but it will keep consistency for later when we do have a link function.</p>
+<p>When we plot the estimates into this equation, this should be similar to our raw data but not identical. Remember we are creating a model to Generalise the patterns of the raw data, not copy them!</p>
+<p>Thankfully we don’t have to extract each <span class="math inline">\(\beta\)</span> parameter from the summary table as R has useful functions that can do this for us! To do this we make simulated raw data with the same predictor variables in.</p>
+<p>We then use the model to predict() the response variable based on those predictor variables.</p>
+<p>Therefore, we make a data set with just sex and species the same as our original data (be careful of spelling and capitalisation, R wants it identical).</p>
 <p>The model then predicts the average Flipper length in mm based on those species and sexes.</p>
-<p>We can also tell the Predict function to predict error (Standard Error here that we then convert to an approximation of the 95% confidence interval)</p>
+<p>We can also tell the predict function to predict error (Standard Error here that we then convert to an approximation of the 95% confidence interval)</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>NewData_1<span class="ot">&lt;-</span><span class="fu">expand.grid</span>(<span class="at">sex=</span><span class="fu">c</span>(<span class="st">"female"</span>,<span class="st">"male"</span>),</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">species=</span><span class="fu">c</span>(<span class="st">"Adelie"</span>,<span class="st">"Chinstrap"</span>,<span class="st">"Gentoo"</span>))</span>
@@ -380,7 +404,7 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p><img src="05_GLMUsageGaussian_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
-<p>This is better, although we could actually plot both the modelled and raw data on one plot</p>
+<p>This is better, although we could actually plot both the modelled and raw data on one plot.</p>
 <p>We can use a position=position_jitterdodge() to have the raw data not all in one line above their species</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(NewData)<span class="sc">+</span></span>
@@ -404,12 +428,17 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p><img src="05_GLMUsageGaussian_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
-<section id="modelling-continuous-predictor-variables" class="level3">
-<h3 class="anchored" data-anchor-id="modelling-continuous-predictor-variables">Modelling Continuous Predictor Variables</h3>
-<p>Okay that is what we do with linear models of categorical factors</p>
-<p>But what if we want to see the relationship between flipper_length_mm and bill_length_mm</p>
-<p>But we know there are species differences and sexual differences in flipper length</p>
-<p>As Males always tend to be larger lets just assess species differences in their flipper to bill relationship</p>
+</section>
+</section>
+<section id="modelling-continuous-predictor-variables" class="level2">
+<h2 class="anchored" data-anchor-id="modelling-continuous-predictor-variables">Modelling Continuous Predictor Variables</h2>
+<p>Okay that is what we do with linear models of categorical factors.</p>
+<p>But what if we want to see the relationship between flipper_length_mm and bill_length_mm.</p>
+<section id="step-one---scienctific-model-to-stats-model-1" class="level3">
+<h3 class="anchored" data-anchor-id="step-one---scienctific-model-to-stats-model-1">Step one - Scienctific Model to Stats Model</h3>
+<p>We know there are species differences and sexual differences in flipper length.</p>
+<p>As males always tend to be larger lets just assess species differences in their flipper to bill relationship.</p>
+<p>flipper_length_mm~species*bill_length_mm</p>
 <p>Lets plot the raw data first</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins_noNAs)<span class="sc">+</span></span>
@@ -421,20 +450,33 @@ F-statistic: 342.4 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p><img src="05_GLMUsageGaussian_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
-<p>We can see from the raw data that we will expect to find some strong linear relationships</p>
+<p>We can see from the raw data that we will expect to find some interesting relationships</p>
+</section>
+<section id="step-two---resonse-variable-distribution-1" class="level3">
+<h3 class="anchored" data-anchor-id="step-two---resonse-variable-distribution-1">Step Two - Resonse Variable Distribution</h3>
+<p>Nothing has changed from above, so lets stick to Gaussian</p>
+</section>
+<section id="step-three---organising-fixed-effects-1" class="level3">
+<h3 class="anchored" data-anchor-id="step-three---organising-fixed-effects-1">Step Three - Organising Fixed Effects</h3>
+<p>The fixed effects again need little to no prep so lets apply the model.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>lm3<span class="fl">.1</span><span class="ot">&lt;-</span><span class="fu">lm</span>(flipper_length_mm<span class="sc">~</span>species<span class="sc">*</span>bill_length_mm,<span class="at">data=</span>penguins_noNAs)</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(lm3<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>lm3<span class="fl">.1</span><span class="ot">&lt;-</span><span class="fu">lm</span>(flipper_length_mm<span class="sc">~</span>species<span class="sc">*</span>bill_length_mm,<span class="at">data=</span>penguins_noNAs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="step-four---assessing-model-functioning-1" class="level3">
+<h3 class="anchored" data-anchor-id="step-four---assessing-model-functioning-1">Step Four - Assessing Model Functioning</h3>
+<p>Lets check the plots and then the model summary.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(lm3<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Model has interaction terms. VIFs might be inflated.
   You may check multicollinearity among predictors of a model without
   interaction terms.</code></pre>
 </div>
 <div class="cell-output-display">
-<p><img src="05_GLMUsageGaussian_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="768"></p>
+<p><img src="05_GLMUsageGaussian_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
 </div>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm3<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(lm3<span class="fl">.1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -461,17 +503,17 @@ F-statistic: 322.5 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <p>As we hypothesised before modelling that there would be different bill to flipper relationships between species</p>
-<p>The interaction model follows our scientific assumptions</p>
+<p>The interaction model follows our scientific assumptions.</p>
 <p>Therefore, it would be incorrect to use lower complexity models (without the interaction for example)</p>
-<p>To predict again we want to create lines for each species</p>
+<p>To predict again we want to create lines for each species.</p>
 <p>To do this we want to create fake bill length data over the same range for each species</p>
 <p>Here we will use the seq() function again that creates a sequence of values from your first number to your last number</p>
 <p>And you can chose the length of the vector it creates or the distance between each individual value</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>NewData_<span class="ot">&lt;-</span><span class="fu">expand.grid</span>(<span class="at">bill_length_mm=</span><span class="fu">seq</span>(<span class="at">from=</span><span class="fu">min</span>(penguins_noNAs<span class="sc">$</span>bill_length_mm),</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">to=</span><span class="fu">max</span>(penguins_noNAs<span class="sc">$</span>bill_length_mm),</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">length.out=</span><span class="dv">1000</span>),</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">species=</span><span class="fu">c</span>(<span class="st">"Adelie"</span>,<span class="st">"Chinstrap"</span>,<span class="st">"Gentoo"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>NewData_<span class="ot">&lt;-</span><span class="fu">expand.grid</span>(<span class="at">bill_length_mm=</span><span class="fu">seq</span>(<span class="at">from=</span><span class="fu">min</span>(penguins_noNAs<span class="sc">$</span>bill_length_mm),</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">to=</span><span class="fu">max</span>(penguins_noNAs<span class="sc">$</span>bill_length_mm),</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                                        <span class="at">length.out=</span><span class="dv">1000</span>),</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>                     <span class="at">species=</span><span class="fu">c</span>(<span class="st">"Adelie"</span>,<span class="st">"Chinstrap"</span>,<span class="st">"Gentoo"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>As the different species won’t be across all of these bill length ranges</p>
 <p>We should also remove values outside of each species range</p>
@@ -481,80 +523,80 @@ F-statistic: 322.5 on 5 and 327 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>Then we use case_when (a more sophisticated version of if_else()) to create a new column in our new df that either says Good or it will have NAs</p>
 <p>We then filter all rows that have NAs in them, thus removing bill lengths outside of each species’ range.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>Gentoo_Range<span class="ot">&lt;-</span>penguins_noNAs <span class="sc">%&gt;%</span> </span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Gentoo"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">min=</span><span class="fu">min</span>(bill_length_mm),</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">max=</span><span class="fu">max</span>(bill_length_mm))</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>Adelie_Range<span class="ot">&lt;-</span>penguins_noNAs <span class="sc">%&gt;%</span> </span>
-<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">min=</span><span class="fu">min</span>(bill_length_mm),</span>
-<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">max=</span><span class="fu">max</span>(bill_length_mm))</span>
-<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>Chinstrap_Range<span class="ot">&lt;-</span>penguins_noNAs <span class="sc">%&gt;%</span> </span>
-<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Chinstrap"</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">min=</span><span class="fu">min</span>(bill_length_mm),</span>
-<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">max=</span><span class="fu">max</span>(bill_length_mm))</span>
-<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>NewData_3<span class="ot">&lt;-</span>NewData_ <span class="sc">%&gt;%</span> </span>
-<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Range=</span><span class="fu">case_when</span>(species<span class="sc">==</span><span class="st">"Gentoo"</span> <span class="sc">&amp;</span></span>
-<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>                              bill_length_mm<span class="sc">&gt;=</span>Gentoo_Range<span class="sc">$</span>min <span class="sc">&amp;</span></span>
-<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>                              bill_length_mm<span class="sc">&lt;=</span>Gentoo_Range<span class="sc">$</span>max<span class="sc">~</span><span class="st">"Good"</span>,</span>
-<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>                         species<span class="sc">==</span><span class="st">"Adelie"</span> <span class="sc">&amp;</span></span>
-<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>                           bill_length_mm<span class="sc">&gt;=</span>Adelie_Range<span class="sc">$</span>min <span class="sc">&amp;</span></span>
-<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>                           bill_length_mm<span class="sc">&lt;=</span>Adelie_Range<span class="sc">$</span>max<span class="sc">~</span><span class="st">"Good"</span>,</span>
-<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>                         species<span class="sc">==</span><span class="st">"Chinstrap"</span> <span class="sc">&amp;</span></span>
-<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>                           bill_length_mm<span class="sc">&gt;=</span>Chinstrap_Range<span class="sc">$</span>min <span class="sc">&amp;</span></span>
-<span id="cb20-26"><a href="#cb20-26" aria-hidden="true" tabindex="-1"></a>                           bill_length_mm<span class="sc">&lt;=</span>Chinstrap_Range<span class="sc">$</span>max<span class="sc">~</span><span class="st">"Good"</span></span>
-<span id="cb20-27"><a href="#cb20-27" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span> </span>
-<span id="cb20-28"><a href="#cb20-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>Range<span class="sc">%in%</span><span class="cn">NA</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb20-29"><a href="#cb20-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Range)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>Gentoo_Range<span class="ot">&lt;-</span>penguins_noNAs <span class="sc">%&gt;%</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Gentoo"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">min=</span><span class="fu">min</span>(bill_length_mm),</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>            <span class="at">max=</span><span class="fu">max</span>(bill_length_mm))</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>Adelie_Range<span class="ot">&lt;-</span>penguins_noNAs <span class="sc">%&gt;%</span> </span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Adelie"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">min=</span><span class="fu">min</span>(bill_length_mm),</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>            <span class="at">max=</span><span class="fu">max</span>(bill_length_mm))</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>Chinstrap_Range<span class="ot">&lt;-</span>penguins_noNAs <span class="sc">%&gt;%</span> </span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(species<span class="sc">==</span><span class="st">"Chinstrap"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">min=</span><span class="fu">min</span>(bill_length_mm),</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>            <span class="at">max=</span><span class="fu">max</span>(bill_length_mm))</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>NewData_3<span class="ot">&lt;-</span>NewData_ <span class="sc">%&gt;%</span> </span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Range=</span><span class="fu">case_when</span>(species<span class="sc">==</span><span class="st">"Gentoo"</span> <span class="sc">&amp;</span></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>                              bill_length_mm<span class="sc">&gt;=</span>Gentoo_Range<span class="sc">$</span>min <span class="sc">&amp;</span></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>                              bill_length_mm<span class="sc">&lt;=</span>Gentoo_Range<span class="sc">$</span>max<span class="sc">~</span><span class="st">"Good"</span>,</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>                         species<span class="sc">==</span><span class="st">"Adelie"</span> <span class="sc">&amp;</span></span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>                           bill_length_mm<span class="sc">&gt;=</span>Adelie_Range<span class="sc">$</span>min <span class="sc">&amp;</span></span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>                           bill_length_mm<span class="sc">&lt;=</span>Adelie_Range<span class="sc">$</span>max<span class="sc">~</span><span class="st">"Good"</span>,</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>                         species<span class="sc">==</span><span class="st">"Chinstrap"</span> <span class="sc">&amp;</span></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>                           bill_length_mm<span class="sc">&gt;=</span>Chinstrap_Range<span class="sc">$</span>min <span class="sc">&amp;</span></span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>                           bill_length_mm<span class="sc">&lt;=</span>Chinstrap_Range<span class="sc">$</span>max<span class="sc">~</span><span class="st">"Good"</span></span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>  )) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>Range<span class="sc">%in%</span><span class="cn">NA</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(<span class="sc">-</span>Range)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>After bad range values are filtered out we use the select function to remove the “Range” column, we do this with the - operator.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>Pred_2<span class="ot">&lt;-</span><span class="fu">predict</span>(lm3<span class="fl">.1</span>,NewData_3,<span class="at">se.fit=</span><span class="cn">TRUE</span>)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>NewData_2<span class="ot">&lt;-</span>NewData_3 <span class="sc">%&gt;%</span> </span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">response=</span>Pred_2<span class="sc">$</span>fit,</span>
-<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">se.fit=</span>Pred_2<span class="sc">$</span>se.fit,</span>
-<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">Upr=</span>response<span class="sc">+</span>(se.fit<span class="sc">*</span><span class="fl">1.96</span>),</span>
-<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">Lwr=</span>response<span class="sc">-</span>(se.fit<span class="sc">*</span><span class="fl">1.96</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>Pred_2<span class="ot">&lt;-</span><span class="fu">predict</span>(lm3<span class="fl">.1</span>,NewData_3,<span class="at">se.fit=</span><span class="cn">TRUE</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>NewData_2<span class="ot">&lt;-</span>NewData_3 <span class="sc">%&gt;%</span> </span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">response=</span>Pred_2<span class="sc">$</span>fit,</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>         <span class="at">se.fit=</span>Pred_2<span class="sc">$</span>se.fit,</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>         <span class="at">Upr=</span>response<span class="sc">+</span>(se.fit<span class="sc">*</span><span class="fl">1.96</span>),</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>         <span class="at">Lwr=</span>response<span class="sc">-</span>(se.fit<span class="sc">*</span><span class="fl">1.96</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>So now we have many data points that can be used to draw the linear model outputs</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data=</span>NewData_2,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>bill_length_mm,<span class="at">ymax=</span>Upr,</span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">ymin=</span>Lwr,<span class="at">fill=</span>species),</span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>NewData_2,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>bill_length_mm,<span class="at">y=</span>response,<span class="at">colour=</span>species),</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Length (mm)"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data=</span>NewData_2,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>bill_length_mm,<span class="at">ymax=</span>Upr,</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                                                 <span class="at">ymin=</span>Lwr,<span class="at">fill=</span>species),</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>NewData_2,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>bill_length_mm,<span class="at">y=</span>response,<span class="at">colour=</span>species),</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Length (mm)"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="05_GLMUsageGaussian_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="768"></p>
+<p><img src="05_GLMUsageGaussian_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>This looks good but lets maybe add the raw data values onto the same figure as the model outputs as before</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>penguins_noNAs,<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span>bill_length_mm,</span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">y=</span>flipper_length_mm,</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">colour=</span>species),</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha=</span><span class="fl">0.4</span>,<span class="at">size=</span><span class="fl">0.8</span>)<span class="sc">+</span></span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data=</span>NewData_2,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>bill_length_mm,<span class="at">ymax=</span>Upr,</span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">ymin=</span>Lwr,<span class="at">fill=</span>species),</span>
-<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
-<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>NewData_2,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>bill_length_mm,<span class="at">y=</span>response,<span class="at">colour=</span>species),</span>
-<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
-<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
-<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
-<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Length (mm)"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
-<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>penguins_noNAs,<span class="at">mapping =</span> <span class="fu">aes</span>(<span class="at">x=</span>bill_length_mm,</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">y=</span>flipper_length_mm,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>                                               <span class="at">colour=</span>species),</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>             <span class="at">alpha=</span><span class="fl">0.4</span>,<span class="at">size=</span><span class="fl">0.8</span>)<span class="sc">+</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">data=</span>NewData_2,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>bill_length_mm,<span class="at">ymax=</span>Upr,</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>                                         <span class="at">ymin=</span>Lwr,<span class="at">fill=</span>species),</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>              <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data=</span>NewData_2,<span class="at">mapping=</span><span class="fu">aes</span>(<span class="at">x=</span>bill_length_mm,<span class="at">y=</span>response,<span class="at">colour=</span>species),</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>            <span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>,<span class="st">"grey30"</span>))<span class="sc">+</span></span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Bill Length (mm)"</span>,<span class="at">y=</span><span class="st">"Response Variable (Flipper Length (mm))"</span>)<span class="sc">+</span></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="05_GLMUsageGaussian_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="768"></p>
+<p><img src="05_GLMUsageGaussian_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 </section>

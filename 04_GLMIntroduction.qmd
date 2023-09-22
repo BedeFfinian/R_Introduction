@@ -538,5 +538,10 @@ p12+p13
 ```
 
 
+## Fifth Step of Analysis - Model Interpretation
+
+Once we are happy with our model, we can assess what the model tells us about our data. Our interpretation of the model will depend on the statistical model we used and the assumptions we made about our raw data. The best way to interpret a model, once we are happy with it, is to plot the model. To do this we can simulate data that covers the range of our fixed effects, then use the model to predict our response variable for all the values of these fixed effects we simulated. As a final check of how well our model has Generalised the patterns of the raw data we can also plot the raw data alongside our modelled data. 
+
+![Example of Model Prediction from Davies et al., 2022. Here points and error bars show raw data and lines with shading show model estimates and 95% confidence intervals.](Images/Example_Plot.png)
 
 

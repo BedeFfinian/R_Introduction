@@ -74,6 +74,7 @@ ul.task-list li input[type="checkbox"] {
   <li><a href="#homoscedasticity-of-residuals---fitted-vs-residuals-plot" id="toc-homoscedasticity-of-residuals---fitted-vs-residuals-plot" class="nav-link" data-scroll-target="#homoscedasticity-of-residuals---fitted-vs-residuals-plot">Homoscedasticity of Residuals - Fitted vs Residuals Plot</a></li>
   <li><a href="#normality-of-residuals---quantile-quantile-plot" id="toc-normality-of-residuals---quantile-quantile-plot" class="nav-link" data-scroll-target="#normality-of-residuals---quantile-quantile-plot">Normality of Residuals - Quantile-Quantile Plot</a></li>
   </ul></li>
+  <li><a href="#fifth-step-of-analysis---model-interpretation" id="toc-fifth-step-of-analysis---model-interpretation" class="nav-link" data-scroll-target="#fifth-step-of-analysis---model-interpretation">Fifth Step of Analysis - Model Interpretation</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -132,7 +133,7 @@ ul.task-list li input[type="checkbox"] {
 <p><span class="math display">\[s = Distribution(y',\sigma)\]</span></p>
 <p><span class="math display">\[y'=f(y)\]</span></p>
 <p><span class="math display">\[y = \beta x + c\]</span></p>
-<p>The first of these equations is saying that the data we recorded (<span class="math inline">\(s\)</span>) comes from a some distribution (We will define this later) with a mean of <span class="math inline">\(y'\)</span> and a standard deviation of <span class="math inline">\(\sigma\)</span>. <span class="math inline">\(y\)</span> is the result of an effect (<span class="math inline">\(\beta\)</span>) multiplied by some fixed effect (<span class="math inline">\(x\)</span>) and an intercept value (<span class="math inline">\(c\)</span>). Between these two equations we have a link function (<span class="math inline">\(f()\)</span>). This converts <span class="math inline">\(y\)</span> into a value that the distribution function will accept <span class="math inline">\(y'\)</span>, again we will define what these elements are later. The elements that we want our GLM to tell us is the effect of x (<span class="math inline">\(\beta\)</span>) and the intercept (<span class="math inline">\(c\)</span>). We don’t have to do maths at all for GLMs but it can help some people understand what the model is telling us. (If you don’t like equations/maths ignore this bit - But we will discuss link functions).</p>
+<p>The first of these equations is saying that the data we recorded (<span class="math inline">\(s\)</span>) comes from a some distribution (We will define this later) with a mean of <span class="math inline">\(y'\)</span> and a standard deviation of <span class="math inline">\(\sigma\)</span>. <span class="math inline">\(y\)</span> is the result of an effect (<span class="math inline">\(\beta\)</span>) multiplied by some fixed effect (<span class="math inline">\(x\)</span>) and an intercept value (<span class="math inline">\(c\)</span>). Between these two equations we have a link function (<span class="math inline">\(f()\)</span>). This converts <span class="math inline">\(y\)</span> into a value that the distribution function will accept <span class="math inline">\(y'\)</span>, again we will define what these elements are later. The elements that we want our GLM to tell us is the effect of x (<span class="math inline">\(\beta\)</span>) and the intercept (<span class="math inline">\(c\)</span>). We don’t have to do maths at all for GLMs but it can help some people understand what the model is telling us. (If you don’t like equations/maths ignore this bit - But we will discuss link functions later on).</p>
 </section>
 <section id="first-step-of-analysis---statistical-model-formulation" class="level2">
 <h2 class="anchored" data-anchor-id="first-step-of-analysis---statistical-model-formulation">First Step of Analysis - Statistical Model Formulation</h2>
@@ -308,6 +309,16 @@ ul.task-list li input[type="checkbox"] {
 </div>
 </div>
 </section>
+</section>
+<section id="fifth-step-of-analysis---model-interpretation" class="level2">
+<h2 class="anchored" data-anchor-id="fifth-step-of-analysis---model-interpretation">Fifth Step of Analysis - Model Interpretation</h2>
+<p>Once we are happy with our model, we can assess what the model tells us about our data. Our interpretation of the model will depend on the statistical model we used and the assumptions we made about our raw data. The best way to interpret a model, once we are happy with it, is to plot the model. To do this we can simulate data that covers the range of our fixed effects, then use the model to predict our response variable for all the values of these fixed effects we simulated. As a final check of how well our model has Generalised the patterns of the raw data we can also plot the raw data alongside our modelled data.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="Images/Example_Plot.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">Example of Model Prediction from Davies et al., 2022. Here points and error bars show raw data and lines with shading show model estimates and 95% confidence intervals.</figcaption>
+</figure>
+</div>
 </section>
 </section>
 

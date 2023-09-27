@@ -1,0 +1,189 @@
+---
+title: "(General) Linear Models in R - Regression Analysis Use and Examples"
+format:
+  html:
+    toc: true
+    toc-location: left
+---
+
+# Using Poisson GLMs <img src='Images/logo.png' align="right" height="138.5" /></a>
+
+## Data Loading
+
+Rather than using a real-world dataset. This data set is the number of Plant species on different islands in the Galapagos Islands, how many of those species are endemic, the area of the island, its max elevation, the distance to the nearest island, its distance to santa cruz (the most populace island) and the area of the nearest island.
+
+```{r}
+library(tidyverse)
+library(faraway)
+library(performance)
+library(patchwork)
+
+data("gala")
+
+glimpse(gala)
+
+```
+
+### Step One - Scienctific Model to Stats Model
+
+As an archipelago of volcanic islands the Galapagos were formed by geological processes, these geological processes such as tectonic movement and volcanic activity will have implications for the amount of endemic plant species on an island. Therefore, lets explore the relationship of plant endemism and physical features of the islands. For this example we will assess the effect of elevation of an island on the number of endemic species on that island. 
+
+This is a relatively simple model with just two fixed effect and can be written as:
+
+Count of Endemic Plants ~ Elevation
+
+### Step Two - Resonse Variable Distribution
+
+The number of endemic species is a count response where there is no theoretical limit (although one probably exists). Therefore the values can range from 0 upwards. This tells us that is most likely a Poisson distribution. 
+
+### Step Three - Organising Fixed Effects 
+
+Often with highly variable numeric values, such as Elevation or Area or Population, we might need to transform our fixed effect with a log or a square root. We can assess the distribution of our Elevation variables to see if there is a a lot of variance across our islands. 
+
+```{r}
+#| fig.width: 8
+#| fig.height: 4
+
+p1<-ggplot(gala,aes(x=Elevation))+
+  geom_density(fill="darkcyan",alpha=0.7)+
+  theme_classic()
+
+
+p2<-ggplot(gala,aes(x=log(Elevation)))+
+  geom_density(fill="darkcyan",alpha=0.7)+
+  theme_classic()
+
+p1+p2
+
+```
+
+We seem to have a good spread of values across its range with some very large values so we will use a log transformation for modelling. We can then convert back to its native scale after modelling. Lets fit the model using the glm function, we add our statistical formula with the log transformed Elevation, our data and then we specify that the family or distribution we want to use is poisson.
+
+```{r}
+#| fig.width: 8
+#| fig.height: 8
+
+df<-gala %>% 
+  mutate(Elevation_log=log(Elevation))
+
+glm1<-glm(Endemics~Elevation_log,data=df, family= "poisson")
+
+```
+
+### Step Four - Assessing Model Functioning
+
+```{r}
+#| fig.width: 8
+#| fig.height: 8
+
+check_model(glm1)
+
+```
+
+We see some fairly mixed results here. The normality of residuals is good with almost all points following the line, whereas our homogenerity of variance is not amazing, which is likely being driven by a low number of high elevation values. However, the general patterns are quite spread but with very large values showing some overdispersion. This over dispersion might make us want to use a distribution that is more able to deal with over dispersion, such as Negative Binomial. We will accept the amount of over dispersion here as it is quite minor and only at the largest values, which are being driven by our highest value of Elevation and highest value of Endemism: Fernandina and Santa Cruz 
+
+```{r}
+summary(glm1)
+```
+
+Okay there are a lot of numbers here but what does it actually mean?
+
+Lets write out the equation for the model, then we can use the values from the summary to create an equation for the model (the predict function will do this for us). 
+
+If we wanted to we could write out our model as this:
+
+$$Count of Endemic Species = Poisson(\lambda)$$
+
+$$\lambda=log(y)$$
+
+$$
+\begin{aligned}
+y = \beta_{1} log Elevation + Intercept 
+\end{aligned}
+$$
+
+As the Poisson distribution requires only one shape parameter ($\lambda$) and this must be zero or above, we must convert out linear equation results ($y$) so that it is non-negative. This means we use the link function, which for poisson models is by default a log. We can use a different link function if we want, or even check to check which link was used. 
+
+```{r}
+
+glm1$family$link
+
+```
+
+When we plot the estimates into this equation, this should be similar to our raw data but not identical. Remember we are creating a model to Generalise the patterns of the raw data, not copy them!
+
+### Step Five - Model Interpretation
+
+Thankfully we don't have to extract each $\beta$ parameter from the summary table as R has useful functions that can do this for us! To do this we make simulated raw data with the same predictor variables in.
+
+We then use the model to predict() the response variable based on those predictor variables.
+
+Therefore, we make a data set with just Elevation (on the log scale) the same as our original data (be careful of spelling and capitalisation, R wants it identical).
+
+The model then predicts the average Count of Endemic Species based on those log Elevations. 
+
+We can also tell the predict function to predict error (Standard Error here that we then convert to an approximation of the 95% confidence interval).
+
+Note that here I tell Predict that I want the fit to be returned on the response scale and not the link scale. 
+
+```{r}
+#| fig.width: 8
+#| fig.height: 8
+
+NewData_1<-data.frame(Elevation_log=seq(min(df$Elevation_log),max(df$Elevation_log),length.out=50))
+
+Pred<-predict(glm1,NewData_1,se.fit=TRUE,type="response")
+
+NewData<-NewData_1 %>% 
+  mutate(response=Pred$fit,
+         se.fit=Pred$se.fit,
+         Upr=response+(se.fit*1.96),
+         Lwr=response-(se.fit*1.96),
+         Elevation=exp(Elevation_log))
+
+ggplot(NewData)+
+  geom_ribbon(aes(x=Elevation,
+                    ymax=Upr,
+                    ymin=Lwr),
+              alpha=0.7,
+              fill="darkcyan")+
+  geom_line(aes(x=Elevation,
+                 y=response),
+              colour="darkcyan")+
+  labs(x="Elevation",y="Response Variable (Count of Endemic Plant Species)")+
+  theme_classic()
+
+
+```
+
+Now lets plot this model output over the raw values to see how well the model has worked.
+
+```{r}
+#| fig.width: 8
+#| fig.height: 8
+ggplot(NewData)+
+  geom_point(data=df,aes(x=Elevation,
+                         y=Endemics),
+              alpha=0.3,
+             size=0.8,
+             colour="darkcyan")+
+  geom_ribbon(aes(x=Elevation,
+                    ymax=Upr,
+                    ymin=Lwr),
+              alpha=0.7,
+              fill="darkcyan")+
+  geom_line(aes(x=Elevation,
+                 y=response),
+              colour="darkcyan")+
+  labs(x="Elevation",y="Response Variable (Count of Endemic Plant Species)")+
+  theme_classic()
+```
+
+
+# Some Caveats
+
+Now this looks quite good, with more uncertainty at higher values where there are less values to influence the prediction. This is a very simplified model that is not taking into consideration many different factors. For example, Age of an island is highly influential on its plant communities as well as the volcanic activity. So from a science point of view this is not the whole story, infact the Elevation may be just a proxy for the amount of available habitat space and the potential for habitat niches that are influential on endemism. Other factors such as human occupation and the influence that has caused in Galapagos on the local plant populations should not be ignored: invasive species, agricultural practices etc.
+
+
+
+

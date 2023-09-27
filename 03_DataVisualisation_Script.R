@@ -216,9 +216,6 @@ ggplot()+
   labs(x="Year",y="Response Variable")+
   theme_classic()
 
-
-
-
 # We could even separate plots by another column (facetting)
 
 
@@ -229,7 +226,7 @@ ggplot()+
                                                  ymin=MeanResponse-SDResponse,fill=Treatment),
               alpha=0.4)+
   geom_line(data=df_1_summary_year,mapping=aes(x=Year,y=MeanResponse,colour=Treatment))+
-  facet_wrap(~Rep, nrow=2)+
+  facet_wrap(~Treatment)+
   scale_color_manual(values=c("darkcyan","darkorange","grey30"))+
   scale_fill_manual(values=c("darkcyan","darkorange","grey30"))+
   labs(x="Year",y="Response Variable")+

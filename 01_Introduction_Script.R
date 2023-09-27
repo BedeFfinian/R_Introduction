@@ -403,7 +403,7 @@ dir.create("NewFolderName/")
 
 library(readr)
 
-write_csv(df,"NewFolderName/OurNewFile.csv")
+write_csv(df,"NewFolderName/R_is_Really_Cool.csv")
 
 
 
@@ -423,8 +423,6 @@ write_csv(df,"NewFolderName/OurNewFile.csv")
 # To navigate up or down inside folders on your computer you use / to signify a folder, with the highest level folder on the far left
 # 
 # For example:
-
-
 
 My_DF<-read_csv("NewFolderName/OurNewFile.csv")
 

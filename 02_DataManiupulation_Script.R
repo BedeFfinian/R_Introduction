@@ -11,6 +11,9 @@
 #  install.packages("palmerpenguins")
 
 library(palmerpenguins)
+
+data()
+
 data(penguins)
 
 
@@ -278,6 +281,7 @@ All_But_Three_Columns<-penguins_raw %>%
   select(-studyName,-Species,-Island)
 
 names(Three_Columns)
+
 names(All_But_Three_Columns)
 
 

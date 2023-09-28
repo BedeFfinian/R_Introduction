@@ -8,9 +8,9 @@ format:
 
 # Using Poisson GLMs <img src='Images/logo.png' align="right" height="138.5" /></a>
 
-## Data Loading
+## Data Loading Simple - Galapagos
 
-Rather than using a real-world dataset. This data set is the number of Plant species on different islands in the Galapagos Islands, how many of those species are endemic, the area of the island, its max elevation, the distance to the nearest island, its distance to santa cruz (the most populace island) and the area of the nearest island.
+Lets use a real-world dataset. This data set is the number of Plant species on different islands in the Galapagos Islands, how many of those species are endemic, the area of the island, its max elevation, the distance to the nearest island, its distance to santa cruz (the most populace island) and the area of the nearest island.
 
 ```{r}
 library(tidyverse)
@@ -24,11 +24,13 @@ glimpse(gala)
 
 ```
 
+<img src='Images/island-of-rock.jpg' align="centre" width = 100%/></a>
+
 ### Step One - Scienctific Model to Stats Model
 
 As an archipelago of volcanic islands the Galapagos were formed by geological processes, these geological processes such as tectonic movement and volcanic activity will have implications for the amount of endemic plant species on an island. Therefore, lets explore the relationship of plant endemism and physical features of the islands. For this example we will assess the effect of elevation of an island on the number of endemic species on that island. 
 
-This is a relatively simple model with just two fixed effect and can be written as:
+This is a relatively simple model with just one fixed effect and can be written as:
 
 Count of Endemic Plants ~ Elevation
 
@@ -180,9 +182,243 @@ ggplot(NewData)+
 ```
 
 
-# Some Caveats
+### Some Caveats
 
 Now this looks quite good, with more uncertainty at higher values where there are less values to influence the prediction. This is a very simplified model that is not taking into consideration many different factors. For example, Age of an island is highly influential on its plant communities as well as the volcanic activity. So from a science point of view this is not the whole story, infact the Elevation may be just a proxy for the amount of available habitat space and the potential for habitat niches that are influential on endemism. Other factors such as human occupation and the influence that has caused in Galapagos on the local plant populations should not be ignored: invasive species, agricultural practices etc.
+
+## Data Loading Complex - Epilepsy
+
+Lets create a more complex poisson model. This data set is the number of epileptic seizures from 59 patients in a clinical trial of a treatment. Patients were given a a treatment of Placebo or a drug called Progabide. There is a base number of seizures for the 8 weeks before the trial and then a seizure rate for every 2 week period (up to 8 weeks) after being given a treatment. Patients Ages are also available. We will summarise all seizures had by a patient in the 4 periods post treatment to make this a simpler assessment. Although, we could have assessed an effect over time post treatment as well. (Another day perhaps)
+
+```{r}
+# install.packages("HSAUR2")
+
+library(HSAUR2)
+
+data("epilepsy")
+
+glimpse(epilepsy)
+
+df_epilepsy<-epilepsy %>% 
+  group_by(age,base,subject,treatment) %>% 
+  summarise(seizures=sum(seizure.rate))
+
+```
+
+### Step One - Scienctific Model to Stats Model
+
+We will assess the number of seizures in the 8 weeks after treatment for patients and assess whether this pattern changes with age and the number of seizures they had before treatment.
+
+This is a bit more complex model with two interacting fixed effect and one additional fixed effect and can be written as:
+
+Count of Seizures After Treatment ~ Treatment*Age + Base Number of Seizures
+
+### Step Two - Resonse Variable Distribution
+
+Again, the number of seizures can only be a non-negative integer.
+
+### Step Three - Organising Fixed Effects 
+
+Lets check all our fixed effects. For numeric values we can assess their distribution, categorical we can see the number of samples is relatively even.
+
+```{r}
+#| fig.width: 8
+#| fig.height: 8
+
+p1<-ggplot(df_epilepsy,aes(x=age))+
+  geom_density(fill="darkcyan",alpha=0.7)+
+  theme_classic()
+
+
+p2<-ggplot(df_epilepsy,aes(x=treatment))+
+  geom_bar(fill="darkcyan",alpha=0.7)+
+  theme_classic()
+
+p3<-ggplot(df_epilepsy,aes(x=base))+
+  geom_density(fill="darkcyan",alpha=0.7)+
+  theme_classic()
+  
+p4<-ggplot(df_epilepsy,aes(x=sqrt(base)))+
+  geom_density(fill="darkcyan",alpha=0.7)+
+  theme_classic()
+
+(p1+p2)/(p3+p4)
+
+```
+
+Our factors age and treatment seem fine, but maybe we should square root the base effect so we don't have really big base values influencing our model as much. We could log here or centre and scale but we shall use square root for now. 
+
+```{r}
+#| fig.width: 8
+#| fig.height: 8
+
+df<-df_epilepsy %>% 
+  mutate(base_sqrt=sqrt(base))
+
+glm2<-glm(seizures~treatment*age+base_sqrt,data=df, family= "poisson")
+
+```
+
+### Step Four - Assessing Model Functioning
+
+```{r}
+#| fig.width: 8
+#| fig.height: 8
+
+check_model(glm2)
+
+```
+
+As earlier, we see some fairly mixed results here. The normality of residuals is good with almost all points following the line, whereas our homogenerity of variance is again not amazing, which is likely being driven by a low number of high base seizure values values. However, the general patterns are quite spread but with very large values showing some overdispersion. This over dispersion might make us want to use a distribution that is more able to deal with over dispersion, such as Negative Binomial. We will accept the amount of over dispersion here as it is quite minor and only at the largest values.
+
+```{r}
+summary(glm2)
+```
+
+Okay there are a lot of numbers here but what does it actually mean?
+
+Lets write out the equation for the model, then we can use the values from the summary to create an equation for the model (the predict function will do this for us). 
+
+If we wanted to we could write out our model as this:
+
+$$Count of Seizures Post Treatment = Poisson(\lambda)$$
+
+$$\lambda=log(y)$$
+
+$$
+\begin{aligned}
+y = \beta_{1} treatment:age\\
++ \beta_{2} \sqrt{base} \\
++ \beta_{3} age\\
++ \beta_{4} treatment\\
++ Intercept 
+\end{aligned}
+$$
+
+As the Poisson distribution requires only one shape parameter ($\lambda$) and this must be zero or above, we must convert out linear equation results ($y$) so that it is non-negative. This means we use the link function, which for poisson models is by default a log. We can use a different link function if we want, or even check to check which link was used. 
+
+```{r}
+
+glm2$family$link
+
+```
+
+When we plot the estimates into this equation, this should be similar to our raw data but not identical. Remember we are creating a model to Generalise the patterns of the raw data, not copy them!
+
+### Step Five - Model Interpretation
+
+Thankfully we don't have to extract each $\beta$ parameter from the summary table as R has useful functions that can do this for us! To do this we make simulated raw data with the same predictor variables in.
+
+We then use the model to predict() the response variable based on those predictor variables.
+
+Therefore, we make a data set with age, treatment and base level the same as our original data (be careful of spelling and capitalisation, R wants it identical).
+
+We will choose a low, middle and high base level 
+
+The model then predicts the average Count of Seizures based on those ages, treatments and base levels. 
+
+As we have two continuous fixed effects we could plot as heatmap style if we wanted. But then it is difficult or impossible to display confidence levels well.
+
+We can also tell the predict function to predict error (Standard Error here that we then convert to an approximation of the 95% confidence interval).
+
+Note that here I tell Predict that I want the fit to be returned on the response scale and not the link scale. 
+
+```{r}
+#| fig.width: 8
+#| fig.height: 8
+
+NewData_1<-expand.grid(base_sqrt=seq(min(df$base_sqrt),max(df$base_sqrt),length.out=100),
+                       age=seq(min(df$age),max(df$age),length.out=50),
+                       treatment=c("placebo","Progabide"))
+
+Pred<-predict(glm2,NewData_1,se.fit=TRUE,type="response")
+
+NewData<-NewData_1 %>% 
+  mutate(response=Pred$fit,
+         se.fit=Pred$se.fit,
+         Upr=response+(se.fit*1.96),
+         Lwr=response-(se.fit*1.96),
+         base=base_sqrt^2,
+         treatment=if_else(treatment=="placebo","Placebo",treatment))
+
+ggplot(NewData)+
+  geom_tile(aes(x=age,y=base,fill=response),
+            alpha=0.9)+
+  scale_y_sqrt()+
+  scale_fill_viridis_c(direction=-1)+
+  facet_wrap(~treatment)+
+  labs(x="Age",y="Base Number of Seizures",fill="Predicted Number\nof Seizures")+
+  theme_classic()
+
+```
+
+Now lets plot this model output with the raw values to see how well the model has worked.
+
+```{r}
+#| fig.width: 8
+#| fig.height: 8
+
+df_1<-df %>% 
+  mutate(treatment=if_else(treatment=="placebo","Placebo",treatment))
+
+ggplot(NewData)+
+  geom_tile(aes(x=age,y=base,fill=response),
+            alpha=0.9)+
+  geom_point(data=df_1,aes(x=age,y=base,fill=seizures),shape=21,colour="#80808040")+
+  scale_y_sqrt()+
+  scale_fill_viridis_c(direction=-1,limits=c(0,470))+
+  scale_colour_viridis_c(direction=-1,limits=c(0,470))+
+  facet_wrap(~treatment)+
+  labs(x="Age",y="Base Number of Seizures",fill="Number\nof Seizures",colour="Number\nof Seizures")+
+  theme_classic()
+
+```
+
+The patterns of colour from points to back ground do seem to generalise well. However, from this plot we can see clearly that the model is predicting in the age/base space that is not in the original data, so perhaps it would be better to plot the model assuming an average base level of seizures then compare with the raw data. We can also display the models confidence then too.
+
+```{r}
+#| fig.width: 8
+#| fig.height: 8
+
+
+NewData_2<-expand.grid(base_sqrt=sqrt(mean(df$base)),
+                       age=seq(min(df$age),max(df$age),length.out=50),
+                       treatment=c("placebo","Progabide"))
+
+Pred_3<-predict(glm2,NewData_2,se.fit=TRUE,type="response")
+
+NewData_MeanBase<-NewData_2 %>% 
+  mutate(response=Pred_3$fit,
+         se.fit=Pred_3$se.fit,
+         Upr=response+(se.fit*1.96),
+         Lwr=response-(se.fit*1.96),
+         base=base_sqrt^2,
+         treatment=if_else(treatment=="placebo","Placebo",treatment))
+
+ggplot(NewData_MeanBase)+
+  geom_point(data=df_1,aes(x=age,y=seizures,colour=treatment))+
+   geom_ribbon(aes(x=age,
+                     ymax=Upr,
+                     ymin=Lwr,
+                   fill=treatment),
+               alpha=0.7)+
+   geom_line(aes(x=age,
+                  y=response,
+                   colour=treatment))+
+   scale_colour_manual(values=c("darkcyan","darkorange"))+
+   scale_fill_manual(values=c("darkcyan","darkorange"))+
+   scale_y_continuous(limits=c(0,100))+
+   labs(x="Age",y="Response Variable (Count of Seizures)",colour="Treatment",fill="Treatment")+
+   theme_classic()
+
+```
+
+I have set the y axis to ignore very large values (above 100) so we can see clearly what the model is telling us.
+
+This shows a clearer picture and helps us understand that the model has seen some differences between the treatments and that this difference becomes more distinct with age. Although the differences are very minimal between treatments. But a clear increase in Seizures with increasing age regardless of treatment. 
+
+
+
 
 
 

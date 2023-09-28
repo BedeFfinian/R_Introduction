@@ -83,16 +83,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <ul>
   <li><a href="#using-poisson-glms" id="toc-using-poisson-glms" class="nav-link active" data-scroll-target="#using-poisson-glms">Using Poisson GLMs <img src="Images/logo.png" align="right" height="138.5"></a>
   <ul class="collapse">
-  <li><a href="#data-loading" id="toc-data-loading" class="nav-link" data-scroll-target="#data-loading">Data Loading</a>
+  <li><a href="#data-loading-simple---galapagos" id="toc-data-loading-simple---galapagos" class="nav-link" data-scroll-target="#data-loading-simple---galapagos">Data Loading Simple - Galapagos</a>
   <ul class="collapse">
   <li><a href="#step-one---scienctific-model-to-stats-model" id="toc-step-one---scienctific-model-to-stats-model" class="nav-link" data-scroll-target="#step-one---scienctific-model-to-stats-model">Step One - Scienctific Model to Stats Model</a></li>
   <li><a href="#step-two---resonse-variable-distribution" id="toc-step-two---resonse-variable-distribution" class="nav-link" data-scroll-target="#step-two---resonse-variable-distribution">Step Two - Resonse Variable Distribution</a></li>
   <li><a href="#step-three---organising-fixed-effects" id="toc-step-three---organising-fixed-effects" class="nav-link" data-scroll-target="#step-three---organising-fixed-effects">Step Three - Organising Fixed Effects</a></li>
   <li><a href="#step-four---assessing-model-functioning" id="toc-step-four---assessing-model-functioning" class="nav-link" data-scroll-target="#step-four---assessing-model-functioning">Step Four - Assessing Model Functioning</a></li>
   <li><a href="#step-five---model-interpretation" id="toc-step-five---model-interpretation" class="nav-link" data-scroll-target="#step-five---model-interpretation">Step Five - Model Interpretation</a></li>
-  </ul></li>
-  </ul></li>
   <li><a href="#some-caveats" id="toc-some-caveats" class="nav-link" data-scroll-target="#some-caveats">Some Caveats</a></li>
+  </ul></li>
+  <li><a href="#data-loading-complex---epilepsy" id="toc-data-loading-complex---epilepsy" class="nav-link" data-scroll-target="#data-loading-complex---epilepsy">Data Loading Complex - Epilepsy</a>
+  <ul class="collapse">
+  <li><a href="#step-one---scienctific-model-to-stats-model-1" id="toc-step-one---scienctific-model-to-stats-model-1" class="nav-link" data-scroll-target="#step-one---scienctific-model-to-stats-model-1">Step One - Scienctific Model to Stats Model</a></li>
+  <li><a href="#step-two---resonse-variable-distribution-1" id="toc-step-two---resonse-variable-distribution-1" class="nav-link" data-scroll-target="#step-two---resonse-variable-distribution-1">Step Two - Resonse Variable Distribution</a></li>
+  <li><a href="#step-three---organising-fixed-effects-1" id="toc-step-three---organising-fixed-effects-1" class="nav-link" data-scroll-target="#step-three---organising-fixed-effects-1">Step Three - Organising Fixed Effects</a></li>
+  <li><a href="#step-four---assessing-model-functioning-1" id="toc-step-four---assessing-model-functioning-1" class="nav-link" data-scroll-target="#step-four---assessing-model-functioning-1">Step Four - Assessing Model Functioning</a></li>
+  <li><a href="#step-five---model-interpretation-1" id="toc-step-five---model-interpretation-1" class="nav-link" data-scroll-target="#step-five---model-interpretation-1">Step Five - Model Interpretation</a></li>
+  </ul></li>
+  </ul></li>
   </ul>
 </nav>
 </div>
@@ -119,9 +127,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <section id="using-poisson-glms" class="level1">
 <h1>Using Poisson GLMs <img src="Images/logo.png" align="right" height="138.5"></h1>
-<section id="data-loading" class="level2">
-<h2 class="anchored" data-anchor-id="data-loading">Data Loading</h2>
-<p>Rather than using a real-world dataset. This data set is the number of Plant species on different islands in the Galapagos Islands, how many of those species are endemic, the area of the island, its max elevation, the distance to the nearest island, its distance to santa cruz (the most populace island) and the area of the nearest island.</p>
+<section id="data-loading-simple---galapagos" class="level2">
+<h2 class="anchored" data-anchor-id="data-loading-simple---galapagos">Data Loading Simple - Galapagos</h2>
+<p>Lets use a real-world dataset. This data set is the number of Plant species on different islands in the Galapagos Islands, how many of those species are endemic, the area of the island, its max elevation, the distance to the nearest island, its distance to santa cruz (the most populace island) and the area of the nearest island.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -155,10 +163,11 @@ $ Scruz     &lt;dbl&gt; 0.6, 26.3, 58.7, 47.4, 1.9, 8.0, 12.0, 290.2, 0.4, 50.2,
 $ Adjacent  &lt;dbl&gt; 1.84, 572.33, 0.78, 0.18, 903.82, 1.84, 0.34, 2.85, 17.95, 0…</code></pre>
 </div>
 </div>
+<p><img src="Images/island-of-rock.jpg" align="centre" width="100%/"></p>
 <section id="step-one---scienctific-model-to-stats-model" class="level3">
 <h3 class="anchored" data-anchor-id="step-one---scienctific-model-to-stats-model">Step One - Scienctific Model to Stats Model</h3>
 <p>As an archipelago of volcanic islands the Galapagos were formed by geological processes, these geological processes such as tectonic movement and volcanic activity will have implications for the amount of endemic plant species on an island. Therefore, lets explore the relationship of plant endemism and physical features of the islands. For this example we will assess the effect of elevation of an island on the number of endemic species on that island.</p>
-<p>This is a relatively simple model with just two fixed effect and can be written as:</p>
+<p>This is a relatively simple model with just one fixed effect and can be written as:</p>
 <p>Count of Endemic Plants ~ Elevation</p>
 </section>
 <section id="step-two---resonse-variable-distribution" class="level3">
@@ -304,11 +313,262 @@ y = \beta_{1} log Elevation + Intercept
 </div>
 </div>
 </section>
-</section>
-</section>
-<section id="some-caveats" class="level1">
-<h1>Some Caveats</h1>
+<section id="some-caveats" class="level3">
+<h3 class="anchored" data-anchor-id="some-caveats">Some Caveats</h3>
 <p>Now this looks quite good, with more uncertainty at higher values where there are less values to influence the prediction. This is a very simplified model that is not taking into consideration many different factors. For example, Age of an island is highly influential on its plant communities as well as the volcanic activity. So from a science point of view this is not the whole story, infact the Elevation may be just a proxy for the amount of available habitat space and the potential for habitat niches that are influential on endemism. Other factors such as human occupation and the influence that has caused in Galapagos on the local plant populations should not be ignored: invasive species, agricultural practices etc.</p>
+</section>
+</section>
+<section id="data-loading-complex---epilepsy" class="level2">
+<h2 class="anchored" data-anchor-id="data-loading-complex---epilepsy">Data Loading Complex - Epilepsy</h2>
+<p>Lets create a more complex poisson model. This data set is the number of epileptic seizures from 59 patients in a clinical trial of a treatment. Patients were given a a treatment of Placebo or a drug called Progabide. There is a base number of seizures for the 8 weeks before the trial and then a seizure rate for every 2 week period (up to 8 weeks) after being given a treatment. Patients Ages are also available. We will summarise all seizures had by a patient in the 4 periods post treatment to make this a simpler assessment. Although, we could have assessed an effect over time post treatment as well. (Another day perhaps)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># install.packages("HSAUR2")</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(HSAUR2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: tools</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'HSAUR2'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:faraway':
+
+    epilepsy, toenail</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:tidyr':
+
+    household</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(<span class="st">"epilepsy"</span>)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glimpse</span>(epilepsy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 236
+Columns: 6
+$ treatment    &lt;fct&gt; placebo, placebo, placebo, placebo, placebo, placebo, pla…
+$ base         &lt;int&gt; 11, 11, 11, 11, 11, 11, 11, 11, 6, 6, 6, 6, 8, 8, 8, 8, 6…
+$ age          &lt;int&gt; 31, 31, 31, 31, 30, 30, 30, 30, 25, 25, 25, 25, 36, 36, 3…
+$ seizure.rate &lt;int&gt; 5, 3, 3, 3, 3, 5, 3, 3, 2, 4, 0, 5, 4, 4, 1, 4, 7, 18, 9,…
+$ period       &lt;ord&gt; 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, 4, 1, 2, 3, …
+$ subject      &lt;fct&gt; 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, …</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>df_epilepsy<span class="ot">&lt;-</span>epilepsy <span class="sc">%&gt;%</span> </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(age,base,subject,treatment) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">seizures=</span><span class="fu">sum</span>(seizure.rate))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`summarise()` has grouped output by 'age', 'base', 'subject'. You can override
+using the `.groups` argument.</code></pre>
+</div>
+</div>
+<section id="step-one---scienctific-model-to-stats-model-1" class="level3">
+<h3 class="anchored" data-anchor-id="step-one---scienctific-model-to-stats-model-1">Step One - Scienctific Model to Stats Model</h3>
+<p>We will assess the number of seizures in the 8 weeks after treatment for patients and assess whether this pattern changes with age and the number of seizures they had before treatment.</p>
+<p>This is a bit more complex model with two interacting fixed effect and one additional fixed effect and can be written as:</p>
+<p>Count of Seizures After Treatment ~ Treatment*Age + Base Number of Seizures</p>
+</section>
+<section id="step-two---resonse-variable-distribution-1" class="level3">
+<h3 class="anchored" data-anchor-id="step-two---resonse-variable-distribution-1">Step Two - Resonse Variable Distribution</h3>
+<p>Again, the number of seizures can only be a non-negative integer.</p>
+</section>
+<section id="step-three---organising-fixed-effects-1" class="level3">
+<h3 class="anchored" data-anchor-id="step-three---organising-fixed-effects-1">Step Three - Organising Fixed Effects</h3>
+<p>Lets check all our fixed effects. For numeric values we can assess their distribution, categorical we can see the number of samples is relatively even.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>p1<span class="ot">&lt;-</span><span class="fu">ggplot</span>(df_epilepsy,<span class="fu">aes</span>(<span class="at">x=</span>age))<span class="sc">+</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">fill=</span><span class="st">"darkcyan"</span>,<span class="at">alpha=</span><span class="fl">0.7</span>)<span class="sc">+</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>p2<span class="ot">&lt;-</span><span class="fu">ggplot</span>(df_epilepsy,<span class="fu">aes</span>(<span class="at">x=</span>treatment))<span class="sc">+</span></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">fill=</span><span class="st">"darkcyan"</span>,<span class="at">alpha=</span><span class="fl">0.7</span>)<span class="sc">+</span></span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>p3<span class="ot">&lt;-</span><span class="fu">ggplot</span>(df_epilepsy,<span class="fu">aes</span>(<span class="at">x=</span>base))<span class="sc">+</span></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">fill=</span><span class="st">"darkcyan"</span>,<span class="at">alpha=</span><span class="fl">0.7</span>)<span class="sc">+</span></span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>p4<span class="ot">&lt;-</span><span class="fu">ggplot</span>(df_epilepsy,<span class="fu">aes</span>(<span class="at">x=</span><span class="fu">sqrt</span>(base)))<span class="sc">+</span></span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">fill=</span><span class="st">"darkcyan"</span>,<span class="at">alpha=</span><span class="fl">0.7</span>)<span class="sc">+</span></span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>(p1<span class="sc">+</span>p2)<span class="sc">/</span>(p3<span class="sc">+</span>p4)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="06_GLMUsagePoisson_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>Our factors age and treatment seem fine, but maybe we should square root the base effect so we don’t have really big base values influencing our model as much. We could log here or centre and scale but we shall use square root for now.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>df<span class="ot">&lt;-</span>df_epilepsy <span class="sc">%&gt;%</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">base_sqrt=</span><span class="fu">sqrt</span>(base))</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>glm2<span class="ot">&lt;-</span><span class="fu">glm</span>(seizures<span class="sc">~</span>treatment<span class="sc">*</span>age<span class="sc">+</span>base_sqrt,<span class="at">data=</span>df, <span class="at">family=</span> <span class="st">"poisson"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="step-four---assessing-model-functioning-1" class="level3">
+<h3 class="anchored" data-anchor-id="step-four---assessing-model-functioning-1">Step Four - Assessing Model Functioning</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(glm2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Model has interaction terms. VIFs might be inflated.
+  You may check multicollinearity among predictors of a model without
+  interaction terms.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="06_GLMUsagePoisson_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>As earlier, we see some fairly mixed results here. The normality of residuals is good with almost all points following the line, whereas our homogenerity of variance is again not amazing, which is likely being driven by a low number of high base seizure values values. However, the general patterns are quite spread but with very large values showing some overdispersion. This over dispersion might make us want to use a distribution that is more able to deal with over dispersion, such as Negative Binomial. We will accept the amount of over dispersion here as it is quite minor and only at the largest values.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glm2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = seizures ~ treatment * age + base_sqrt, family = "poisson", 
+    data = df)
+
+Coefficients:
+                        Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)             0.483382   0.182272   2.652   0.0080 ** 
+treatmentProgabide      0.317571   0.226665   1.401   0.1612    
+age                     0.029911   0.005555   5.385 7.25e-08 ***
+base_sqrt               0.357709   0.008901  40.187  &lt; 2e-16 ***
+treatmentProgabide:age -0.013838   0.007903  -1.751   0.0799 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 2122.73  on 58  degrees of freedom
+Residual deviance:  490.77  on 54  degrees of freedom
+AIC: 784.04
+
+Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+</div>
+<p>Okay there are a lot of numbers here but what does it actually mean?</p>
+<p>Lets write out the equation for the model, then we can use the values from the summary to create an equation for the model (the predict function will do this for us).</p>
+<p>If we wanted to we could write out our model as this:</p>
+<p><span class="math display">\[Count of Seizures Post Treatment = Poisson(\lambda)\]</span></p>
+<p><span class="math display">\[\lambda=log(y)\]</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+y = \beta_{1} treatment:age\\
++ \beta_{2} \sqrt{base} \\
++ \beta_{3} age\\
++ \beta_{4} treatment\\
++ Intercept
+\end{aligned}
+\]</span></p>
+<p>As the Poisson distribution requires only one shape parameter (<span class="math inline">\(\lambda\)</span>) and this must be zero or above, we must convert out linear equation results (<span class="math inline">\(y\)</span>) so that it is non-negative. This means we use the link function, which for poisson models is by default a log. We can use a different link function if we want, or even check to check which link was used.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>glm2<span class="sc">$</span>family<span class="sc">$</span>link</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "log"</code></pre>
+</div>
+</div>
+<p>When we plot the estimates into this equation, this should be similar to our raw data but not identical. Remember we are creating a model to Generalise the patterns of the raw data, not copy them!</p>
+</section>
+<section id="step-five---model-interpretation-1" class="level3">
+<h3 class="anchored" data-anchor-id="step-five---model-interpretation-1">Step Five - Model Interpretation</h3>
+<p>Thankfully we don’t have to extract each <span class="math inline">\(\beta\)</span> parameter from the summary table as R has useful functions that can do this for us! To do this we make simulated raw data with the same predictor variables in.</p>
+<p>We then use the model to predict() the response variable based on those predictor variables.</p>
+<p>Therefore, we make a data set with age, treatment and base level the same as our original data (be careful of spelling and capitalisation, R wants it identical).</p>
+<p>We will choose a low, middle and high base level</p>
+<p>The model then predicts the average Count of Seizures based on those ages, treatments and base levels.</p>
+<p>As we have two continuous fixed effects we could plot as heatmap style if we wanted. But then it is difficult or impossible to display confidence levels well.</p>
+<p>We can also tell the predict function to predict error (Standard Error here that we then convert to an approximation of the 95% confidence interval).</p>
+<p>Note that here I tell Predict that I want the fit to be returned on the response scale and not the link scale.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>NewData_1<span class="ot">&lt;-</span><span class="fu">expand.grid</span>(<span class="at">base_sqrt=</span><span class="fu">seq</span>(<span class="fu">min</span>(df<span class="sc">$</span>base_sqrt),<span class="fu">max</span>(df<span class="sc">$</span>base_sqrt),<span class="at">length.out=</span><span class="dv">100</span>),</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">age=</span><span class="fu">seq</span>(<span class="fu">min</span>(df<span class="sc">$</span>age),<span class="fu">max</span>(df<span class="sc">$</span>age),<span class="at">length.out=</span><span class="dv">50</span>),</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">treatment=</span><span class="fu">c</span>(<span class="st">"placebo"</span>,<span class="st">"Progabide"</span>))</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-5"><a href="#cb32-5" aria-hidden="true" tabindex="-1"></a>Pred<span class="ot">&lt;-</span><span class="fu">predict</span>(glm2,NewData_1,<span class="at">se.fit=</span><span class="cn">TRUE</span>,<span class="at">type=</span><span class="st">"response"</span>)</span>
+<span id="cb32-6"><a href="#cb32-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-7"><a href="#cb32-7" aria-hidden="true" tabindex="-1"></a>NewData<span class="ot">&lt;-</span>NewData_1 <span class="sc">%&gt;%</span> </span>
+<span id="cb32-8"><a href="#cb32-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">response=</span>Pred<span class="sc">$</span>fit,</span>
+<span id="cb32-9"><a href="#cb32-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">se.fit=</span>Pred<span class="sc">$</span>se.fit,</span>
+<span id="cb32-10"><a href="#cb32-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">Upr=</span>response<span class="sc">+</span>(se.fit<span class="sc">*</span><span class="fl">1.96</span>),</span>
+<span id="cb32-11"><a href="#cb32-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">Lwr=</span>response<span class="sc">-</span>(se.fit<span class="sc">*</span><span class="fl">1.96</span>),</span>
+<span id="cb32-12"><a href="#cb32-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">base=</span>base_sqrt<span class="sc">^</span><span class="dv">2</span>,</span>
+<span id="cb32-13"><a href="#cb32-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">treatment=</span><span class="fu">if_else</span>(treatment<span class="sc">==</span><span class="st">"placebo"</span>,<span class="st">"Placebo"</span>,treatment))</span>
+<span id="cb32-14"><a href="#cb32-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb32-15"><a href="#cb32-15" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(NewData)<span class="sc">+</span></span>
+<span id="cb32-16"><a href="#cb32-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">x=</span>age,<span class="at">y=</span>base,<span class="at">fill=</span>response),</span>
+<span id="cb32-17"><a href="#cb32-17" aria-hidden="true" tabindex="-1"></a>            <span class="at">alpha=</span><span class="fl">0.9</span>)<span class="sc">+</span></span>
+<span id="cb32-18"><a href="#cb32-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_sqrt</span>()<span class="sc">+</span></span>
+<span id="cb32-19"><a href="#cb32-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">direction=</span><span class="sc">-</span><span class="dv">1</span>)<span class="sc">+</span></span>
+<span id="cb32-20"><a href="#cb32-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>treatment)<span class="sc">+</span></span>
+<span id="cb32-21"><a href="#cb32-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Age"</span>,<span class="at">y=</span><span class="st">"Base Number of Seizures"</span>,<span class="at">fill=</span><span class="st">"Predicted Number</span><span class="sc">\n</span><span class="st">of Seizures"</span>)<span class="sc">+</span></span>
+<span id="cb32-22"><a href="#cb32-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="06_GLMUsagePoisson_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>Now lets plot this model output with the raw values to see how well the model has worked.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>df_1<span class="ot">&lt;-</span>df <span class="sc">%&gt;%</span> </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">treatment=</span><span class="fu">if_else</span>(treatment<span class="sc">==</span><span class="st">"placebo"</span>,<span class="st">"Placebo"</span>,treatment))</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(NewData)<span class="sc">+</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">x=</span>age,<span class="at">y=</span>base,<span class="at">fill=</span>response),</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">alpha=</span><span class="fl">0.9</span>)<span class="sc">+</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>df_1,<span class="fu">aes</span>(<span class="at">x=</span>age,<span class="at">y=</span>base,<span class="at">fill=</span>seizures),<span class="at">shape=</span><span class="dv">21</span>,<span class="at">colour=</span><span class="st">"#80808040"</span>)<span class="sc">+</span></span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_sqrt</span>()<span class="sc">+</span></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">direction=</span><span class="sc">-</span><span class="dv">1</span>,<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">470</span>))<span class="sc">+</span></span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_viridis_c</span>(<span class="at">direction=</span><span class="sc">-</span><span class="dv">1</span>,<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">470</span>))<span class="sc">+</span></span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>treatment)<span class="sc">+</span></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Age"</span>,<span class="at">y=</span><span class="st">"Base Number of Seizures"</span>,<span class="at">fill=</span><span class="st">"Number</span><span class="sc">\n</span><span class="st">of Seizures"</span>,<span class="at">colour=</span><span class="st">"Number</span><span class="sc">\n</span><span class="st">of Seizures"</span>)<span class="sc">+</span></span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="06_GLMUsagePoisson_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>The patterns of colour from points to back ground do seem to generalise well. However, from this plot we can see clearly that the model is predicting in the age/base space that is not in the original data, so perhaps it would be better to plot the model assuming an average base level of seizures then compare with the raw data. We can also display the models confidence then too.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>NewData_2<span class="ot">&lt;-</span><span class="fu">expand.grid</span>(<span class="at">base_sqrt=</span><span class="fu">sqrt</span>(<span class="fu">mean</span>(df<span class="sc">$</span>base)),</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>                       <span class="at">age=</span><span class="fu">seq</span>(<span class="fu">min</span>(df<span class="sc">$</span>age),<span class="fu">max</span>(df<span class="sc">$</span>age),<span class="at">length.out=</span><span class="dv">50</span>),</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>                       <span class="at">treatment=</span><span class="fu">c</span>(<span class="st">"placebo"</span>,<span class="st">"Progabide"</span>))</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-5"><a href="#cb34-5" aria-hidden="true" tabindex="-1"></a>Pred_3<span class="ot">&lt;-</span><span class="fu">predict</span>(glm2,NewData_2,<span class="at">se.fit=</span><span class="cn">TRUE</span>,<span class="at">type=</span><span class="st">"response"</span>)</span>
+<span id="cb34-6"><a href="#cb34-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-7"><a href="#cb34-7" aria-hidden="true" tabindex="-1"></a>NewData_MeanBase<span class="ot">&lt;-</span>NewData_2 <span class="sc">%&gt;%</span> </span>
+<span id="cb34-8"><a href="#cb34-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">response=</span>Pred_3<span class="sc">$</span>fit,</span>
+<span id="cb34-9"><a href="#cb34-9" aria-hidden="true" tabindex="-1"></a>         <span class="at">se.fit=</span>Pred_3<span class="sc">$</span>se.fit,</span>
+<span id="cb34-10"><a href="#cb34-10" aria-hidden="true" tabindex="-1"></a>         <span class="at">Upr=</span>response<span class="sc">+</span>(se.fit<span class="sc">*</span><span class="fl">1.96</span>),</span>
+<span id="cb34-11"><a href="#cb34-11" aria-hidden="true" tabindex="-1"></a>         <span class="at">Lwr=</span>response<span class="sc">-</span>(se.fit<span class="sc">*</span><span class="fl">1.96</span>),</span>
+<span id="cb34-12"><a href="#cb34-12" aria-hidden="true" tabindex="-1"></a>         <span class="at">base=</span>base_sqrt<span class="sc">^</span><span class="dv">2</span>,</span>
+<span id="cb34-13"><a href="#cb34-13" aria-hidden="true" tabindex="-1"></a>         <span class="at">treatment=</span><span class="fu">if_else</span>(treatment<span class="sc">==</span><span class="st">"placebo"</span>,<span class="st">"Placebo"</span>,treatment))</span>
+<span id="cb34-14"><a href="#cb34-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb34-15"><a href="#cb34-15" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(NewData_MeanBase)<span class="sc">+</span></span>
+<span id="cb34-16"><a href="#cb34-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>df_1,<span class="fu">aes</span>(<span class="at">x=</span>age,<span class="at">y=</span>seizures,<span class="at">colour=</span>treatment))<span class="sc">+</span></span>
+<span id="cb34-17"><a href="#cb34-17" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_ribbon</span>(<span class="fu">aes</span>(<span class="at">x=</span>age,</span>
+<span id="cb34-18"><a href="#cb34-18" aria-hidden="true" tabindex="-1"></a>                     <span class="at">ymax=</span>Upr,</span>
+<span id="cb34-19"><a href="#cb34-19" aria-hidden="true" tabindex="-1"></a>                     <span class="at">ymin=</span>Lwr,</span>
+<span id="cb34-20"><a href="#cb34-20" aria-hidden="true" tabindex="-1"></a>                   <span class="at">fill=</span>treatment),</span>
+<span id="cb34-21"><a href="#cb34-21" aria-hidden="true" tabindex="-1"></a>               <span class="at">alpha=</span><span class="fl">0.7</span>)<span class="sc">+</span></span>
+<span id="cb34-22"><a href="#cb34-22" aria-hidden="true" tabindex="-1"></a>   <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x=</span>age,</span>
+<span id="cb34-23"><a href="#cb34-23" aria-hidden="true" tabindex="-1"></a>                  <span class="at">y=</span>response,</span>
+<span id="cb34-24"><a href="#cb34-24" aria-hidden="true" tabindex="-1"></a>                   <span class="at">colour=</span>treatment))<span class="sc">+</span></span>
+<span id="cb34-25"><a href="#cb34-25" aria-hidden="true" tabindex="-1"></a>   <span class="fu">scale_colour_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>))<span class="sc">+</span></span>
+<span id="cb34-26"><a href="#cb34-26" aria-hidden="true" tabindex="-1"></a>   <span class="fu">scale_fill_manual</span>(<span class="at">values=</span><span class="fu">c</span>(<span class="st">"darkcyan"</span>,<span class="st">"darkorange"</span>))<span class="sc">+</span></span>
+<span id="cb34-27"><a href="#cb34-27" aria-hidden="true" tabindex="-1"></a>   <span class="fu">scale_y_continuous</span>(<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">100</span>))<span class="sc">+</span></span>
+<span id="cb34-28"><a href="#cb34-28" aria-hidden="true" tabindex="-1"></a>   <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Age"</span>,<span class="at">y=</span><span class="st">"Response Variable (Count of Seizures)"</span>,<span class="at">colour=</span><span class="st">"Treatment"</span>,<span class="at">fill=</span><span class="st">"Treatment"</span>)<span class="sc">+</span></span>
+<span id="cb34-29"><a href="#cb34-29" aria-hidden="true" tabindex="-1"></a>   <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: Removed 3 rows containing missing values (`geom_point()`).</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="06_GLMUsagePoisson_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>I have set the y axis to ignore very large values (above 100) so we can see clearly what the model is telling us.</p>
+<p>This shows a clearer picture and helps us understand that the model has seen some differences between the treatments and that this difference becomes more distinct with age. Although the differences are very minimal between treatments. But a clear increase in Seizures with increasing age regardless of treatment.</p>
+</section>
+</section>
 </section>
 
 </main>

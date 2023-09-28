@@ -364,7 +364,7 @@ df_1<-df %>%
 ggplot(NewData)+
   geom_tile(aes(x=age,y=base,fill=response),
             alpha=0.9)+
-  geom_point(data=df_1,aes(x=age,y=base,fill=seizures),shape=21,colour="#80808040")+
+  geom_point(data=df_1,aes(x=age,y=base,fill=seizures),shape=21,colour="#FFFFFF50")+
   scale_y_sqrt()+
   scale_fill_viridis_c(direction=-1,limits=c(0,470))+
   scale_colour_viridis_c(direction=-1,limits=c(0,470))+
@@ -415,7 +415,7 @@ ggplot(NewData_MeanBase)+
 
 I have set the y axis to ignore very large values (above 100) so we can see clearly what the model is telling us.
 
-This shows a clearer picture and helps us understand that the model has seen some differences between the treatments and that this difference becomes more distinct with age. Although the differences are very minimal between treatments. But a clear increase in Seizures with increasing age regardless of treatment. 
+This shows a clearer picture and helps us understand that the model has seen some differences between the treatments and that this difference becomes more distinct with age. Although the differences are very minimal between treatments. But a clear increase in Seizures with increasing age regardless of treatment. This model (which is simplistic and probably not fully adequate at addressing this question) would not give us evidence that the drug is significantly different from placebo but we might infer there is some lessening of the effect of age in the Progabide treatment.
 
 
 

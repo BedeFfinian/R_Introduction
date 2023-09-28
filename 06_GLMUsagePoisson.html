@@ -516,7 +516,7 @@ y = \beta_{1} treatment:age\\
 <span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(NewData)<span class="sc">+</span></span>
 <span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">x=</span>age,<span class="at">y=</span>base,<span class="at">fill=</span>response),</span>
 <span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">alpha=</span><span class="fl">0.9</span>)<span class="sc">+</span></span>
-<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>df_1,<span class="fu">aes</span>(<span class="at">x=</span>age,<span class="at">y=</span>base,<span class="at">fill=</span>seizures),<span class="at">shape=</span><span class="dv">21</span>,<span class="at">colour=</span><span class="st">"#80808040"</span>)<span class="sc">+</span></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data=</span>df_1,<span class="fu">aes</span>(<span class="at">x=</span>age,<span class="at">y=</span>base,<span class="at">fill=</span>seizures),<span class="at">shape=</span><span class="dv">21</span>,<span class="at">colour=</span><span class="st">"#FFFFFF50"</span>)<span class="sc">+</span></span>
 <span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_sqrt</span>()<span class="sc">+</span></span>
 <span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">direction=</span><span class="sc">-</span><span class="dv">1</span>,<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">470</span>))<span class="sc">+</span></span>
 <span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_viridis_c</span>(<span class="at">direction=</span><span class="sc">-</span><span class="dv">1</span>,<span class="at">limits=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">470</span>))<span class="sc">+</span></span>
@@ -566,7 +566,7 @@ y = \beta_{1} treatment:age\\
 </div>
 </div>
 <p>I have set the y axis to ignore very large values (above 100) so we can see clearly what the model is telling us.</p>
-<p>This shows a clearer picture and helps us understand that the model has seen some differences between the treatments and that this difference becomes more distinct with age. Although the differences are very minimal between treatments. But a clear increase in Seizures with increasing age regardless of treatment.</p>
+<p>This shows a clearer picture and helps us understand that the model has seen some differences between the treatments and that this difference becomes more distinct with age. Although the differences are very minimal between treatments. But a clear increase in Seizures with increasing age regardless of treatment. This model (which is simplistic and probably not fully adequate at addressing this question) would not give us evidence that the drug is significantly different from placebo but we might infer there is some lessening of the effect of age in the Progabide treatment.</p>
 </section>
 </section>
 </section>

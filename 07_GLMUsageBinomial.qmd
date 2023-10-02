@@ -1,0 +1,451 @@
+---
+title: "(General) Linear Models in R - Regression Analysis Use and Examples"
+format:
+  html:
+    toc: true
+    toc-location: left
+---
+
+# Using Binomial GLMs <img src='Images/logo.png' align="right" height="138.5" /></a>
+
+## Data Loading Simple - Diamonds
+
+Okay let's grab the data from the yarrr dataset for diamonds to assess what drives the value of diamonds based on their weight, clarity and colour. 
+
+```{r}
+library(performance)
+library(tidyverse)
+library(patchwork)
+#install.packages("yarrr")
+library(yarrr)
+
+data(diamonds)
+summary(diamonds)
+
+```
+
+<img src='Images/diamond.jpeg' align="centre" width = 100%/></a>
+
+### Step One - Scienctific Model to Stats Model
+
+So we could model the actual diamond value but for this example we will split the value into high and low values (higher than 190 or lower than 190). 
+
+```{r}
+#| fig.width: 8
+#| fig.height: 4
+
+df_bin<-diamonds %>% 
+  mutate(binary=if_else(value>190,1,0))
+
+ggplot(df_bin,aes(x=as.factor(binary)))+
+  geom_bar(fill="darkcyan",alpha=0.7)+
+  labs(x="Binary Value Above 190 or not",y="Count")+
+  theme_classic()
+
+```
+
+We imagine that the colour, weight and clarity will all influence the value of a diamond, thus we shall additively include each of these variables in the model.
+
+Binary Value (above 190) ~ Clarity + Weight + Colour
+
+### Step Two - Resonse Variable Distribution
+
+We created the response variable to be either 1 or 0. We therefore know that it is a binomial distribution but more specifically it is a Bernoulli distribution. For modelling in r the binomial distribution family is what is used.
+
+### Step Three - Organising Fixed Effects 
+
+Okay so lets look at our fixed effects, we will use density for continuous values (clarity and weight), while bars can show the counts for the integer Colour. Here colour is an ordinal integer, therefore we will model it as such. If we had Colour as a category (such as red, green, blue etc) we would want to convert it to be a factor for modelling as it would be more nominal. 
+
+```{r}
+#| fig.width: 8
+#| fig.height: 4
+
+p1<-ggplot(df_bin,aes(x=clarity))+
+  geom_density(fill="darkcyan",alpha=0.7)+
+  labs(x="Diamond Clarity",y="Density")+
+  theme_classic()
+
+p2<-ggplot(df_bin,aes(x=color))+
+  geom_bar(fill="darkcyan",alpha=0.7)+
+  labs(x="Diamond Colour",y="Count")+
+  theme_classic()
+
+p3<-ggplot(df_bin,aes(x=weight))+
+  geom_density(fill="darkcyan",alpha=0.7)+
+  labs(x="Diamond Weight",y="Denisty")+
+  theme_classic()
+
+
+p1+p2+p3
+
+```
+
+
+Let's fit the glm using these our statistical model from above. 
+
+```{r}
+
+glm1<-glm(binary~clarity+color+weight,data=df_bin, family= "binomial")
+
+```
+
+### Step Four - Assessing Model Functioning
+
+```{r}
+#| fig.width: 8
+#| fig.height: 8
+
+check_model(glm1)
+
+```
+
+Okay, here we have a different looking plot than before as the response variable is not continuous or integers. Therefore, homogeneity of resiiduals is less important, but normality of residuals is. Here we see that the qqnorm plot looks fairly good but high values are moving away from normality. Generally the model seems to fit well so we will interpret it. 
+
+```{r}
+summary(glm1)
+```
+
+Lets write out the equation for the model, then we can use the values from the summary to create an equation for the model (the predict function will do this for us). 
+
+If we wanted to we could write out our model as this:
+
+$$ Value \:Above \:190 \:(or \:Not) = Binomial(N, Pr)$$
+
+$$Pr=logit(y)$$
+
+$$
+\begin{aligned}
+y = \beta_{1} Weight + \beta_{2} Colour + \beta_{3} Clarity+ Intercept 
+\end{aligned}
+$$
+
+Here our link function is slightly different again. This time it is a logit. This is effectively a way of converting a value to be a probability. 
+
+We can check this is the link function r is using here.
+
+```{r}
+
+glm1$family$link
+
+```
+
+### Step Five - Model Interpretation
+
+Thankfully we don't have to extract each $\beta$ parameter from the summary table as R has useful functions that can do this for us! To do this we make simulated raw data with the same predictor variables in.
+
+We then use the model to predict() the response variable based on those predictor variables.
+
+Therefore, we make a data set with just Clarity, Color and Weight the same as our original data (be careful of spelling and capitalisation, R wants it identical).
+
+The model then predicts the average Probability that a Diamond has a value over 190 based on its weight, color and clarity. 
+
+We can also tell the predict function to predict error (Standard Error here that we then convert to an approximation of the 95% confidence interval, we make sure these Upper and Lower confidence intervals don't stray outside of 0 and 1).
+
+Note that here I tell Predict that I want the fit to be returned on the response scale and not the link scale. 
+
+To make plotting easier I will set a Low, middle and high value for weight and color as clarity has the highest influence on diamond value.
+
+```{r}
+#| fig.width: 8
+#| fig.height: 8
+
+NewData_1<-expand.grid(weight=c(min(df_bin$weight),mean(df_bin$weight),max(df_bin$weight)),
+                       color=c(2,5,8),
+                       clarity=seq(min(df_bin$clarity),max(df_bin$clarity),length.out=50)
+                       ) %>% 
+  mutate(Weight_Group=factor(case_when(weight==min(df_bin$weight)~"Low",
+                                weight==mean(df_bin$weight)~"Mid",
+                                weight==max(df_bin$weight)~"High"
+                                ),levels=c("Low","Mid","High")),
+         Color_Group=factor(case_when(color==2~"Low Colour",
+                                color==5~"Mid Colour",
+                                color==8~"High Colour"
+                                ),levels=c("Low Colour","Mid Colour","High Colour")))
+
+Pred<-predict(glm1,NewData_1,se.fit=TRUE,type="response")
+
+NewData<-NewData_1 %>% 
+  mutate(response=Pred$fit,
+         se.fit=Pred$se.fit,
+         Upr=response+(se.fit*1.96),
+         Lwr=response-(se.fit*1.96),
+         Upr=case_when(Upr>1~1,
+                       TRUE~Upr),
+         Lwr=case_when(Lwr<0~0,
+                       TRUE~Lwr))
+
+ggplot(NewData)+
+  geom_ribbon(aes(x=clarity,
+                    ymax=Upr,
+                    ymin=Lwr,
+                  fill=Weight_Group),
+              alpha=0.6)+
+  geom_line(aes(x=clarity,
+                 y=response,
+                  colour=Weight_Group))+
+  facet_wrap(~Color_Group,ncol = 1)+
+   scale_colour_manual(values=c("darkorange","grey70","darkcyan"),)+
+   scale_fill_manual(values=c("darkorange","grey70","darkcyan"))+
+  labs(x="Clarity",y="Response Variable (Probability of Diamond value over 190)",
+       fill="Weight Group",colour="Weight Group")+
+  theme_classic()
+
+
+```
+
+From this graph we can see that Higher Weight class leads to a higher probability of a diamond being over 190 in value, likewise higher clarity leads to higher probability of high value. Colour seems to have less effect, although this is hard to see from this graph.
+
+Now lets plot this model output over the raw values to see how well the model has worked. We will create new columns to show the Colour and Weight Group from the raw data. I will set arbitary cut offs, which could be interquartiles or thirds of the data. Or if there were specific values of interest these could be plotted on their own.
+
+```{r}
+#| fig.width: 8
+#| fig.height: 8
+
+
+Raw_df_bin<-df_bin %>% 
+  mutate(Weight_Group=factor(case_when(weight<=7.5~"Low",
+                                weight>7.5 & weight<12.5~"Mid",
+                                weight>=12.5~"High"
+                                ),levels=c("Low","Mid","High")),
+         Color_Group=factor(case_when(color<=3~"Low Colour",
+                                color>3 & color<7~"Mid Colour",
+                                color>=7~"High Colour"
+                                ),levels=c("Low Colour","Mid Colour","High Colour")))
+
+
+ggplot(NewData)+
+  geom_ribbon(aes(x=clarity,
+                    ymax=Upr,
+                    ymin=Lwr,
+                  fill=Weight_Group),
+              alpha=0.6)+
+  geom_line(aes(x=clarity,
+                 y=response,
+                  colour=Weight_Group))+
+  geom_point(data=Raw_df_bin,aes(x=clarity,y=binary,colour=Weight_Group))+
+  facet_grid(Weight_Group~Color_Group)+
+   scale_colour_manual(values=c("darkorange","grey70","darkcyan"),)+
+   scale_fill_manual(values=c("darkorange","grey70","darkcyan"))+
+  labs(x="Clarity",y="Response Variable (Probability of Diamond value over 190)",
+       fill="Weight Group",colour="Weight Group")+
+  theme_classic()
+
+
+```
+
+### Some Caveats
+
+Now this looks quite good, with more uncertainty where there are less values to influence the prediction. This is a very simplified model that is not taking into consideration many different factors, such as origin of diamond, the current diamond market etc. It is also a relatively small data set.
+
+## Data Loading Complex - Affairs
+
+Lets create a more complex Binomial model. This data set is the frequency of affairs within the last year with their gender, age, yearsmarried, children, religiousness, education, occupation and self rating of marriage. 
+
+```{r}
+#install.packages("AER")
+library("AER")
+data(Affairs, package="AER")
+
+summary(Affairs)
+
+Affairs_binom<-Affairs %>% 
+  mutate(affairs_bin=if_else(affairs>0,1,0))
+
+```
+
+Our response variable will be a summary of the affairs column for occurrence or not of an affair in the last year where affairs was how often someone engaged in extramarital sexual intercourse during the past year? 0 = none, 1 = once, 2 = twice, 3 = 3 times, 7 = 4–10 times, 12 = monthly, 12 = weekly, 12 = daily.
+
+### Step One - Scienctific Model to Stats Model
+
+We will assess the frequency of affairs and whether someones gender, religiousness affects this value, we will also include yearsmarried and whether the pattern of yearsmarried changes depending having children or not.
+
+This is a bit more complex model with some interacting fixed effects and additional additive fixed effects and can be written as:
+
+Frequency of Affairs ~ Children*Yearsmarried + Gender + Religiousness
+
+### Step Two - Resonse Variable Distribution
+
+As before there are only integer values for affairs or none in the last year. This type of data could be presented in a different way if we wanted but we will use this scale for now.
+
+### Step Three - Organising Fixed Effects 
+
+Lets check all our fixed effects. For numeric values we can assess their distribution, categorical we can see the number of samples and if it is relatively even. From the way our data has been stored, they are all ordered categories but r has read some as numeric values. This is why we code them as factors first. Gender and children are already factors. We could use the yearsmarried as a categry but we will use a numeric here. I will also do a bit of house keeping such as capitalising the factors (personal preference!).
+
+```{r}
+#| fig.width: 8
+#| fig.height: 8
+
+Affairs_binom<-Affairs_binom %>% 
+  mutate(Yearsmarried_fct=factor(case_when(yearsmarried==0.125~"<1 Year",
+                                          yearsmarried==0.417~"<1 Year",
+                                          yearsmarried==0.75~"<1 Year",
+                                          yearsmarried==1.5~"1-2 Years",
+                                          yearsmarried==4~"3-5 Years",
+                                          yearsmarried==7~"6-8 Years",
+                                          yearsmarried==10~"9-11 Years",
+                                          yearsmarried==15~"> 12 Years"
+                                          ),
+                                 levels=c("<1 Year",
+                                          "1-2 Years","3-5 Years","6-8 Years",
+                                          "9-11 Years","> 12 Years")),
+         Religiousness_fct=factor(case_when(religiousness==1~"Anti",
+                                          religiousness==2~"Not",
+                                          religiousness==3~"Slightly",
+                                          religiousness==4~"Somewhat",
+                                          religiousness==5~"Very"
+                                          ),
+                                 levels=c("Anti","Not","Slightly","Somewhat","Very")),
+         Gender=case_when(gender=="male"~"Male",
+                          gender=="female"~"Female"),
+         Children=case_when(children=="yes"~"Yes",
+                            children=="no"~"No")) %>% 
+  dplyr::rename(Yearsmarried=yearsmarried)
+  
+
+p1<-ggplot(Affairs_binom,aes(x=Children))+
+  geom_bar(fill="darkcyan",alpha=0.7)+
+  theme_classic()
+
+
+p2<-ggplot(Affairs_binom,aes(x=Yearsmarried))+
+  geom_density(fill="darkcyan",alpha=0.7)+
+  theme_classic()
+
+p3<-ggplot(Affairs_binom,aes(x=Gender))+
+  geom_bar(fill="darkcyan",alpha=0.7)+
+  theme_classic()
+  
+p4<-ggplot(Affairs_binom,aes(x=Religiousness_fct))+
+  geom_bar(fill="darkcyan",alpha=0.7)+
+  theme_classic()
+
+(p1+p2)/(p3+p4)
+
+```
+
+These look okay, not always totally even but we shall see how the model performs. 
+
+```{r}
+#| fig.width: 8
+#| fig.height: 8
+
+
+
+glm2<-glm(affairs_bin~Children*Yearsmarried+Gender+Religiousness_fct,data=Affairs_binom, family= "binomial")
+
+```
+
+### Step Four - Assessing Model Functioning
+
+```{r}
+#| fig.width: 8
+#| fig.height: 8
+
+check_model(glm2)
+
+```
+
+As earlier, we don't see the plot for hommogeneity of residuals but we do see binned probabilities, which most of our values are inside the error bounds. Again the qqnorm plot looks good. There seems to be high collinearity but this is often the case with interactions terms. Generally, we can be happy with this model diagnostic.
+
+```{r}
+summary(glm2)
+```
+
+Here we have, for the first time sing our penguins example, multiple levels in a categorical fixed effect. This highlights a behaviour that $\beta$ values or Estimate values from GLMs show pairwise effect. So each row in this summary where it says yearsmarried_ft then one of the factor levels, it is comparing that factor level to the base level (<1 Year). Likewise, for religiousness_fct, where Anti is our base value and all factor levels are compared to this base level. 
+
+
+Lets write out the equation for the model, then we can use the values from the summary to create an equation for the model (the predict function will do this for us). 
+
+If we wanted to we could write out our model as this (this is a long one as there are so many factors):
+
+$$ Affair \:Occurence \:in \:Last  \:Year = Binomial(N, Pr)$$
+
+$$Pr=logit(y)$$
+
+$$
+\begin{aligned}
+y = \beta_{1} Children : Years \:Married \\
++ \beta_{2} Anti \:vs \:Not \:Regligious \\
++ \beta_{3} Anti \:vs \:Somewhat \:Regligious \\
++ \beta_{4} Anti \:vs \:Slightly \:Regligious \\
++ \beta_{5} Anti \:vs \:Very \:Regligious \\
++ \beta_{6} Female \:vs \:Male \:Gender \\
++ \beta_{7} Years \:Married \\
++ \beta_{8} Children \\
++ Intercept 
+\end{aligned}
+$$
+
+This is a lot of $\beta$ values but thankfully we don't have to deal with them directly. As before our link function is the logit value.
+
+```{r}
+
+glm2$family$link
+
+```
+
+When we plot the estimates into this equation, this should be similar to our raw data but not identical. Remember we are creating a model to Generalise the patterns of the raw data, not copy them!
+
+### Step Five - Model Interpretation
+
+Thankfully we don't have to extract each $\beta$ parameter from the summary table as R has useful functions that can do this for us! To do this we make simulated raw data with the same predictor variables in.
+
+We then use the model to predict() the response variable based on those predictor variables.
+
+Therefore, we make a data set with Children, Years Married, Gender and Religiousness the same as our original data (be careful of spelling and capitalisation, R wants it identical).
+
+The model then predicts the probability of affairs based on those Children, Years Married, Gender and Religiousness factors. 
+
+We can also tell the predict function to predict error (Standard Error here that we then convert to an approximation of the 95% confidence interval again we make sure they stay between 0 and 1).
+
+Note that here I tell Predict that I want the fit to be returned on the response scale and not the link scale. 
+
+```{r}
+#| fig.width: 8
+#| fig.height: 8
+
+NewData_1<-expand.grid(Children=as.factor(c("Yes","No")),
+                       Yearsmarried=unique(Affairs_binom$Yearsmarried),
+                       Gender=as.factor(c("Female","Male")),
+                       Religiousness_fct=as.factor(c("Anti","Not","Slightly","Somewhat","Very")))
+
+Pred<-predict(glm2,NewData_1,se.fit=TRUE,type="response")
+
+NewData<-NewData_1 %>% 
+  mutate(response=Pred$fit,
+         se.fit=Pred$se.fit,
+         Upr=response+(se.fit*1.96),
+         Lwr=response-(se.fit*1.96),
+         Upr=case_when(Upr>1~1,
+                       TRUE~Upr),
+         Lwr=case_when(Lwr<0~0,
+                       TRUE~Lwr))
+
+ggplot(NewData)+
+  geom_ribbon(aes(x=Yearsmarried,
+                    ymax=Upr,
+                    ymin=Lwr,
+                  fill=Children),
+              alpha=0.6)+
+  geom_line(aes(x=Yearsmarried,
+                 y=response,
+                  colour=Children),
+              alpha=0.6)+
+  facet_grid(Religiousness_fct~Gender)+
+   scale_colour_manual(values=c("darkorange","darkcyan"),)+
+   scale_fill_manual(values=c("darkorange","darkcyan"))+
+  labs(x="Years Married",y="Probability of an Affair\nin the Last Year",
+       fill="Children",
+       colour="Children")+
+  theme_classic()
+
+```
+
+We wont plot this model output with the raw values to see how well the model has worked as it will look pretty horrible. This is one of the biggest issues with Binomial models, the raw data are all 0s and 1s so when plotted it is very hard to see any patterns.
+
+We can see from these plots that the probability of having had an affair in the last year increases with how many years you have been married especially if you don't have children. This pattern is less clear or obvious if someone is more religious and there doesn't appear to be any difference in these trends between Males or Females.
+
+
+
+
+

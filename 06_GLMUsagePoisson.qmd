@@ -398,8 +398,8 @@ NewData_MeanBase<-NewData_2 %>%
 ggplot(NewData_MeanBase)+
   geom_point(data=df_1,aes(x=age,y=seizures,colour=treatment))+
    geom_ribbon(aes(x=age,
-                     ymax=Upr,
-                     ymin=Lwr,
+                   ymax=Upr,
+                   ymin=Lwr,
                    fill=treatment),
                alpha=0.7)+
    geom_line(aes(x=age,

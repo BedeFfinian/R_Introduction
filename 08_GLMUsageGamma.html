@@ -370,7 +370,7 @@ y = \beta_{1} Age + Intercept
 <p><img src="08_GLMUsageGamma_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
-<p>As earlier, we see some fairly mixed results here. The normality of residuals is not perfect with many small and high value points following the line, whereas our homogenerity of variance is pretty amazing part from less variation at lower values than larger values.</p>
+<p>As earlier, we see some fairly mixed results here. The normality of residuals is not perfect with many small and high value points not following the line, whereas our homogenerity of variance is pretty amazing part from less variation at lower values than larger values.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(glm2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -408,12 +408,12 @@ Number of Fisher Scoring iterations: 5</code></pre>
 <p><span class="math display">\[
 \begin{aligned}
 y = \beta_{1} Time:Diet 1 vs 4\\
-+ \beta_{1} Time:Diet 1 vs 3\\
-+ \beta_{1} Time:Diet 1 vs 2\\
-+ \beta_{1} Diet 1 vs 4\\
-+ \beta_{1} Diet 1 vs 3\\
-+ \beta_{1} Diet 1 vs 2\\
-+ \beta_{1} Time\\
++ \beta_{2} Time:Diet 1 vs 3\\
++ \beta_{3} Time:Diet 1 vs 2\\
++ \beta_{4} Diet 1 vs 4\\
++ \beta_{5} Diet 1 vs 3\\
++ \beta_{6} Diet 1 vs 2\\
++ \beta_{7} Time\\
 + Intercept
 \end{aligned}
 \]</span></p>

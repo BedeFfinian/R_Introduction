@@ -1,0 +1,10 @@
+---
+title: "Data Visualisation in R"
+format:
+  html:
+    toc: true
+    toc-location: left
+---
+
+# Visualisation <img src='Images/ggplot2.png' align="right" height="138.5" /></a>
+

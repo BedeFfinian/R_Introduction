@@ -1,0 +1,313 @@
+---
+title: "Using R to Make Maps"
+format:
+  html:
+    toc: true
+    toc-location: left
+---
+
+# Mapping Geographical Information Systems (GIS) in R <img src='Images/sf.gif' align="right" height="138.5" /></a>
+
+## Rant about Research and Being Lazy
+
+Okay so I have strong and potentially controversial opinions on using GIS software. While very useful, user friendly tools, just like Excel, I strongly argue against their use for scientific analysis (I have caveats to this). The main pillars of science, in my opinion, are increasing societies knowledge in an open, repeatable, replicate-able and critique-able way. Therefore, using software that is paid for or not open access is a big no for me. Likewise, software that is just lots of clicking buttons, without a full transcript of the process being carried out, doesn't allow full repeatablility. This may be repetition by other researchers to check your results, emulate your analysis method on another dataset or it may be repetition by future you or me! Another major element of using a coding language to carry out tasks is scaleability. If I make a map in a GIS software, to make the same map with a few changes will always take a similar amount of time, doing so in r (or another coding language) will decrease the time per map through looping or functional programming. I am also a lazy scientist, I can use R to carry out all elements of my research, so why learn another program? 
+
+## Rant Over, Let's Make Some Maps
+
+### Spatial Data Types
+
+Spatial data is basically the same as any other data type but it has some information about its location, and generally it is stored in two major types: Raster or Shape. Raster data are gridded with repeating units or pixels, with each pixel having a x and y coordinates and some data value(s). Shape data are generally type of irregular polygons or points. 
+
+Thankfully for us we can use ggplot2 and its functionality to plot a wide range of shapes and polygons, as well as combination of them. 
+
+### Mapping Attack Plan
+
+- First and foremost for a Map we want our background Map. Somethings this is all we want and can be many different types: satellite image, coastline, road map. Generally, it gives us the spatial context for other elements we want to display.
+
+```{r}
+#| echo: false
+#| warning: false
+#| error: false
+#| fig.width: 4
+#| fig.height: 4
+
+library(Utilities.Package) 
+library(tidyverse) 
+library(sf) 
+library(rnaturalearth) 
+library(rnaturalearthdata) 
+#remotes::install_github("ropensci/rnaturalearthhires")
+library(rnaturalearthhires) 
+library(ggforce) 
+library(patchwork)
+
+world_map <- sovereignty10 %>% 
+  st_as_sf() 
+
+bbox_europe <- st_bbox(c(xmin = -25, ymin = 32,
+                         xmax = 20, ymax = 60) ,
+                       crs = st_crs(world_map) ) 
+
+world_map<-st_make_valid(world_map) 
+
+european_union_map_cropped <- st_crop(world_map, bbox_europe)  %>% 
+  st_transform("+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +units=m +no_defs ")  
+
+
+
+Europe_sf<-european_union_map_cropped 
+
+Projects<-data.frame(
+  Name=c(
+  "Portugal - Ria de Aveiro Lagoon - Training",
+  "France - Auray Estuary,\nMorbihan Gulf &\nBourgneuf Bay - Training",
+  "France - Auray Estuary,\nMorbihan Gulf &\nBourgneuf Bay - Training",
+  "France - Auray Estuary,\nMorbihan Gulf &\nBourgneuf Bay - Training",
+  "France - Mont Saint-Michel Bay \nSaint-Brieuc &\nPenzé Estuary - Training",
+  "France - Veys Bay - Training",
+  "France - Mont Saint-Michel Bay \nSaint-Brieuc &\nPenzé Estuary - Training",
+  "France - Mont Saint-Michel Bay \nSaint-Brieuc &\nPenzé Estuary - Training",
+  "Channel Islands - Jersey - Training",
+  "Portugal - Ria de Aveiro Lagoon - Validation",
+  "Portugal - Tagus Estuary - Validation",
+  "England - Tamar Estuary - Validation",
+  "France - Ria D'Etel &\nBourgneuf Bay - Validation",
+  "France - Ria D'Etel &\nBourgneuf Bay - Validation",
+  "Spain - Cádiz Bay - Prediction",
+  "Morocco - Merja Zerga - Prediction",
+  "Portugal - Ria de Aveiro Lagoon - Prediction",
+  "Portugal - Tagus Estuary - Prediction",
+  "France - Marennes-Oléron Bay - Prediction",
+  "France - Bourgneuf Bay - Prediction",
+  "England - Tamar Estuary - Prediction",
+  "Wales - Milford Haven - Prediction",
+  "Northern Ireland - Strangford Lough - Prediction",
+  "Germany - Beltringharder Koog - Prediction",
+  "Scotland - Cromarty Firth - Prediction",
+  "Spain - Santander Bay - Prediction",
+  "Spain - Cádiz Bay - Validation"
+  ) ,
+  Long=c(-8.745730,
+         -2.097998, 
+         -2.757178,
+         -2.960312,
+         -1.508291,
+         -1.136109,
+         -2.696024,
+         -3.948165,
+         -2.136736,
+         -8.745730,
+         -9.025242,
+         -4.191163,
+         -2.097998,
+         -3.180103, 
+         -6.225762,
+         -6.272933,
+         -8.745730,
+         -9.025242,
+         -1.153727,
+         -2.097998,
+         -4.191163,
+         -5.049930,
+         -5.586926,
+         8.607683,
+         -4.068501,
+         -3.794634,
+         -6.226530),
+  Lat=c(40.617610, 
+        46.977129, 
+        47.546101,
+        47.632116,
+        48.659781,
+        49.367892,
+        48.546778,
+        48.663007,
+        49.201875,
+        40.617610,
+        38.789567,
+        50.366767, 
+        46.977129,
+        47.694525, 
+        36.491059,
+        34.844544,
+        40.617610,
+        38.789567,
+        45.952656, 
+        46.977129,
+        50.366767,
+        51.699920,
+        54.466256,
+        54.619877,
+        57.718409,
+        43.436576,
+        36.477228) ,
+  Use = factor(c("Training","Training","Training","Training","Training","Training",
+          "Training","Training","Training","Validation","Validation",
+          "Validation","Validation","Validation","Prediction","Prediction",
+          "Prediction","Prediction","Prediction","Prediction","Prediction","Prediction"
+          ,"Prediction","Prediction","Prediction","Prediction","Validation"),levels = c("Training","Validation","Prediction"))
+  )  %>% 
+  st_as_sf(coords=c("Long","Lat") )  %>% 
+  st_set_crs("EPSG:4326")  %>% 
+  st_transform("+proj=laea +lat_0=52 +lon_0=10 +x_0=4321000 +y_0=3210000 +ellps=GRS80 +units=m +no_defs ")  
+
+Projects_df<-Projects %>%
+  dplyr::mutate(lon = sf::st_coordinates(.) [,1],
+                lat = sf::st_coordinates(.) [,2]) %>% 
+  sf::st_set_geometry(NULL)  %>% 
+  separate(Name, into=c("Country","Bay","Use") ,sep=" - ")  %>% 
+  dplyr::mutate(Country=as.factor(Country) ,
+                Bay=as.factor(Bay),
+                Use=factor(Use,levels = c("Training","Validation","Prediction"))) 
+
+ggplot(Europe_sf) +
+  geom_sf(linewidth=0.1,alpha=0.93,
+          fill="palegreen3",colour="grey30")
+    
+```
+
+
+- Secondly we want the elements we are going to display inside our geographical context, this could be bathymetry, sample sites, labels etc.
+
+```{r}
+#| echo: false
+#| warning: false
+#| error: false
+#| fig.width: 4
+#| fig.height: 4
+
+ggplot(Europe_sf) +
+  geom_sf(linewidth=0.1,alpha=0.93,
+          fill="palegreen3",colour="grey30")+
+ggforce::geom_mark_ellipse(data=Projects_df %>% 
+                            filter(Use=="Prediction"),
+               aes(x=lon,
+                   y=lat,
+                   label = Bay,
+                   description=Country,
+                   fill=Use,
+                   group=Bay) ,
+               size=0.01,
+               show.legend=F,
+               alpha=0.8,
+expand = unit(2, "mm") , 
+radius = unit(2, "mm") , 
+label.buffer = unit(5, "mm") ,
+label.fill = "grey90")  +
+geom_sf(data=Projects %>%
+          filter(Use=="Prediction"),linewidth=1.5,shape=8) +
+coord_sf(xlim=c(2300000,4200000) ,
+        ylim=c(1508000,4000000))
+
+
+
+```
+
+- Finally, we want to add other info elements like scale bars, north arrows, data sources and generally improve the appearance. 
+
+```{r}
+#| echo: false
+#| warning: false
+#| error: false
+#| fig.width: 4
+#| fig.height: 4
+
+ggplot(Europe_sf) +
+  geom_sf(linewidth=0.1,alpha=0.93,
+          fill="palegreen3",colour="grey30")+
+ggforce::geom_mark_ellipse(data=Projects_df %>% 
+                            filter(Use=="Prediction"),
+               aes(x=lon,
+                   y=lat,
+                   label = Bay,
+                   description=Country,
+                   fill=Use,
+                   group=Bay) ,
+               size=0.3,
+               show.legend=F,
+               alpha=0.8,
+expand = unit(2, "mm") , 
+radius = unit(2, "mm") , 
+label.buffer = unit(5, "mm") ,
+label.fill = "grey90")  +
+geom_sf(data=Projects %>%
+          filter(Use=="Prediction"),linewidth=1.5,shape=8) +
+coord_sf(xlim=c(2300000,4200000) ,
+        ylim=c(1508000,4000000) )+
+  scale_fill_Bede("SAS")+
+  theme_Bede_Map() +
+  labs(x="Longitude",
+       y="Latitude") +
+    theme(plot.margin = unit(c(0.1,0.1,0.1,0.1), "cm") )
+
+
+
+```
+
+
+With ggplot we can layer all these elements on top of each other in the order we want. 
+
+## Data Download
+
+Often we will have our own shape or raster files locally, but there are also a wide range of easily accessible data for different forms of data. 
+
+In this tutorial we will be using readily available open access data, specifically the rnaturalearth shape files of countries to begin with. 
+
+To organise and edit we will use the sf package for shape files and the terra package for rasters. There are many others, such as sp, raster and maptools etc. However, they are being deprecated soon and recommend using sf or terra. There are also many supplements to these packages, when we need them we will install and use them. 
+
+### World Coastlines 
+
+The rnaturalearth packages have preloaded data that we can access for country polygons at different spatial scales, lets look at the biggest scale. If we load the basic ne_countries() data set and tell the function we want it as an 'sf' object we can plot it using the base plot. However, as there are many columns other than the spatial information the baseplot function plots each separately. 
+
+```{r}
+
+library(tidyverse) 
+library(sf) 
+library(rnaturalearth) 
+library(rnaturalearthdata) 
+#remotes::install_github("ropensci/rnaturalearthhires")
+library(rnaturalearthhires) 
+
+world_map <- ne_countries(returnclass = "sf",scale = 110) 
+
+plot(world_map)
+
+```
+
+Here we have a world_map object in our global environment, and generally it seems just like a normal dataframe, with columns and rows of data. An sf object has extra information in a column called geometry. This is information on the type of shape (Point, Line or Polygon) for each line in the dataframe. Here we have a row for each country and a polygon for each, alongside lots of info on its administration and population etc. As a dataframe we can easily inspect the data we have and use the same techniques of data manipulation we have used before such as mutating, selecting, summarising, grouping etc.
+
+Lets take a glance at the top of the first 6 columns:
+
+```{r}
+
+head(world_map[c(1:6)])
+
+```
+
+### Enter ggplot2
+
+Lets plot it using ggplot instead. Thankfully the sf package has its own geom (geom_sf()), this means we don't have to give it too much information for it to do something pretty good.
+
+```{r}
+
+ggplot(world_map)+
+  geom_sf()
+
+```
+
+There are some obvious issues with this map but generally it is a pretty good starting point. 
+
+### Coordinate Reference Systems
+
+Here we are looking at a map of a three dimensional sphere projected onto a flat surface. To do this we use different map projections, which can lead to interesting effects by distorting apparent size, such as Antarctica being long and thin at the base of this map, when really it is a circle shape around the south pole. We can easily change between CRS using sf functions. While previously CRS was denoted with quite a long string, now there are easy to use 4 digit EPSG codes.  You can find loads here: <https://spatialreference.org/ref/epsg/>
+
+```{r}
+
+world_map %>% 
+ggplot()+
+  geom_sf() +
+ coord_sf(crs = st_crs(4326))
+
+```
+
+

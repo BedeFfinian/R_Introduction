@@ -261,12 +261,12 @@ $$y'=y^{-1}$$
 $$
 \begin{aligned}
 y = \beta_{1} Time:Diet 1 vs 4\\
-+ \beta_{1} Time:Diet 1 vs 3\\
-+ \beta_{1} Time:Diet 1 vs 2\\
-+ \beta_{1} Diet 1 vs 4\\
-+ \beta_{1} Diet 1 vs 3\\
-+ \beta_{1} Diet 1 vs 2\\
-+ \beta_{1} Time\\
++ \beta_{2} Time:Diet 1 vs 3\\
++ \beta_{3} Time:Diet 1 vs 2\\
++ \beta_{4} Diet 1 vs 4\\
++ \beta_{5} Diet 1 vs 3\\
++ \beta_{6} Diet 1 vs 2\\
++ \beta_{7} Time\\
 + Intercept 
 \end{aligned}
 $$

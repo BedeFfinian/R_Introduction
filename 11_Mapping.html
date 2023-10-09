@@ -79,20 +79,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#mapping-geographical-information-systems-gis-in-r" id="toc-mapping-geographical-information-systems-gis-in-r" class="nav-link active" data-scroll-target="#mapping-geographical-information-systems-gis-in-r">Mapping Geographical Information Systems (GIS) in R <img src="Images/sf.gif" align="right" height="138.5"></a>
+  <li><a href="#section" id="toc-section" class="nav-link active" data-scroll-target="#section"><img src="Images/sf.gif" align="right" height="138.5"></a>
   <ul class="collapse">
   <li><a href="#rant-about-research-and-being-lazy" id="toc-rant-about-research-and-being-lazy" class="nav-link" data-scroll-target="#rant-about-research-and-being-lazy">Rant about Research and Being Lazy</a></li>
-  <li><a href="#rant-over-lets-make-some-maps" id="toc-rant-over-lets-make-some-maps" class="nav-link" data-scroll-target="#rant-over-lets-make-some-maps">Rant Over, Let’s Make Some Maps</a>
-  <ul class="collapse">
-  <li><a href="#spatial-data-types" id="toc-spatial-data-types" class="nav-link" data-scroll-target="#spatial-data-types">Spatial Data Types</a></li>
+  <li><a href="#rant-over-simple-mapping-attack-plan" id="toc-rant-over-simple-mapping-attack-plan" class="nav-link" data-scroll-target="#rant-over-simple-mapping-attack-plan">Rant Over, Simple Mapping Attack Plan</a></li>
   <li><a href="#mapping-attack-plan" id="toc-mapping-attack-plan" class="nav-link" data-scroll-target="#mapping-attack-plan">Mapping Attack Plan</a></li>
   </ul></li>
-  <li><a href="#data-download" id="toc-data-download" class="nav-link" data-scroll-target="#data-download">Data Download</a>
+  <li><a href="#map-the-globe" id="toc-map-the-globe" class="nav-link" data-scroll-target="#map-the-globe">Map the Globe</a>
   <ul class="collapse">
+  <li><a href="#step-1---background-map-1" id="toc-step-1---background-map-1" class="nav-link" data-scroll-target="#step-1---background-map-1">Step 1 - Background Map</a>
+  <ul class="collapse">
+  <li><a href="#data-download" id="toc-data-download" class="nav-link" data-scroll-target="#data-download">Data Download</a></li>
   <li><a href="#world-coastlines" id="toc-world-coastlines" class="nav-link" data-scroll-target="#world-coastlines">World Coastlines</a></li>
-  <li><a href="#enter-ggplot2" id="toc-enter-ggplot2" class="nav-link" data-scroll-target="#enter-ggplot2">Enter ggplot2</a></li>
-  <li><a href="#coordinate-reference-systems" id="toc-coordinate-reference-systems" class="nav-link" data-scroll-target="#coordinate-reference-systems">Coordinate Reference Systems</a></li>
+  <li><a href="#coordinate-reference-systems-and-projections" id="toc-coordinate-reference-systems-and-projections" class="nav-link" data-scroll-target="#coordinate-reference-systems-and-projections">Coordinate Reference Systems and Projections</a></li>
+  <li><a href="#distortions" id="toc-distortions" class="nav-link" data-scroll-target="#distortions">Distortions</a></li>
   </ul></li>
+  <li><a href="#step-2---spatially-explicit-details-1" id="toc-step-2---spatially-explicit-details-1" class="nav-link" data-scroll-target="#step-2---spatially-explicit-details-1">Step 2 - Spatially Explicit Details</a></li>
+  <li><a href="#step-3---appearance-1" id="toc-step-3---appearance-1" class="nav-link" data-scroll-target="#step-3---appearance-1">Step 3 - Appearance</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -118,53 +121,69 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<section id="mapping-geographical-information-systems-gis-in-r" class="level1">
-<h1>Mapping Geographical Information Systems (GIS) in R <img src="Images/sf.gif" align="right" height="138.5"></h1>
-<section id="rant-about-research-and-being-lazy" class="level2">
-<h2 class="anchored" data-anchor-id="rant-about-research-and-being-lazy">Rant about Research and Being Lazy</h2>
+<section id="section" class="level1">
+<h1><img src="Images/sf.gif" align="right" height="138.5"></h1>
+<section id="rant-about-research-and-being-lazy" class="level3">
+<h3 class="anchored" data-anchor-id="rant-about-research-and-being-lazy">Rant about Research and Being Lazy</h3>
 <p>Okay so I have strong and potentially controversial opinions on using GIS software. While very useful, user friendly tools, just like Excel, I strongly argue against their use for scientific analysis (I have caveats to this). The main pillars of science, in my opinion, are increasing societies knowledge in an open, repeatable, replicate-able and critique-able way. Therefore, using software that is paid for or not open access is a big no for me. Likewise, software that is just lots of clicking buttons, without a full transcript of the process being carried out, doesn’t allow full repeatablility. This may be repetition by other researchers to check your results, emulate your analysis method on another dataset or it may be repetition by future you or me! Another major element of using a coding language to carry out tasks is scaleability. If I make a map in a GIS software, to make the same map with a few changes will always take a similar amount of time, doing so in r (or another coding language) will decrease the time per map through looping or functional programming. I am also a lazy scientist, I can use R to carry out all elements of my research, so why learn another program?</p>
 </section>
-<section id="rant-over-lets-make-some-maps" class="level2">
-<h2 class="anchored" data-anchor-id="rant-over-lets-make-some-maps">Rant Over, Let’s Make Some Maps</h2>
-<section id="spatial-data-types" class="level3">
-<h3 class="anchored" data-anchor-id="spatial-data-types">Spatial Data Types</h3>
+<section id="rant-over-simple-mapping-attack-plan" class="level3">
+<h3 class="anchored" data-anchor-id="rant-over-simple-mapping-attack-plan">Rant Over, Simple Mapping Attack Plan</h3>
+<section id="spatial-data-types" class="level4">
+<h4 class="anchored" data-anchor-id="spatial-data-types">Spatial Data Types</h4>
 <p>Spatial data is basically the same as any other data type but it has some information about its location, and generally it is stored in two major types: Raster or Shape. Raster data are gridded with repeating units or pixels, with each pixel having a x and y coordinates and some data value(s). Shape data are generally type of irregular polygons or points.</p>
 <p>Thankfully for us we can use ggplot2 and its functionality to plot a wide range of shapes and polygons, as well as combination of them.</p>
 </section>
+</section>
 <section id="mapping-attack-plan" class="level3">
 <h3 class="anchored" data-anchor-id="mapping-attack-plan">Mapping Attack Plan</h3>
+<section id="step-1---background-map" class="level4">
+<h4 class="anchored" data-anchor-id="step-1---background-map">Step 1 - Background Map</h4>
 <ul>
-<li>First and foremost for a Map we want our background Map. Somethings this is all we want and can be many different types: satellite image, coastline, road map. Generally, it gives us the spatial context for other elements we want to display.</li>
+<li>Somethings this is all we want and can be many different types: satellite image, coastline, road map. Generally, it gives us the spatial context for other elements we want to display.</li>
 </ul>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="11_Mapping_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="384"></p>
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
+</section>
+<section id="step-2---spatially-explicit-details" class="level4">
+<h4 class="anchored" data-anchor-id="step-2---spatially-explicit-details">Step 2 - Spatially Explicit Details</h4>
 <ul>
 <li>Secondly we want the elements we are going to display inside our geographical context, this could be bathymetry, sample sites, labels etc.</li>
 </ul>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="11_Mapping_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="384"></p>
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
+</section>
+<section id="step-3---appearance" class="level4">
+<h4 class="anchored" data-anchor-id="step-3---appearance">Step 3 - Appearance</h4>
 <ul>
 <li>Finally, we want to add other info elements like scale bars, north arrows, data sources and generally improve the appearance.</li>
 </ul>
 <div class="cell">
 <div class="cell-output-display">
-<p><img src="11_Mapping_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="384"></p>
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="768"></p>
 </div>
 </div>
 <p>With ggplot we can layer all these elements on top of each other in the order we want.</p>
 </section>
 </section>
-<section id="data-download" class="level2">
-<h2 class="anchored" data-anchor-id="data-download">Data Download</h2>
+</section>
+<section id="map-the-globe" class="level1">
+<h1>Map the Globe</h1>
+<section id="step-1---background-map-1" class="level2">
+<h2 class="anchored" data-anchor-id="step-1---background-map-1">Step 1 - Background Map</h2>
+<p>Here we need the data itself, then we want to plot it in a project that makes sense. Atlantic centric? Pacific centric? But depending on some projections we may need to do some extra work to look nice.</p>
+<section id="data-download" class="level3">
+<h3 class="anchored" data-anchor-id="data-download">Data Download</h3>
 <p>Often we will have our own shape or raster files locally, but there are also a wide range of easily accessible data for different forms of data.</p>
 <p>In this tutorial we will be using readily available open access data, specifically the rnaturalearth shape files of countries to begin with.</p>
 <p>To organise and edit we will use the sf package for shape files and the terra package for rasters. There are many others, such as sp, raster and maptools etc. However, they are being deprecated soon and recommend using sf or terra. There are also many supplements to these packages, when we need them we will install and use them.</p>
+</section>
 <section id="world-coastlines" class="level3">
 <h3 class="anchored" data-anchor-id="world-coastlines">World Coastlines</h3>
 <p>The rnaturalearth packages have preloaded data that we can access for country polygons at different spatial scales, lets look at the biggest scale. If we load the basic ne_countries() data set and tell the function we want it as an ‘sf’ object we can plot it using the base plot. However, as there are many columns other than the spatial information the baseplot function plots each separately.</p>
@@ -176,11 +195,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">#remotes::install_github("ropensci/rnaturalearthhires")</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rnaturalearthhires) </span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>world_map <span class="ot">&lt;-</span> <span class="fu">ne_countries</span>(<span class="at">returnclass =</span> <span class="st">"sf"</span>,<span class="at">scale =</span> <span class="dv">110</span>) </span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>world_map <span class="ot">&lt;-</span> <span class="fu">ne_countries</span>(<span class="at">returnclass =</span> <span class="st">"sf"</span>,<span class="at">scale =</span> <span class="dv">50</span>) </span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(world_map)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning: plotting the first 9 out of 94 attributes; use max.plot = 94 to plot
+<pre><code>Warning: plotting the first 9 out of 63 attributes; use max.plot = 63 to plot
 all</code></pre>
 </div>
 <div class="cell-output-display">
@@ -195,27 +214,26 @@ all</code></pre>
 <pre><code>Simple feature collection with 6 features and 6 fields
 Geometry type: MULTIPOLYGON
 Dimension:     XY
-Bounding box:  xmin: -180 ymin: -18.28799 xmax: 180 ymax: 83.23324
+Bounding box:  xmin: -70.06611 ymin: -18.01973 xmax: 74.89131 ymax: 60.40581
 Geodetic CRS:  +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
-       featurecla scalerank labelrank                  sovereignt sov_a3
-0 Admin-0 country         1         6                        Fiji    FJI
-1 Admin-0 country         1         3 United Republic of Tanzania    TZA
-2 Admin-0 country         1         7              Western Sahara    SAH
-3 Admin-0 country         1         2                      Canada    CAN
-4 Admin-0 country         1         2    United States of America    US1
-5 Admin-0 country         1         3                  Kazakhstan    KAZ
-  adm0_dif                       geometry
-0        0 MULTIPOLYGON (((180 -16.067...
-1        0 MULTIPOLYGON (((33.90371 -0...
-2        0 MULTIPOLYGON (((-8.66559 27...
-3        0 MULTIPOLYGON (((-122.84 49,...
-4        1 MULTIPOLYGON (((-122.84 49,...
-5        0 MULTIPOLYGON (((87.35997 49...</code></pre>
+  scalerank      featurecla labelrank     sovereignt sov_a3 adm0_dif
+0         3 Admin-0 country         5    Netherlands    NL1        1
+1         1 Admin-0 country         3    Afghanistan    AFG        0
+2         1 Admin-0 country         3         Angola    AGO        0
+3         1 Admin-0 country         6 United Kingdom    GB1        1
+4         1 Admin-0 country         6        Albania    ALB        0
+5         3 Admin-0 country         6        Finland    FI1        1
+                        geometry
+0 MULTIPOLYGON (((-69.89912 1...
+1 MULTIPOLYGON (((74.89131 37...
+2 MULTIPOLYGON (((14.19082 -5...
+3 MULTIPOLYGON (((-63.00122 1...
+4 MULTIPOLYGON (((20.06396 42...
+5 MULTIPOLYGON (((20.61133 60...</code></pre>
 </div>
 </div>
-</section>
-<section id="enter-ggplot2" class="level3">
-<h3 class="anchored" data-anchor-id="enter-ggplot2">Enter ggplot2</h3>
+<section id="enter-ggplot2" class="level4">
+<h4 class="anchored" data-anchor-id="enter-ggplot2">Enter ggplot2</h4>
 <p>Lets plot it using ggplot instead. Thankfully the sf package has its own geom (geom_sf()), this means we don’t have to give it too much information for it to do something pretty good.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(world_map)<span class="sc">+</span></span>
@@ -226,10 +244,383 @@ Geodetic CRS:  +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
 </div>
 <p>There are some obvious issues with this map but generally it is a pretty good starting point.</p>
 </section>
-<section id="coordinate-reference-systems" class="level3">
-<h3 class="anchored" data-anchor-id="coordinate-reference-systems">Coordinate Reference Systems</h3>
-<p>Here we are looking at a map of a three dimensional sphere projected onto a flat surface. To do this we use different map projections, which can lead to interesting effects by distorting apparent size, such as Antarctica being long and thin at the base of this map, when really it is a circle shape around the south pole. We can easily change between</p>
 </section>
+<section id="coordinate-reference-systems-and-projections" class="level3">
+<h3 class="anchored" data-anchor-id="coordinate-reference-systems-and-projections">Coordinate Reference Systems and Projections</h3>
+<p>Here we are looking at a map of a three dimensional sphere projected onto a flat surface. To do this we use different map projections, which can lead to interesting effects by distorting apparent size, such as Antarctica being long and thin at the base of this map, when really it is a circle shape around the south pole. We can easily change between CRS using sf functions. While previously CRS was denoted with quite a long string, now there are easy to use 4 digit EPSG codes. You can find loads here: <a href="https://spatialreference.org/ref/epsg/" class="uri">https://spatialreference.org/ref/epsg/</a></p>
+<p>EPSG codes relate to preset or defined CRS strings. So we can use either EPSG codes or we can be more specific with a CRS we want to use e.g.: “+proj=laea +lat_0=0 +lon_0=-30 +x_0=43210000 +y_0=3210000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs”. This string states the projection, the centre lat, centre lon, the centre x, centre y, the ellipsoid (type of sphere the globe is assumed to be), the conversion from WGS 84, the units, and other info. For the standard latlong projection that is often used we would have: “+proj=longlat +datum=WGS84 +no_defs”</p>
+<p>For example here is the same map reprojected to Mercator:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>world_map <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">st_transform</span>(<span class="at">crs=</span><span class="dv">3857</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>But we can see a <strong>BIG</strong> issue with this projection. It makes greenland look like the size of africa, and it also makes antarctica the size of the sun (not quite)! As it is a ggplot we can crop out the bottom of the graph instead.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>world_map <span class="sc">%&gt;%</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">st_transform</span>(<span class="at">crs=</span><span class="dv">3857</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">20000000</span>,<span class="cn">NA</span>))<span class="sc">+</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>The mercator uses metres as its units so we have to use those units for setting limits. Lets see some another systems.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>world_map <span class="sc">%&gt;%</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">st_transform</span>(<span class="at">crs=</span><span class="dv">3978</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>world_map <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">st_transform</span>(<span class="at">crs=</span><span class="dv">32190</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>world_map <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">st_transform</span>(<span class="at">crs=</span><span class="dv">26917</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-9-3.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>As you can see, all of these are horrible. But it seems the main issue is being caused by Antarctica. Perhaps if we remove it they will look better?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>world_map <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span>sovereignt<span class="sc">==</span><span class="st">"Antarctica"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">st_transform</span>(<span class="at">crs=</span><span class="dv">3978</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Okay no it doesn’t.</p>
+</section>
+<section id="distortions" class="level3">
+<h3 class="anchored" data-anchor-id="distortions">Distortions</h3>
+<p>These projections have inherent edges to their projection which will be latitude or longitude values, they will also have the centre position. The areas of the map that are furthest from the centre, around the edges will become distorted when plotting on a 2D plane: think about looking at a 3D globe and trying to see the countries on the other side from you. When transfomring and then plotting, a polygon of a country (the shape that country makes) will potentially get divided. Thus we get these weird glitchy distortions. There are ways around having these distortions but it involves creating a really thin polygon along the edges of the original map, then deleting this thin polygon. This splits the polygons that will be split when changing the transformation. We can visualise this if we want.</p>
+<p>Original Map and transformed into desired CRS.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>world_map <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">st_transform</span>(<span class="at">crs=</span><span class="dv">4326</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>world_map <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">st_transform</span>(<span class="at">crs=</span><span class="fu">st_crs</span>(<span class="st">"+proj=cea +lon_0=130 +x_0=0 +y_0=0 +lat_ts=45 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>So in our desired projection we can see the the central longitude is 130. We therefore need to make a slim polygon opposite 130 on the globe! (180-130)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>world<span class="ot">&lt;-</span>world_map <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">st_transform</span>(<span class="at">crs=</span><span class="dv">4326</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_make_valid</span>()</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># define a long &amp; slim polygon that overlaps the meridian line &amp; set its CRS to match</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"># that of world</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Centered in lon 130 on this example</span></span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>offset <span class="ot">&lt;-</span> <span class="dv">180</span> <span class="sc">-</span> <span class="dv">130</span></span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>polygon <span class="ot">&lt;-</span> <span class="fu">st_polygon</span>(<span class="at">x =</span> <span class="fu">list</span>(<span class="fu">rbind</span>(</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.0001</span> <span class="sc">-</span> offset, <span class="dv">90</span>),</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">0</span> <span class="sc">-</span> offset, <span class="dv">90</span>),</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="dv">0</span> <span class="sc">-</span> offset, <span class="sc">-</span><span class="dv">90</span>),</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.0001</span> <span class="sc">-</span> offset, <span class="sc">-</span><span class="dv">90</span>),</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="sc">-</span><span class="fl">0.0001</span> <span class="sc">-</span> offset, <span class="dv">90</span>)</span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>))) <span class="sc">%&gt;%</span></span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_sfc</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb14-22"><a href="#cb14-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_set_crs</span>(<span class="dv">4326</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Lets plot the slime polygon on the original map.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>world_map <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">st_transform</span>(<span class="at">crs=</span><span class="dv">4326</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data=</span>polygon,<span class="at">fill=</span><span class="st">"red"</span>,<span class="at">colour=</span><span class="st">"red"</span>)<span class="sc">+</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Now we have this thin polygon we can remove this slim area from the original world map.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>world_fixed <span class="ot">&lt;-</span> world <span class="sc">%&gt;%</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_difference</span>(polygon)</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>target_crs<span class="ot">&lt;-</span><span class="fu">st_crs</span>(<span class="st">"+proj=cea +lon_0=130 +x_0=0 +y_0=0 +lat_ts=45 +ellps=WGS84 +datum=WGS84 +units=m +no_defs"</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>world_fixed <span class="ot">&lt;-</span> world_fixed <span class="sc">%&gt;%</span> </span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(target_crs)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(<span class="at">data =</span> world_fixed) <span class="sc">+</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Here there are still some odd looking shapes e.g.&nbsp;Papua New Guinea. Maybe we can find a better projection. Maybe we can use one that looks a little 3D even when in 2D?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>world_map <span class="sc">%&gt;%</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(<span class="st">"+proj=laea +lat_0=0 +lon_0=-30 +x_0=43210000 +y_0=3210000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>This projection is a favourite of mine, I used it above for the map of Europe. The choice of mapping projection will be dictated by the scale you want to show</p>
+</section>
+</section>
+<section id="step-2---spatially-explicit-details-1" class="level2">
+<h2 class="anchored" data-anchor-id="step-2---spatially-explicit-details-1">Step 2 - Spatially Explicit Details</h2>
+<p>Okay so we have a global map we will use to be our Base Map, it isn’t perfect by any means but it is fine for now. Now lets plots some spatially explicit data. As a Marine Ecologist I absolutely <strong>LOVE</strong> bathymetry plots so lets get some bathymetry and try make a nice Bathymetry plot of the North Atlantic. We may have our own bathymetry data, or we could go to some website, download it and read into r, <strong>or</strong> we can download straight into r using the marmap package. This gets bathymetry data from the NOAA database.</p>
+<p>To do this we use the getNOAA.bathy() and tell the function the longitude limits, then latitude limits, then the resolution. If our desired data cross the antimeridian (the longitude line 180 and -180) we can tell the function this too. This function creates a bathy object, but we can convert this to a data frame with as.xyz(). Remember when we set a big area and a low resolution value the file gets bigger so will take longer to download and plot. We shall also remove Depth values that are positive so we only get Depth. (This may not be ideal for inland areas that are below 0).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("marmap")</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(marmap)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Get bathymetric data</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>bat <span class="ot">&lt;-</span> <span class="fu">getNOAA.bathy</span>(<span class="at">lon1=</span><span class="sc">-</span><span class="dv">90</span>,<span class="at">lon2=</span><span class="dv">40</span>,<span class="at">lat1=</span><span class="dv">70</span>,<span class="at">lat2=</span><span class="sc">-</span><span class="dv">60</span>, <span class="at">res =</span> <span class="dv">4</span>)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>bat_xyz <span class="ot">&lt;-</span> <span class="fu">as.xyz</span>(bat) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Longitude=</span>V1,<span class="at">Latitude=</span>V2,<span class="at">Depth=</span>V3) <span class="sc">%&gt;%</span> </span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Depth<span class="sc">&lt;</span><span class="dv">1</span>)</span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(bat_xyz)<span class="sc">+</span></span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="fu">aes</span>(<span class="at">x=</span>Longitude,<span class="at">y=</span>Latitude,<span class="at">fill=</span>Depth))<span class="sc">+</span></span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Okay so now we have some regular gridded bathymetry data but it isn’t the same projection we have our base map in, so if we try plot together it will be rather wrong. Infact on the global scale our bathymetry data which range from -90 to 40 in longitude and 70 to -60 in latitude are not even visible on a map using this projection.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>Projection3D<span class="ot">&lt;-</span><span class="st">"+proj=laea +lat_0=0 +lon_0=-30 +x_0=43210000 +y_0=3210000 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs"</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>world_map <span class="sc">%&gt;%</span> </span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(Projection3D) <span class="sc">%&gt;%</span> </span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">data=</span>bat_xyz,<span class="fu">aes</span>(<span class="at">x=</span>Longitude,<span class="at">y=</span>Latitude,<span class="at">fill=</span>Depth))<span class="sc">+</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>So what we will do is convert the dataframe to an spatial object. We could use sf to do this. Then we can easily transform it to the projection we want! To do this we can use the st_as_sf() function. One issue is we will need to tell sf what projection our latitude and longitude data are.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>Bathy_sf<span class="ot">&lt;-</span><span class="fu">st_as_sf</span>(bat_xyz,<span class="at">coords =</span> <span class="fu">c</span>(<span class="st">"Longitude"</span>,<span class="st">"Latitude"</span>),<span class="at">crs=</span><span class="dv">4326</span>) <span class="sc">%&gt;%</span>  </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(Projection3D)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>world_map <span class="sc">%&gt;%</span> </span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(Projection3D) <span class="sc">%&gt;%</span> </span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data=</span>Bathy_sf,<span class="fu">aes</span>(<span class="at">fill=</span>Depth))<span class="sc">+</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>This doesn’t look like it has worked, what is happening is that each row of the sf is thought of as a point, ggplot is then plotting those points. It would be better for speed of plotting and how the plot looks if we use a raster format, as this is how the data are laid out. We can use the terra package to do this.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("terra")</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("tidyterra")</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(terra)</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyterra)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>Bathy_terra<span class="ot">&lt;-</span><span class="fu">as_spatraster</span>(bat_xyz,<span class="at">xycols =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>),<span class="at">crs=</span><span class="dv">4326</span>) <span class="sc">%&gt;%</span>  </span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">project</span>(Projection3D)</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>world_map <span class="sc">%&gt;%</span> </span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(Projection3D) <span class="sc">%&gt;%</span> </span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_spatraster</span>(<span class="at">data=</span>Bathy_terra,<span class="fu">aes</span>(<span class="at">fill=</span>Depth))<span class="sc">+</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Okay, this good, the projection is correct and the detail is enough for our current zoom level. The main issue now seems to be the NA values in the spat raster being plotted in a grey colour. So lets plot this with a nicer colour palette, and maybe we want our map lines to be on top of the bathymetry?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>world_map <span class="sc">%&gt;%</span> </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(Projection3D) <span class="sc">%&gt;%</span> </span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_spatraster</span>(<span class="at">data=</span>Bathy_terra,<span class="fu">aes</span>(<span class="at">fill=</span>Depth))<span class="sc">+</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">na.value =</span> <span class="cn">NA</span>)<span class="sc">+</span></span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-20-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Hmmm maybe it would be nicer with a full global bathymetry? Or we could zoom into the area we have bathymetry for?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>bat_whole <span class="ot">&lt;-</span> <span class="fu">getNOAA.bathy</span>(<span class="at">lon1=</span><span class="sc">-</span><span class="dv">180</span>,<span class="at">lon2=</span><span class="dv">180</span>,<span class="at">lat1=</span><span class="dv">90</span>,<span class="at">lat2=</span><span class="sc">-</span><span class="dv">90</span>, <span class="at">res =</span> <span class="dv">10</span>)</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>Bathy_Whole_World <span class="ot">&lt;-</span> <span class="fu">as.xyz</span>(bat_whole) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Longitude=</span>V1,<span class="at">Latitude=</span>V2,<span class="at">Depth=</span>V3) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Depth<span class="sc">&lt;</span><span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_spatraster</span>(<span class="at">xycols =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>),<span class="at">crs=</span><span class="dv">4326</span>) <span class="sc">%&gt;%</span>  </span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">project</span>(Projection3D)</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>world_map <span class="sc">%&gt;%</span> </span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(Projection3D) <span class="sc">%&gt;%</span> </span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_spatraster</span>(<span class="at">data=</span>Bathy_Whole_World,<span class="fu">aes</span>(<span class="at">fill=</span>Depth))<span class="sc">+</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">na.value =</span> <span class="cn">NA</span>)<span class="sc">+</span></span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Lets also make some labels of points of interest, and lets zoom in on the mid atlantic ridge because it is very cool! Always have to refer to <a href="https://en.wikipedia.org/wiki/Marie_Tharp">Marie Tharp</a> for her magnificent work on mapping and effectively discovering this region of the ocean!</p>
+<p>As our projection works in metres it would be a lot of trial and error to get the correct values, but we can create an sf object with the latitude and longitude we want then transform it and use that to create our limits!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("sfheaders")</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sfheaders)</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggforce)</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>Crop_MAR<span class="ot">&lt;-</span><span class="fu">data.frame</span>(</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">lon =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">80</span>,<span class="dv">50</span>,<span class="sc">-</span><span class="dv">80</span>,<span class="dv">50</span>),  </span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">lat =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">45</span>,<span class="sc">-</span><span class="dv">45</span>,<span class="dv">45</span>,<span class="dv">45</span>)</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords=</span><span class="fu">c</span>(<span class="st">"lon"</span>,<span class="st">"lat"</span>), <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(Projection3D) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sf_to_df</span>(<span class="at">fill=</span>T)</span>
+<span id="cb24-13"><a href="#cb24-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-14"><a href="#cb24-14" aria-hidden="true" tabindex="-1"></a>InterestingPoints<span class="ot">&lt;-</span><span class="fu">data.frame</span>(</span>
+<span id="cb24-15"><a href="#cb24-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">lon =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="fl">27.862</span>,<span class="sc">-</span><span class="fl">14.3737</span>,<span class="sc">-</span><span class="fl">15.7315</span>,<span class="sc">-</span><span class="fl">16.751</span>,<span class="sc">-</span><span class="fl">64.7896</span>,</span>
+<span id="cb24-16"><a href="#cb24-16" aria-hidden="true" tabindex="-1"></a>          <span class="sc">-</span><span class="fl">23.777</span>,<span class="sc">-</span><span class="fl">32.425</span>,<span class="fl">6.739</span>,<span class="sc">-</span><span class="fl">5.705</span>,<span class="sc">-</span><span class="fl">12.2821</span>,<span class="sc">-</span><span class="fl">37.05</span>,</span>
+<span id="cb24-17"><a href="#cb24-17" aria-hidden="true" tabindex="-1"></a>          <span class="sc">-</span><span class="fl">59.364</span>,<span class="fl">51.741</span>,<span class="sc">-</span><span class="fl">59.5463</span>),  </span>
+<span id="cb24-18"><a href="#cb24-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">lat =</span> <span class="fu">c</span>(<span class="fl">38.723</span>,<span class="sc">-</span><span class="fl">7.9481</span>,<span class="fl">28.620</span>,<span class="fl">32.860</span>,<span class="fl">32.352</span>,<span class="fl">15.9495</span>,</span>
+<span id="cb24-19"><a href="#cb24-19" aria-hidden="true" tabindex="-1"></a>          <span class="sc">-</span><span class="fl">3.8543</span>,<span class="fl">0.4535</span>,<span class="sc">-</span><span class="fl">15.9697</span>,<span class="sc">-</span><span class="fl">37.115</span>,<span class="sc">-</span><span class="fl">54.403</span>,<span class="sc">-</span><span class="fl">51.772</span>,</span>
+<span id="cb24-20"><a href="#cb24-20" aria-hidden="true" tabindex="-1"></a>          <span class="sc">-</span><span class="fl">46.4046</span>,<span class="fl">13.102</span>),</span>
+<span id="cb24-21"><a href="#cb24-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">Islands=</span> <span class="fu">c</span>(<span class="st">"Azores"</span>,<span class="st">"Ascension"</span>,<span class="st">"Canaries"</span>,<span class="st">"Madeira"</span>,</span>
+<span id="cb24-22"><a href="#cb24-22" aria-hidden="true" tabindex="-1"></a>             <span class="st">"Bermuda"</span>,<span class="st">"Cabo Verde"</span>,<span class="st">"Fernando de Noronha"</span>,</span>
+<span id="cb24-23"><a href="#cb24-23" aria-hidden="true" tabindex="-1"></a>             <span class="st">"São Tomé and Príncipe"</span>,<span class="st">"Saint Helena"</span>,<span class="st">"Tristan da Cunha"</span>,</span>
+<span id="cb24-24"><a href="#cb24-24" aria-hidden="true" tabindex="-1"></a>             <span class="st">"South Georgia"</span>,<span class="st">"Islas Malvinas"</span>,<span class="st">"Possession"</span>,<span class="st">"Barbados"</span>)</span>
+<span id="cb24-25"><a href="#cb24-25" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-26"><a href="#cb24-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords=</span><span class="fu">c</span>(<span class="st">"lon"</span>,<span class="st">"lat"</span>), <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-27"><a href="#cb24-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(Projection3D) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-28"><a href="#cb24-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sf_to_df</span>(<span class="at">fill=</span>T)</span>
+<span id="cb24-29"><a href="#cb24-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-30"><a href="#cb24-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-31"><a href="#cb24-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-32"><a href="#cb24-32" aria-hidden="true" tabindex="-1"></a>world_map <span class="sc">%&gt;%</span> </span>
+<span id="cb24-33"><a href="#cb24-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(Projection3D) <span class="sc">%&gt;%</span> </span>
+<span id="cb24-34"><a href="#cb24-34" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb24-35"><a href="#cb24-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_spatraster</span>(<span class="at">data=</span>Bathy_Whole_World,<span class="fu">aes</span>(<span class="at">fill=</span>Depth))<span class="sc">+</span></span>
+<span id="cb24-36"><a href="#cb24-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb24-37"><a href="#cb24-37" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_mark_ellipse</span>(<span class="at">data=</span>InterestingPoints,</span>
+<span id="cb24-38"><a href="#cb24-38" aria-hidden="true" tabindex="-1"></a>               <span class="fu">aes</span>(<span class="at">x=</span>x,</span>
+<span id="cb24-39"><a href="#cb24-39" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y=</span>y,</span>
+<span id="cb24-40"><a href="#cb24-40" aria-hidden="true" tabindex="-1"></a>                   <span class="at">label =</span> Islands,</span>
+<span id="cb24-41"><a href="#cb24-41" aria-hidden="true" tabindex="-1"></a>                   <span class="at">group=</span>Islands))<span class="sc">+</span></span>
+<span id="cb24-42"><a href="#cb24-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">na.value =</span> <span class="cn">NA</span>)<span class="sc">+</span></span>
+<span id="cb24-43"><a href="#cb24-43" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="fu">min</span>(Crop_MAR<span class="sc">$</span>x),<span class="fu">max</span>(Crop_MAR<span class="sc">$</span>x)),</span>
+<span id="cb24-44"><a href="#cb24-44" aria-hidden="true" tabindex="-1"></a>           <span class="at">ylim=</span><span class="fu">c</span>(<span class="fu">min</span>(Crop_MAR<span class="sc">$</span>y),<span class="fu">max</span>(Crop_MAR<span class="sc">$</span>y)))<span class="sc">+</span></span>
+<span id="cb24-45"><a href="#cb24-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
+</section>
+<section id="step-3---appearance-1" class="level2">
+<h2 class="anchored" data-anchor-id="step-3---appearance-1">Step 3 - Appearance</h2>
+<p>Appearance is very down to personal preference but is all just using ggplot theme and scale elements. For a map this big a scale bar is unneccesary (but we will put a small one in anyway) and in my opinion a North arrow is never useful (except for navigational maps), as having Latitude on the y axis and Longitude on the x axis removes its utility.</p>
+<p>Here I add nicer legend labels. Again it is personal preference but Depth in my opinion should be positive going deeper. I also add a scale bar, although with this projection it will change how big it should be for different areas of the map. I change the colour scheme of the bathymetry to be a blue palette. The I add Labels for x and y and captions. I add some grid lines to show latitude and longitude lines with theme().</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("ggsn")</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggsn)</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>world_map <span class="sc">%&gt;%</span> </span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(Projection3D) <span class="sc">%&gt;%</span> </span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_spatraster</span>(<span class="at">data=</span>Bathy_Whole_World,<span class="fu">aes</span>(<span class="at">fill=</span>Depth), <span class="at">maxcell =</span> <span class="dv">5005560</span>)<span class="sc">+</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">linewidth=</span><span class="fl">0.1</span>,<span class="at">alpha=</span><span class="fl">0.9</span>,</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>          <span class="at">fill=</span><span class="st">"palegreen4"</span>,<span class="at">colour=</span><span class="st">"grey30"</span>)<span class="sc">+</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_mark_ellipse</span>(<span class="at">data=</span>InterestingPoints,</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>               <span class="fu">aes</span>(<span class="at">x=</span>x,</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y=</span>y,</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a>                   <span class="at">label =</span> Islands,</span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a>                   <span class="at">group=</span>Islands) ,</span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>               <span class="at">show.legend=</span>F,</span>
+<span id="cb25-17"><a href="#cb25-17" aria-hidden="true" tabindex="-1"></a>               <span class="at">alpha=</span><span class="fl">0.8</span>,</span>
+<span id="cb25-18"><a href="#cb25-18" aria-hidden="true" tabindex="-1"></a>               <span class="at">label.buffer =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"mm"</span>),</span>
+<span id="cb25-19"><a href="#cb25-19" aria-hidden="true" tabindex="-1"></a>               <span class="at">label.fill =</span> <span class="st">"grey80"</span>)<span class="sc">+</span></span>
+<span id="cb25-20"><a href="#cb25-20" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradientn</span>(<span class="at">colours=</span><span class="fu">c</span>(<span class="st">"#5e24d6"</span>,<span class="st">"#22496d"</span>,<span class="st">"#042f66"</span>,<span class="st">"#054780"</span>,<span class="st">"#1074a6"</span>,</span>
+<span id="cb25-21"><a href="#cb25-21" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"#218eb7"</span>,<span class="st">"#48b5d2"</span>,<span class="st">"#72d0e1"</span>,<span class="st">"#9ddee7"</span>,<span class="st">"#c6edec"</span>),</span>
+<span id="cb25-22"><a href="#cb25-22" aria-hidden="true" tabindex="-1"></a>                       <span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="sc">-</span><span class="dv">2500</span>,<span class="sc">-</span><span class="dv">5000</span>,<span class="sc">-</span><span class="dv">7500</span>),</span>
+<span id="cb25-23"><a href="#cb25-23" aria-hidden="true" tabindex="-1"></a>                       <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"0"</span>,<span class="st">"2,500"</span>,<span class="st">"5,000"</span>,<span class="st">"7,500"</span>),</span>
+<span id="cb25-24"><a href="#cb25-24" aria-hidden="true" tabindex="-1"></a>                       <span class="at">na.value =</span> <span class="cn">NA</span>)<span class="sc">+</span></span>
+<span id="cb25-25"><a href="#cb25-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="fu">min</span>(Crop_MAR<span class="sc">$</span>x),<span class="fu">max</span>(Crop_MAR<span class="sc">$</span>x)),</span>
+<span id="cb25-26"><a href="#cb25-26" aria-hidden="true" tabindex="-1"></a>           <span class="at">ylim=</span><span class="fu">c</span>(<span class="fu">min</span>(Crop_MAR<span class="sc">$</span>y),<span class="fu">max</span>(Crop_MAR<span class="sc">$</span>y)))<span class="sc">+</span></span>
+<span id="cb25-27"><a href="#cb25-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scalebar</span>(world_map <span class="sc">%&gt;%</span>  <span class="fu">st_transform</span>(Projection3D),</span>
+<span id="cb25-28"><a href="#cb25-28" aria-hidden="true" tabindex="-1"></a>           <span class="at">dist =</span> <span class="dv">1500</span>, <span class="at">dist_unit =</span> <span class="st">"km"</span>, </span>
+<span id="cb25-29"><a href="#cb25-29" aria-hidden="true" tabindex="-1"></a>                 <span class="at">transform=</span><span class="cn">FALSE</span>, </span>
+<span id="cb25-30"><a href="#cb25-30" aria-hidden="true" tabindex="-1"></a>                 <span class="at">st.dist=</span><span class="fl">0.008</span>,</span>
+<span id="cb25-31"><a href="#cb25-31" aria-hidden="true" tabindex="-1"></a>                 <span class="at">height=</span><span class="fl">0.01</span>,</span>
+<span id="cb25-32"><a href="#cb25-32" aria-hidden="true" tabindex="-1"></a>                 <span class="at">location=</span><span class="st">"bottomright"</span>,</span>
+<span id="cb25-33"><a href="#cb25-33" aria-hidden="true" tabindex="-1"></a>                 <span class="at">anchor=</span><span class="fu">c</span>(<span class="at">x=</span><span class="fu">min</span>(Crop_MAR<span class="sc">$</span>x)<span class="sc">*</span><span class="fl">1.07</span>,</span>
+<span id="cb25-34"><a href="#cb25-34" aria-hidden="true" tabindex="-1"></a>                          <span class="at">y=</span><span class="fu">max</span>(Crop_MAR<span class="sc">$</span>y)<span class="sc">*</span><span class="fl">0.25</span>),</span>
+<span id="cb25-35"><a href="#cb25-35" aria-hidden="true" tabindex="-1"></a>                 <span class="at">border.size =</span> <span class="fl">0.8</span>)<span class="sc">+</span></span>
+<span id="cb25-36"><a href="#cb25-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Longitude"</span>,<span class="at">y=</span><span class="st">"Latitude"</span>, </span>
+<span id="cb25-37"><a href="#cb25-37" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">"Data Source: National Oceanic and Atmospheric Administration (NOAA)"</span>,</span>
+<span id="cb25-38"><a href="#cb25-38" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Bathymetry of the Mid-Atlantic Ridge"</span>,<span class="at">fill=</span><span class="st">"Depth (m)"</span>)<span class="sc">+</span></span>
+<span id="cb25-39"><a href="#cb25-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_blank</span>(), <span class="co"># bg of the panel</span></span>
+<span id="cb25-40"><a href="#cb25-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major =</span> <span class="fu">element_line</span>(<span class="at">linetype =</span> <span class="st">"dotted"</span>,</span>
+<span id="cb25-41"><a href="#cb25-41" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">colour=</span><span class="st">"grey30"</span>,</span>
+<span id="cb25-42"><a href="#cb25-42" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">linewidth=</span><span class="fl">0.25</span>),</span>
+<span id="cb25-43"><a href="#cb25-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.ontop =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb25-44"><a href="#cb25-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb25-45"><a href="#cb25-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">fill=</span><span class="cn">NA</span>, <span class="at">linewidth=</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="960"></p>
+</div>
+</div>
 </section>
 </section>
 

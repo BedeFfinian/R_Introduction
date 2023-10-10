@@ -97,6 +97,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#step-2---spatially-explicit-details-1" id="toc-step-2---spatially-explicit-details-1" class="nav-link" data-scroll-target="#step-2---spatially-explicit-details-1">Step 2 - Spatially Explicit Details</a></li>
   <li><a href="#step-3---appearance-1" id="toc-step-3---appearance-1" class="nav-link" data-scroll-target="#step-3---appearance-1">Step 3 - Appearance</a></li>
   </ul></li>
+  <li><a href="#extra-complex-zoom-in" id="toc-extra-complex-zoom-in" class="nav-link" data-scroll-target="#extra-complex-zoom-in">Extra Complex Zoom-in</a></li>
   </ul>
 </nav>
 </div>
@@ -622,6 +623,239 @@ Geodetic CRS:  +proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0
 </div>
 </div>
 </section>
+</section>
+<section id="extra-complex-zoom-in" class="level1">
+<h1>Extra Complex Zoom-in</h1>
+<p>For this we will be our big map and then zooming in to two regions of the map and plotting them with patchwork to try make a nice plot. First we save our base map. Then create a zoom in of the Canaries, Possession and South Georgia. We will download higher resolution imagery and world maps for these so the aren’t pixelated looking. Note we set the limits of the fill scale to be the same for each so the same palette is used for each.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>BaseMap<span class="ot">&lt;-</span>world_map <span class="sc">%&gt;%</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(Projection3D) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_spatraster</span>(<span class="at">data=</span>Bathy_Whole_World,<span class="fu">aes</span>(<span class="at">fill=</span>Depth), <span class="at">maxcell =</span> <span class="dv">5005560</span>)<span class="sc">+</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">linewidth=</span><span class="fl">0.1</span>,<span class="at">alpha=</span><span class="fl">0.9</span>,</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>          <span class="at">fill=</span><span class="st">"palegreen4"</span>,<span class="at">colour=</span><span class="st">"grey30"</span>)<span class="sc">+</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_mark_ellipse</span>(<span class="at">data=</span>InterestingPoints,</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>               <span class="fu">aes</span>(<span class="at">x=</span>x,</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y=</span>y,</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>                   <span class="at">label =</span> Islands,</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>                   <span class="at">group=</span>Islands) ,</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>               <span class="at">show.legend=</span>F,</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>               <span class="at">alpha=</span><span class="fl">0.8</span>,</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">label.fontsize =</span> <span class="dv">8</span>, </span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a><span class="at">label.buffer =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"mm"</span>),</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a><span class="at">label.fill =</span> <span class="st">"grey90"</span>)<span class="sc">+</span></span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradientn</span>(<span class="at">colours=</span><span class="fu">c</span>(<span class="st">"#5e24d6"</span>,<span class="st">"#22496d"</span>,<span class="st">"#042f66"</span>,<span class="st">"#054780"</span>,<span class="st">"#1074a6"</span>,</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"#218eb7"</span>,<span class="st">"#48b5d2"</span>,<span class="st">"#72d0e1"</span>,<span class="st">"#9ddee7"</span>,<span class="st">"#c6edec"</span>),</span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>                       <span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="sc">-</span><span class="dv">2500</span>,<span class="sc">-</span><span class="dv">5000</span>,<span class="sc">-</span><span class="dv">7500</span>),</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a>                       <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"0"</span>,<span class="st">"2,500"</span>,<span class="st">"5,000"</span>,<span class="st">"7,500"</span>),</span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>                       <span class="at">limits=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">9000</span>,<span class="dv">0</span>),</span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>                       <span class="at">na.value =</span> <span class="cn">NA</span>)<span class="sc">+</span></span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="fu">min</span>(Crop_MAR<span class="sc">$</span>x),<span class="fu">max</span>(Crop_MAR<span class="sc">$</span>x)),</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>           <span class="at">ylim=</span><span class="fu">c</span>(<span class="fu">min</span>(Crop_MAR<span class="sc">$</span>y),<span class="fu">max</span>(Crop_MAR<span class="sc">$</span>y)))<span class="sc">+</span></span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scalebar</span>(world_map <span class="sc">%&gt;%</span>  <span class="fu">st_transform</span>(Projection3D),</span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>           <span class="at">dist =</span> <span class="dv">1500</span>, <span class="at">dist_unit =</span> <span class="st">"km"</span>, </span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>                 <span class="at">transform=</span><span class="cn">FALSE</span>, </span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>                 <span class="at">st.dist=</span><span class="fl">0.008</span>,</span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>                 <span class="at">height=</span><span class="fl">0.01</span>,</span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>                 <span class="at">location=</span><span class="st">"bottomright"</span>,</span>
+<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>                 <span class="at">anchor=</span><span class="fu">c</span>(<span class="at">x=</span><span class="fu">min</span>(Crop_MAR<span class="sc">$</span>x)<span class="sc">*</span><span class="fl">1.07</span>,</span>
+<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>                          <span class="at">y=</span><span class="fu">max</span>(Crop_MAR<span class="sc">$</span>y)<span class="sc">*</span><span class="fl">0.25</span>),</span>
+<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a>                 <span class="at">border.size =</span> <span class="fl">0.8</span>)<span class="sc">+</span></span>
+<span id="cb26-34"><a href="#cb26-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Longitude"</span>,<span class="at">y=</span><span class="st">"Latitude"</span>, </span>
+<span id="cb26-35"><a href="#cb26-35" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Bathymetry of the Mid-Atlantic Ridge"</span>,<span class="at">fill=</span><span class="st">"Depth (m)"</span>)<span class="sc">+</span></span>
+<span id="cb26-36"><a href="#cb26-36" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_blank</span>(), <span class="co"># bg of the panel</span></span>
+<span id="cb26-37"><a href="#cb26-37" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major =</span> <span class="fu">element_line</span>(<span class="at">linetype =</span> <span class="st">"dotted"</span>,</span>
+<span id="cb26-38"><a href="#cb26-38" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">colour=</span><span class="st">"grey30"</span>,</span>
+<span id="cb26-39"><a href="#cb26-39" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">linewidth=</span><span class="fl">0.25</span>),</span>
+<span id="cb26-40"><a href="#cb26-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.ontop =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb26-41"><a href="#cb26-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb26-42"><a href="#cb26-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">fill=</span><span class="cn">NA</span>, <span class="at">linewidth=</span><span class="dv">1</span>))</span>
+<span id="cb26-43"><a href="#cb26-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-44"><a href="#cb26-44" aria-hidden="true" tabindex="-1"></a>Canaries<span class="ot">&lt;-</span><span class="fu">data.frame</span>(</span>
+<span id="cb26-45"><a href="#cb26-45" aria-hidden="true" tabindex="-1"></a>  <span class="at">lon =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">20</span>,<span class="sc">-</span><span class="dv">10</span>,<span class="sc">-</span><span class="dv">20</span>,<span class="sc">-</span><span class="dv">10</span>),  </span>
+<span id="cb26-46"><a href="#cb26-46" aria-hidden="true" tabindex="-1"></a>  <span class="at">lat =</span> <span class="fu">c</span>(<span class="dv">25</span>,<span class="dv">25</span>,<span class="dv">35</span>,<span class="dv">35</span>)</span>
+<span id="cb26-47"><a href="#cb26-47" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-48"><a href="#cb26-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords=</span><span class="fu">c</span>(<span class="st">"lon"</span>,<span class="st">"lat"</span>), <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-49"><a href="#cb26-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(Projection3D) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-50"><a href="#cb26-50" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sf_to_df</span>(<span class="at">fill=</span>T)</span>
+<span id="cb26-51"><a href="#cb26-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-52"><a href="#cb26-52" aria-hidden="true" tabindex="-1"></a>bat_whole_Canaries <span class="ot">&lt;-</span> <span class="fu">getNOAA.bathy</span>(<span class="at">lon1=</span><span class="sc">-</span><span class="dv">30</span>,<span class="at">lon2=</span><span class="dv">0</span>,<span class="at">lat1=</span><span class="dv">15</span>,<span class="at">lat2=</span><span class="dv">45</span>, <span class="at">res =</span> <span class="dv">1</span>)</span>
+<span id="cb26-53"><a href="#cb26-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-54"><a href="#cb26-54" aria-hidden="true" tabindex="-1"></a>Bathy_Canaries <span class="ot">&lt;-</span> <span class="fu">as.xyz</span>(bat_whole_Canaries) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-55"><a href="#cb26-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Longitude=</span>V1,<span class="at">Latitude=</span>V2,<span class="at">Depth=</span>V3) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-56"><a href="#cb26-56" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Depth<span class="sc">&lt;</span><span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-57"><a href="#cb26-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_spatraster</span>(<span class="at">xycols =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>),<span class="at">crs=</span><span class="dv">4326</span>) <span class="sc">%&gt;%</span>  </span>
+<span id="cb26-58"><a href="#cb26-58" aria-hidden="true" tabindex="-1"></a>  <span class="fu">project</span>(Projection3D)</span>
+<span id="cb26-59"><a href="#cb26-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-60"><a href="#cb26-60" aria-hidden="true" tabindex="-1"></a>world_map_HighRes<span class="ot">&lt;-</span> <span class="fu">ne_countries</span>(<span class="at">returnclass =</span> <span class="st">"sf"</span>,<span class="at">scale =</span> <span class="dv">10</span>) </span>
+<span id="cb26-61"><a href="#cb26-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-62"><a href="#cb26-62" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-63"><a href="#cb26-63" aria-hidden="true" tabindex="-1"></a>CanariesMap<span class="ot">&lt;-</span>world_map_HighRes <span class="sc">%&gt;%</span> </span>
+<span id="cb26-64"><a href="#cb26-64" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(Projection3D) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-65"><a href="#cb26-65" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb26-66"><a href="#cb26-66" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_spatraster</span>(<span class="at">data=</span>Bathy_Canaries,<span class="fu">aes</span>(<span class="at">fill=</span>Depth), <span class="at">maxcell =</span> <span class="dv">5005560</span>)<span class="sc">+</span></span>
+<span id="cb26-67"><a href="#cb26-67" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">linewidth=</span><span class="fl">0.1</span>,<span class="at">alpha=</span><span class="fl">0.9</span>,</span>
+<span id="cb26-68"><a href="#cb26-68" aria-hidden="true" tabindex="-1"></a>          <span class="at">fill=</span><span class="st">"palegreen4"</span>,<span class="at">colour=</span><span class="st">"grey30"</span>)<span class="sc">+</span></span>
+<span id="cb26-69"><a href="#cb26-69" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_mark_ellipse</span>(<span class="at">data=</span>InterestingPoints <span class="sc">%&gt;%</span> </span>
+<span id="cb26-70"><a href="#cb26-70" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">filter</span>(Islands<span class="sc">==</span><span class="st">"Canaries"</span>),</span>
+<span id="cb26-71"><a href="#cb26-71" aria-hidden="true" tabindex="-1"></a>               <span class="fu">aes</span>(<span class="at">x=</span>x,</span>
+<span id="cb26-72"><a href="#cb26-72" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y=</span>y,</span>
+<span id="cb26-73"><a href="#cb26-73" aria-hidden="true" tabindex="-1"></a>                   <span class="at">label =</span> Islands,</span>
+<span id="cb26-74"><a href="#cb26-74" aria-hidden="true" tabindex="-1"></a>                   <span class="at">group=</span>Islands) ,</span>
+<span id="cb26-75"><a href="#cb26-75" aria-hidden="true" tabindex="-1"></a>               <span class="at">show.legend=</span>F,</span>
+<span id="cb26-76"><a href="#cb26-76" aria-hidden="true" tabindex="-1"></a>               <span class="at">alpha=</span><span class="fl">0.8</span>,</span>
+<span id="cb26-77"><a href="#cb26-77" aria-hidden="true" tabindex="-1"></a>  <span class="at">label.fontsize =</span> <span class="dv">8</span>,</span>
+<span id="cb26-78"><a href="#cb26-78" aria-hidden="true" tabindex="-1"></a><span class="at">expand =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"mm"</span>) , </span>
+<span id="cb26-79"><a href="#cb26-79" aria-hidden="true" tabindex="-1"></a><span class="at">radius =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"mm"</span>) , </span>
+<span id="cb26-80"><a href="#cb26-80" aria-hidden="true" tabindex="-1"></a><span class="at">label.buffer =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"mm"</span>),</span>
+<span id="cb26-81"><a href="#cb26-81" aria-hidden="true" tabindex="-1"></a><span class="at">label.fill =</span> <span class="st">"grey90"</span>)<span class="sc">+</span></span>
+<span id="cb26-82"><a href="#cb26-82" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradientn</span>(<span class="at">colours=</span><span class="fu">c</span>(<span class="st">"#5e24d6"</span>,<span class="st">"#22496d"</span>,<span class="st">"#042f66"</span>,<span class="st">"#054780"</span>,<span class="st">"#1074a6"</span>,</span>
+<span id="cb26-83"><a href="#cb26-83" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"#218eb7"</span>,<span class="st">"#48b5d2"</span>,<span class="st">"#72d0e1"</span>,<span class="st">"#9ddee7"</span>,<span class="st">"#c6edec"</span>),</span>
+<span id="cb26-84"><a href="#cb26-84" aria-hidden="true" tabindex="-1"></a>                       <span class="at">limits=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">9000</span>,<span class="dv">0</span>),</span>
+<span id="cb26-85"><a href="#cb26-85" aria-hidden="true" tabindex="-1"></a>                       <span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="sc">-</span><span class="dv">2500</span>,<span class="sc">-</span><span class="dv">5000</span>,<span class="sc">-</span><span class="dv">7500</span>),</span>
+<span id="cb26-86"><a href="#cb26-86" aria-hidden="true" tabindex="-1"></a>                       <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"0"</span>,<span class="st">"2,500"</span>,<span class="st">"5,000"</span>,<span class="st">"7,500"</span>),</span>
+<span id="cb26-87"><a href="#cb26-87" aria-hidden="true" tabindex="-1"></a>                       <span class="at">na.value =</span> <span class="cn">NA</span>)<span class="sc">+</span></span>
+<span id="cb26-88"><a href="#cb26-88" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="fu">min</span>(Canaries<span class="sc">$</span>x),<span class="fu">max</span>(Canaries<span class="sc">$</span>x)),</span>
+<span id="cb26-89"><a href="#cb26-89" aria-hidden="true" tabindex="-1"></a>           <span class="at">ylim=</span><span class="fu">c</span>(<span class="fu">min</span>(Canaries<span class="sc">$</span>y),<span class="fu">max</span>(Canaries<span class="sc">$</span>y)))<span class="sc">+</span></span>
+<span id="cb26-90"><a href="#cb26-90" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Longitude"</span>,<span class="at">y=</span><span class="st">"Latitude"</span>,<span class="at">fill=</span><span class="st">"Depth (m)"</span>)<span class="sc">+</span></span>
+<span id="cb26-91"><a href="#cb26-91" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_blank</span>(), <span class="co"># bg of the panel</span></span>
+<span id="cb26-92"><a href="#cb26-92" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major =</span> <span class="fu">element_line</span>(<span class="at">linetype =</span> <span class="st">"dotted"</span>,</span>
+<span id="cb26-93"><a href="#cb26-93" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">colour=</span><span class="st">"grey30"</span>,</span>
+<span id="cb26-94"><a href="#cb26-94" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">linewidth=</span><span class="fl">0.25</span>),</span>
+<span id="cb26-95"><a href="#cb26-95" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.ontop =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb26-96"><a href="#cb26-96" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb26-97"><a href="#cb26-97" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">fill=</span><span class="cn">NA</span>, <span class="at">linewidth=</span><span class="dv">1</span>))</span>
+<span id="cb26-98"><a href="#cb26-98" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-99"><a href="#cb26-99" aria-hidden="true" tabindex="-1"></a>SouthGeorgia<span class="ot">&lt;-</span><span class="fu">data.frame</span>(</span>
+<span id="cb26-100"><a href="#cb26-100" aria-hidden="true" tabindex="-1"></a>  <span class="at">lon =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">40</span>,<span class="sc">-</span><span class="dv">32</span>,<span class="sc">-</span><span class="dv">40</span>,<span class="sc">-</span><span class="dv">32</span>),  </span>
+<span id="cb26-101"><a href="#cb26-101" aria-hidden="true" tabindex="-1"></a>  <span class="at">lat =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">56</span>,<span class="sc">-</span><span class="dv">56</span>,<span class="sc">-</span><span class="dv">53</span>,<span class="sc">-</span><span class="dv">53</span>)</span>
+<span id="cb26-102"><a href="#cb26-102" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-103"><a href="#cb26-103" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords=</span><span class="fu">c</span>(<span class="st">"lon"</span>,<span class="st">"lat"</span>), <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-104"><a href="#cb26-104" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(Projection3D) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-105"><a href="#cb26-105" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sf_to_df</span>(<span class="at">fill=</span>T)</span>
+<span id="cb26-106"><a href="#cb26-106" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-107"><a href="#cb26-107" aria-hidden="true" tabindex="-1"></a>bat_whole_SouthGeorgia <span class="ot">&lt;-</span> <span class="fu">getNOAA.bathy</span>(<span class="at">lon1=</span><span class="sc">-</span><span class="dv">45</span>,<span class="at">lon2=</span><span class="sc">-</span><span class="dv">25</span>,<span class="at">lat1=</span><span class="sc">-</span><span class="dv">58</span>,<span class="at">lat2=</span><span class="sc">-</span><span class="dv">50</span>, <span class="at">res =</span> <span class="dv">1</span>)</span>
+<span id="cb26-108"><a href="#cb26-108" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-109"><a href="#cb26-109" aria-hidden="true" tabindex="-1"></a>Bathy_SouthGeorgia <span class="ot">&lt;-</span> <span class="fu">as.xyz</span>(bat_whole_SouthGeorgia) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-110"><a href="#cb26-110" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Longitude=</span>V1,<span class="at">Latitude=</span>V2,<span class="at">Depth=</span>V3) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-111"><a href="#cb26-111" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Depth<span class="sc">&lt;</span><span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-112"><a href="#cb26-112" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_spatraster</span>(<span class="at">xycols =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>),<span class="at">crs=</span><span class="dv">4326</span>) <span class="sc">%&gt;%</span>  </span>
+<span id="cb26-113"><a href="#cb26-113" aria-hidden="true" tabindex="-1"></a>  <span class="fu">project</span>(Projection3D)</span>
+<span id="cb26-114"><a href="#cb26-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-115"><a href="#cb26-115" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-116"><a href="#cb26-116" aria-hidden="true" tabindex="-1"></a>SGeorgiaMap<span class="ot">&lt;-</span>world_map_HighRes <span class="sc">%&gt;%</span> </span>
+<span id="cb26-117"><a href="#cb26-117" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(Projection3D) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-118"><a href="#cb26-118" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb26-119"><a href="#cb26-119" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_spatraster</span>(<span class="at">data=</span>Bathy_SouthGeorgia,<span class="fu">aes</span>(<span class="at">fill=</span>Depth), <span class="at">maxcell =</span> <span class="dv">5005560</span>)<span class="sc">+</span></span>
+<span id="cb26-120"><a href="#cb26-120" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">linewidth=</span><span class="fl">0.1</span>,<span class="at">alpha=</span><span class="fl">0.9</span>,</span>
+<span id="cb26-121"><a href="#cb26-121" aria-hidden="true" tabindex="-1"></a>          <span class="at">fill=</span><span class="st">"palegreen4"</span>,<span class="at">colour=</span><span class="st">"grey30"</span>)<span class="sc">+</span></span>
+<span id="cb26-122"><a href="#cb26-122" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_mark_ellipse</span>(<span class="at">data=</span>InterestingPoints <span class="sc">%&gt;%</span> </span>
+<span id="cb26-123"><a href="#cb26-123" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">filter</span>(Islands<span class="sc">==</span><span class="st">"South Georgia"</span>),</span>
+<span id="cb26-124"><a href="#cb26-124" aria-hidden="true" tabindex="-1"></a>               <span class="fu">aes</span>(<span class="at">x=</span>x,</span>
+<span id="cb26-125"><a href="#cb26-125" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y=</span>y,</span>
+<span id="cb26-126"><a href="#cb26-126" aria-hidden="true" tabindex="-1"></a>                   <span class="at">label =</span> Islands,</span>
+<span id="cb26-127"><a href="#cb26-127" aria-hidden="true" tabindex="-1"></a>                   <span class="at">group=</span>Islands) ,</span>
+<span id="cb26-128"><a href="#cb26-128" aria-hidden="true" tabindex="-1"></a>               <span class="at">show.legend=</span>F,</span>
+<span id="cb26-129"><a href="#cb26-129" aria-hidden="true" tabindex="-1"></a>               <span class="at">alpha=</span><span class="fl">0.8</span>,</span>
+<span id="cb26-130"><a href="#cb26-130" aria-hidden="true" tabindex="-1"></a>  <span class="at">label.fontsize =</span> <span class="dv">8</span>,</span>
+<span id="cb26-131"><a href="#cb26-131" aria-hidden="true" tabindex="-1"></a><span class="at">expand =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"mm"</span>) , </span>
+<span id="cb26-132"><a href="#cb26-132" aria-hidden="true" tabindex="-1"></a><span class="at">radius =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"mm"</span>) , </span>
+<span id="cb26-133"><a href="#cb26-133" aria-hidden="true" tabindex="-1"></a><span class="at">label.buffer =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"mm"</span>),</span>
+<span id="cb26-134"><a href="#cb26-134" aria-hidden="true" tabindex="-1"></a><span class="at">label.fill =</span> <span class="st">"grey90"</span>)<span class="sc">+</span></span>
+<span id="cb26-135"><a href="#cb26-135" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradientn</span>(<span class="at">colours=</span><span class="fu">c</span>(<span class="st">"#5e24d6"</span>,<span class="st">"#22496d"</span>,<span class="st">"#042f66"</span>,<span class="st">"#054780"</span>,<span class="st">"#1074a6"</span>,</span>
+<span id="cb26-136"><a href="#cb26-136" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"#218eb7"</span>,<span class="st">"#48b5d2"</span>,<span class="st">"#72d0e1"</span>,<span class="st">"#9ddee7"</span>,<span class="st">"#c6edec"</span>),</span>
+<span id="cb26-137"><a href="#cb26-137" aria-hidden="true" tabindex="-1"></a>                       <span class="at">limits=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">9000</span>,<span class="dv">0</span>),</span>
+<span id="cb26-138"><a href="#cb26-138" aria-hidden="true" tabindex="-1"></a>                       <span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="sc">-</span><span class="dv">2500</span>,<span class="sc">-</span><span class="dv">5000</span>,<span class="sc">-</span><span class="dv">7500</span>),</span>
+<span id="cb26-139"><a href="#cb26-139" aria-hidden="true" tabindex="-1"></a>                       <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"0"</span>,<span class="st">"2,500"</span>,<span class="st">"5,000"</span>,<span class="st">"7,500"</span>),</span>
+<span id="cb26-140"><a href="#cb26-140" aria-hidden="true" tabindex="-1"></a>                       <span class="at">na.value =</span> <span class="cn">NA</span>)<span class="sc">+</span></span>
+<span id="cb26-141"><a href="#cb26-141" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="fu">min</span>(SouthGeorgia<span class="sc">$</span>x),<span class="fu">max</span>(SouthGeorgia<span class="sc">$</span>x)),</span>
+<span id="cb26-142"><a href="#cb26-142" aria-hidden="true" tabindex="-1"></a>           <span class="at">ylim=</span><span class="fu">c</span>(<span class="fu">min</span>(SouthGeorgia<span class="sc">$</span>y),<span class="fu">max</span>(SouthGeorgia<span class="sc">$</span>y)))<span class="sc">+</span></span>
+<span id="cb26-143"><a href="#cb26-143" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Longitude"</span>,<span class="at">y=</span><span class="st">"Latitude"</span>,<span class="at">fill=</span><span class="st">"Depth (m)"</span>)<span class="sc">+</span></span>
+<span id="cb26-144"><a href="#cb26-144" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_blank</span>(), <span class="co"># bg of the panel</span></span>
+<span id="cb26-145"><a href="#cb26-145" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major =</span> <span class="fu">element_line</span>(<span class="at">linetype =</span> <span class="st">"dotted"</span>,</span>
+<span id="cb26-146"><a href="#cb26-146" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">colour=</span><span class="st">"grey30"</span>,</span>
+<span id="cb26-147"><a href="#cb26-147" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">linewidth=</span><span class="fl">0.25</span>),</span>
+<span id="cb26-148"><a href="#cb26-148" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.ontop =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb26-149"><a href="#cb26-149" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb26-150"><a href="#cb26-150" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">fill=</span><span class="cn">NA</span>, <span class="at">linewidth=</span><span class="dv">1</span>))</span>
+<span id="cb26-151"><a href="#cb26-151" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-152"><a href="#cb26-152" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-153"><a href="#cb26-153" aria-hidden="true" tabindex="-1"></a>Possession<span class="ot">&lt;-</span><span class="fu">data.frame</span>(</span>
+<span id="cb26-154"><a href="#cb26-154" aria-hidden="true" tabindex="-1"></a>  <span class="at">lon =</span> <span class="fu">c</span>(<span class="dv">51</span>,<span class="dv">53</span>,<span class="dv">53</span>,<span class="dv">51</span>),  </span>
+<span id="cb26-155"><a href="#cb26-155" aria-hidden="true" tabindex="-1"></a>  <span class="at">lat =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">47</span>,<span class="sc">-</span><span class="dv">47</span>,<span class="sc">-</span><span class="dv">46</span>,<span class="sc">-</span><span class="dv">46</span>)</span>
+<span id="cb26-156"><a href="#cb26-156" aria-hidden="true" tabindex="-1"></a>) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-157"><a href="#cb26-157" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_as_sf</span>(<span class="at">coords=</span><span class="fu">c</span>(<span class="st">"lon"</span>,<span class="st">"lat"</span>), <span class="at">crs =</span> <span class="dv">4326</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-158"><a href="#cb26-158" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(Projection3D) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-159"><a href="#cb26-159" aria-hidden="true" tabindex="-1"></a>  <span class="fu">sf_to_df</span>(<span class="at">fill=</span>T)</span>
+<span id="cb26-160"><a href="#cb26-160" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-161"><a href="#cb26-161" aria-hidden="true" tabindex="-1"></a>bat_whole_Possession <span class="ot">&lt;-</span> <span class="fu">getNOAA.bathy</span>(<span class="at">lon1=</span><span class="dv">45</span>,<span class="at">lon2=</span><span class="dv">65</span>,<span class="at">lat1=</span><span class="sc">-</span><span class="dv">50</span>,<span class="at">lat2=</span><span class="sc">-</span><span class="dv">42</span>, <span class="at">res =</span> <span class="dv">1</span>)</span>
+<span id="cb26-162"><a href="#cb26-162" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-163"><a href="#cb26-163" aria-hidden="true" tabindex="-1"></a>Bathy_Possession <span class="ot">&lt;-</span> <span class="fu">as.xyz</span>(bat_whole_Possession) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-164"><a href="#cb26-164" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(<span class="at">Longitude=</span>V1,<span class="at">Latitude=</span>V2,<span class="at">Depth=</span>V3) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-165"><a href="#cb26-165" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(Depth<span class="sc">&lt;</span><span class="dv">1</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-166"><a href="#cb26-166" aria-hidden="true" tabindex="-1"></a>  <span class="fu">as_spatraster</span>(<span class="at">xycols =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>),<span class="at">crs=</span><span class="dv">4326</span>) <span class="sc">%&gt;%</span>  </span>
+<span id="cb26-167"><a href="#cb26-167" aria-hidden="true" tabindex="-1"></a>  <span class="fu">project</span>(Projection3D)</span>
+<span id="cb26-168"><a href="#cb26-168" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-169"><a href="#cb26-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-170"><a href="#cb26-170" aria-hidden="true" tabindex="-1"></a>PossessionMap<span class="ot">&lt;-</span>world_map_HighRes <span class="sc">%&gt;%</span> </span>
+<span id="cb26-171"><a href="#cb26-171" aria-hidden="true" tabindex="-1"></a>  <span class="fu">st_transform</span>(Projection3D) <span class="sc">%&gt;%</span> </span>
+<span id="cb26-172"><a href="#cb26-172" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb26-173"><a href="#cb26-173" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_spatraster</span>(<span class="at">data=</span>Bathy_Possession,<span class="fu">aes</span>(<span class="at">fill=</span>Depth), <span class="at">maxcell =</span> <span class="dv">5005560</span>)<span class="sc">+</span></span>
+<span id="cb26-174"><a href="#cb26-174" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">linewidth=</span><span class="fl">0.1</span>,<span class="at">alpha=</span><span class="fl">0.9</span>,</span>
+<span id="cb26-175"><a href="#cb26-175" aria-hidden="true" tabindex="-1"></a>          <span class="at">fill=</span><span class="st">"palegreen4"</span>,<span class="at">colour=</span><span class="st">"grey30"</span>)<span class="sc">+</span></span>
+<span id="cb26-176"><a href="#cb26-176" aria-hidden="true" tabindex="-1"></a><span class="fu">geom_mark_ellipse</span>(<span class="at">data=</span>InterestingPoints<span class="sc">%&gt;%</span> </span>
+<span id="cb26-177"><a href="#cb26-177" aria-hidden="true" tabindex="-1"></a>                    <span class="fu">filter</span>(Islands<span class="sc">==</span><span class="st">"Possession"</span>),</span>
+<span id="cb26-178"><a href="#cb26-178" aria-hidden="true" tabindex="-1"></a>               <span class="fu">aes</span>(<span class="at">x=</span>x,</span>
+<span id="cb26-179"><a href="#cb26-179" aria-hidden="true" tabindex="-1"></a>                   <span class="at">y=</span>y,</span>
+<span id="cb26-180"><a href="#cb26-180" aria-hidden="true" tabindex="-1"></a>                   <span class="at">label =</span> Islands,</span>
+<span id="cb26-181"><a href="#cb26-181" aria-hidden="true" tabindex="-1"></a>                   <span class="at">group=</span>Islands) ,</span>
+<span id="cb26-182"><a href="#cb26-182" aria-hidden="true" tabindex="-1"></a>               <span class="at">show.legend=</span>F,</span>
+<span id="cb26-183"><a href="#cb26-183" aria-hidden="true" tabindex="-1"></a>               <span class="at">alpha=</span><span class="fl">0.8</span>,</span>
+<span id="cb26-184"><a href="#cb26-184" aria-hidden="true" tabindex="-1"></a>  <span class="at">label.fontsize =</span> <span class="dv">8</span>,</span>
+<span id="cb26-185"><a href="#cb26-185" aria-hidden="true" tabindex="-1"></a><span class="at">expand =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"mm"</span>) , </span>
+<span id="cb26-186"><a href="#cb26-186" aria-hidden="true" tabindex="-1"></a><span class="at">radius =</span> <span class="fu">unit</span>(<span class="fl">0.5</span>, <span class="st">"mm"</span>) , </span>
+<span id="cb26-187"><a href="#cb26-187" aria-hidden="true" tabindex="-1"></a><span class="at">label.buffer =</span> <span class="fu">unit</span>(<span class="dv">1</span>, <span class="st">"mm"</span>),</span>
+<span id="cb26-188"><a href="#cb26-188" aria-hidden="true" tabindex="-1"></a><span class="at">label.fill =</span> <span class="st">"grey90"</span>)<span class="sc">+</span></span>
+<span id="cb26-189"><a href="#cb26-189" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_gradientn</span>(<span class="at">colours=</span><span class="fu">c</span>(<span class="st">"#5e24d6"</span>,<span class="st">"#22496d"</span>,<span class="st">"#042f66"</span>,<span class="st">"#054780"</span>,<span class="st">"#1074a6"</span>,</span>
+<span id="cb26-190"><a href="#cb26-190" aria-hidden="true" tabindex="-1"></a>                                <span class="st">"#218eb7"</span>,<span class="st">"#48b5d2"</span>,<span class="st">"#72d0e1"</span>,<span class="st">"#9ddee7"</span>,<span class="st">"#c6edec"</span>),</span>
+<span id="cb26-191"><a href="#cb26-191" aria-hidden="true" tabindex="-1"></a>                       <span class="at">limits=</span><span class="fu">c</span>(<span class="sc">-</span><span class="dv">9000</span>,<span class="dv">0</span>),</span>
+<span id="cb26-192"><a href="#cb26-192" aria-hidden="true" tabindex="-1"></a>                       <span class="at">breaks=</span><span class="fu">c</span>(<span class="dv">0</span>,<span class="sc">-</span><span class="dv">2500</span>,<span class="sc">-</span><span class="dv">5000</span>,<span class="sc">-</span><span class="dv">7500</span>),</span>
+<span id="cb26-193"><a href="#cb26-193" aria-hidden="true" tabindex="-1"></a>                       <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"0"</span>,<span class="st">"2,500"</span>,<span class="st">"5,000"</span>,<span class="st">"7,500"</span>),</span>
+<span id="cb26-194"><a href="#cb26-194" aria-hidden="true" tabindex="-1"></a>                       <span class="at">na.value =</span> <span class="cn">NA</span>)<span class="sc">+</span></span>
+<span id="cb26-195"><a href="#cb26-195" aria-hidden="true" tabindex="-1"></a>  <span class="fu">coord_sf</span>(<span class="at">xlim=</span><span class="fu">c</span>(<span class="fu">min</span>(Possession<span class="sc">$</span>x),<span class="fu">max</span>(Possession<span class="sc">$</span>x)),</span>
+<span id="cb26-196"><a href="#cb26-196" aria-hidden="true" tabindex="-1"></a>           <span class="at">ylim=</span><span class="fu">c</span>(<span class="fu">min</span>(Possession<span class="sc">$</span>y),<span class="fu">max</span>(Possession<span class="sc">$</span>y)))<span class="sc">+</span></span>
+<span id="cb26-197"><a href="#cb26-197" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Longitude"</span>,<span class="at">y=</span><span class="st">"Latitude"</span>,<span class="at">fill=</span><span class="st">"Depth (m)"</span>)<span class="sc">+</span></span>
+<span id="cb26-198"><a href="#cb26-198" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.background =</span> <span class="fu">element_blank</span>(), <span class="co"># bg of the panel</span></span>
+<span id="cb26-199"><a href="#cb26-199" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.major =</span> <span class="fu">element_line</span>(<span class="at">linetype =</span> <span class="st">"dotted"</span>,</span>
+<span id="cb26-200"><a href="#cb26-200" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">colour=</span><span class="st">"grey30"</span>,</span>
+<span id="cb26-201"><a href="#cb26-201" aria-hidden="true" tabindex="-1"></a>                                             <span class="at">linewidth=</span><span class="fl">0.25</span>),</span>
+<span id="cb26-202"><a href="#cb26-202" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.ontop =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb26-203"><a href="#cb26-203" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb26-204"><a href="#cb26-204" aria-hidden="true" tabindex="-1"></a>    <span class="at">panel.border =</span> <span class="fu">element_rect</span>(<span class="at">colour =</span> <span class="st">"black"</span>, <span class="at">fill=</span><span class="cn">NA</span>, <span class="at">linewidth=</span><span class="dv">1</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Now to plot together with Patchwork (See previous tutorial for more info)</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>layout<span class="ot">&lt;-</span><span class="fu">c</span>(</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>  patchwork<span class="sc">::</span><span class="fu">area</span>(<span class="at">t=</span><span class="dv">1</span>,<span class="at">l=</span><span class="dv">1</span>,<span class="at">b=</span><span class="dv">60</span>,<span class="at">r=</span><span class="dv">25</span>),</span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  patchwork<span class="sc">::</span><span class="fu">area</span>(<span class="at">t=</span><span class="dv">5</span>,<span class="at">l=</span><span class="dv">27</span>,<span class="at">b=</span><span class="dv">25</span>,<span class="at">r=</span><span class="dv">40</span>),</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  patchwork<span class="sc">::</span><span class="fu">area</span>(<span class="at">t=</span><span class="dv">26</span>,<span class="at">l=</span><span class="dv">27</span>,<span class="at">b=</span><span class="dv">45</span>,<span class="at">r=</span><span class="dv">40</span>),</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>  patchwork<span class="sc">::</span><span class="fu">area</span>(<span class="at">t=</span><span class="dv">46</span>,<span class="at">l=</span><span class="dv">27</span>,<span class="at">b=</span><span class="dv">55</span>,<span class="at">r=</span><span class="dv">40</span>)</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(layout)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" style="width:100.0%"></p>
+</div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>BaseMap<span class="sc">+</span>CanariesMap<span class="sc">+</span>PossessionMap<span class="sc">+</span>SGeorgiaMap<span class="sc">+</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_layout</span>(<span class="at">guides =</span> <span class="st">"collect"</span>,<span class="at">design =</span> layout)<span class="sc">+</span></span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(<span class="at">tag_levels =</span> <span class="st">"a"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="11_Mapping_files/figure-html/unnamed-chunk-25-2.png" class="img-fluid" style="width:100.0%"></p>
+</div>
+</div>
 </section>
 
 </main>

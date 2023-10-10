@@ -740,3 +740,249 @@ geom_mark_ellipse(data=InterestingPoints,
     panel.border = element_rect(colour = "black", fill=NA, linewidth=1))
 
 ```
+
+# Extra Complex Zoom-in
+
+For this we will be our big map and then zooming in to two regions of the map and plotting them with patchwork to try make a nice plot. First we save our base map. Then create a zoom in of the Canaries, Possession and South Georgia. We will download higher resolution imagery and world maps for these so the aren't pixelated looking. Note we set the limits of the fill scale to be the same for each so the same palette is used for each.
+
+```{r}
+#| warning: false
+#| error: false
+#| fig-width: 10
+#| fig-height: 12
+
+BaseMap<-world_map %>% 
+  st_transform(Projection3D) %>% 
+ggplot()+
+  geom_spatraster(data=Bathy_Whole_World,aes(fill=Depth), maxcell = 5005560)+
+  geom_sf(linewidth=0.1,alpha=0.9,
+          fill="palegreen4",colour="grey30")+
+geom_mark_ellipse(data=InterestingPoints,
+               aes(x=x,
+                   y=y,
+                   label = Islands,
+                   group=Islands) ,
+               show.legend=F,
+               alpha=0.8,
+  label.fontsize = 8, 
+label.buffer = unit(1, "mm"),
+label.fill = "grey90")+
+  scale_fill_gradientn(colours=c("#5e24d6","#22496d","#042f66","#054780","#1074a6",
+                                "#218eb7","#48b5d2","#72d0e1","#9ddee7","#c6edec"),
+                       breaks=c(0,-2500,-5000,-7500),
+                       labels=c("0","2,500","5,000","7,500"),
+                       limits=c(-9000,0),
+                       na.value = NA)+
+  coord_sf(xlim=c(min(Crop_MAR$x),max(Crop_MAR$x)),
+           ylim=c(min(Crop_MAR$y),max(Crop_MAR$y)))+
+  scalebar(world_map %>%  st_transform(Projection3D),
+           dist = 1500, dist_unit = "km", 
+                 transform=FALSE, 
+                 st.dist=0.008,
+                 height=0.01,
+                 location="bottomright",
+                 anchor=c(x=min(Crop_MAR$x)*1.07,
+                          y=max(Crop_MAR$y)*0.25),
+                 border.size = 0.8)+
+  labs(x="Longitude",y="Latitude", 
+       title = "Bathymetry of the Mid-Atlantic Ridge",fill="Depth (m)")+
+  theme(panel.background = element_blank(), # bg of the panel
+    panel.grid.major = element_line(linetype = "dotted",
+                                             colour="grey30",
+                                             linewidth=0.25),
+    panel.ontop = TRUE,
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(colour = "black", fill=NA, linewidth=1))
+
+Canaries<-data.frame(
+  lon = c(-20,-10,-20,-10),  
+  lat = c(25,25,35,35)
+) %>% 
+  st_as_sf(coords=c("lon","lat"), crs = 4326) %>% 
+  st_transform(Projection3D) %>% 
+  sf_to_df(fill=T)
+
+bat_whole_Canaries <- getNOAA.bathy(lon1=-30,lon2=0,lat1=15,lat2=45, res = 1)
+
+Bathy_Canaries <- as.xyz(bat_whole_Canaries) %>% 
+  rename(Longitude=V1,Latitude=V2,Depth=V3) %>% 
+  filter(Depth<1) %>% 
+  as_spatraster(xycols = c(1:2),crs=4326) %>%  
+  project(Projection3D)
+
+world_map_HighRes<- ne_countries(returnclass = "sf",scale = 10) 
+
+
+CanariesMap<-world_map_HighRes %>% 
+  st_transform(Projection3D) %>% 
+ggplot()+
+  geom_spatraster(data=Bathy_Canaries,aes(fill=Depth), maxcell = 5005560)+
+  geom_sf(linewidth=0.1,alpha=0.9,
+          fill="palegreen4",colour="grey30")+
+geom_mark_ellipse(data=InterestingPoints %>% 
+                    filter(Islands=="Canaries"),
+               aes(x=x,
+                   y=y,
+                   label = Islands,
+                   group=Islands) ,
+               show.legend=F,
+               alpha=0.8,
+  label.fontsize = 8,
+expand = unit(0.5, "mm") , 
+radius = unit(0.5, "mm") , 
+label.buffer = unit(1, "mm"),
+label.fill = "grey90")+
+  scale_fill_gradientn(colours=c("#5e24d6","#22496d","#042f66","#054780","#1074a6",
+                                "#218eb7","#48b5d2","#72d0e1","#9ddee7","#c6edec"),
+                       limits=c(-9000,0),
+                       breaks=c(0,-2500,-5000,-7500),
+                       labels=c("0","2,500","5,000","7,500"),
+                       na.value = NA)+
+  coord_sf(xlim=c(min(Canaries$x),max(Canaries$x)),
+           ylim=c(min(Canaries$y),max(Canaries$y)))+
+  labs(x="Longitude",y="Latitude",fill="Depth (m)")+
+  theme(panel.background = element_blank(), # bg of the panel
+    panel.grid.major = element_line(linetype = "dotted",
+                                             colour="grey30",
+                                             linewidth=0.25),
+    panel.ontop = TRUE,
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(colour = "black", fill=NA, linewidth=1))
+
+SouthGeorgia<-data.frame(
+  lon = c(-40,-32,-40,-32),  
+  lat = c(-56,-56,-53,-53)
+) %>% 
+  st_as_sf(coords=c("lon","lat"), crs = 4326) %>% 
+  st_transform(Projection3D) %>% 
+  sf_to_df(fill=T)
+
+bat_whole_SouthGeorgia <- getNOAA.bathy(lon1=-45,lon2=-25,lat1=-58,lat2=-50, res = 1)
+
+Bathy_SouthGeorgia <- as.xyz(bat_whole_SouthGeorgia) %>% 
+  rename(Longitude=V1,Latitude=V2,Depth=V3) %>% 
+  filter(Depth<1) %>% 
+  as_spatraster(xycols = c(1:2),crs=4326) %>%  
+  project(Projection3D)
+
+
+SGeorgiaMap<-world_map_HighRes %>% 
+  st_transform(Projection3D) %>% 
+ggplot()+
+  geom_spatraster(data=Bathy_SouthGeorgia,aes(fill=Depth), maxcell = 5005560)+
+  geom_sf(linewidth=0.1,alpha=0.9,
+          fill="palegreen4",colour="grey30")+
+geom_mark_ellipse(data=InterestingPoints %>% 
+                    filter(Islands=="South Georgia"),
+               aes(x=x,
+                   y=y,
+                   label = Islands,
+                   group=Islands) ,
+               show.legend=F,
+               alpha=0.8,
+  label.fontsize = 8,
+expand = unit(0.5, "mm") , 
+radius = unit(0.5, "mm") , 
+label.buffer = unit(1, "mm"),
+label.fill = "grey90")+
+  scale_fill_gradientn(colours=c("#5e24d6","#22496d","#042f66","#054780","#1074a6",
+                                "#218eb7","#48b5d2","#72d0e1","#9ddee7","#c6edec"),
+                       limits=c(-9000,0),
+                       breaks=c(0,-2500,-5000,-7500),
+                       labels=c("0","2,500","5,000","7,500"),
+                       na.value = NA)+
+  coord_sf(xlim=c(min(SouthGeorgia$x),max(SouthGeorgia$x)),
+           ylim=c(min(SouthGeorgia$y),max(SouthGeorgia$y)))+
+  labs(x="Longitude",y="Latitude",fill="Depth (m)")+
+  theme(panel.background = element_blank(), # bg of the panel
+    panel.grid.major = element_line(linetype = "dotted",
+                                             colour="grey30",
+                                             linewidth=0.25),
+    panel.ontop = TRUE,
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(colour = "black", fill=NA, linewidth=1))
+
+
+Possession<-data.frame(
+  lon = c(51,53,53,51),  
+  lat = c(-47,-47,-46,-46)
+) %>% 
+  st_as_sf(coords=c("lon","lat"), crs = 4326) %>% 
+  st_transform(Projection3D) %>% 
+  sf_to_df(fill=T)
+
+bat_whole_Possession <- getNOAA.bathy(lon1=45,lon2=65,lat1=-50,lat2=-42, res = 1)
+
+Bathy_Possession <- as.xyz(bat_whole_Possession) %>% 
+  rename(Longitude=V1,Latitude=V2,Depth=V3) %>% 
+  filter(Depth<1) %>% 
+  as_spatraster(xycols = c(1:2),crs=4326) %>%  
+  project(Projection3D)
+
+
+PossessionMap<-world_map_HighRes %>% 
+  st_transform(Projection3D) %>% 
+ggplot()+
+  geom_spatraster(data=Bathy_Possession,aes(fill=Depth), maxcell = 5005560)+
+  geom_sf(linewidth=0.1,alpha=0.9,
+          fill="palegreen4",colour="grey30")+
+geom_mark_ellipse(data=InterestingPoints%>% 
+                    filter(Islands=="Possession"),
+               aes(x=x,
+                   y=y,
+                   label = Islands,
+                   group=Islands) ,
+               show.legend=F,
+               alpha=0.8,
+  label.fontsize = 8,
+expand = unit(0.5, "mm") , 
+radius = unit(0.5, "mm") , 
+label.buffer = unit(1, "mm"),
+label.fill = "grey90")+
+  scale_fill_gradientn(colours=c("#5e24d6","#22496d","#042f66","#054780","#1074a6",
+                                "#218eb7","#48b5d2","#72d0e1","#9ddee7","#c6edec"),
+                       limits=c(-9000,0),
+                       breaks=c(0,-2500,-5000,-7500),
+                       labels=c("0","2,500","5,000","7,500"),
+                       na.value = NA)+
+  coord_sf(xlim=c(min(Possession$x),max(Possession$x)),
+           ylim=c(min(Possession$y),max(Possession$y)))+
+  labs(x="Longitude",y="Latitude",fill="Depth (m)")+
+  theme(panel.background = element_blank(), # bg of the panel
+    panel.grid.major = element_line(linetype = "dotted",
+                                             colour="grey30",
+                                             linewidth=0.25),
+    panel.ontop = TRUE,
+    panel.grid.minor = element_blank(),
+    panel.border = element_rect(colour = "black", fill=NA, linewidth=1))
+
+
+```
+
+Now to plot together with Patchwork (See previous tutorial for more info)
+
+```{r}
+#| warning: false
+#| error: false
+#| fig-width: 11
+#| fig-height: 11
+#| out-width: 100%
+
+library(patchwork)
+
+
+layout<-c(
+  patchwork::area(t=1,l=1,b=60,r=25),
+  patchwork::area(t=5,l=27,b=25,r=40),
+  patchwork::area(t=26,l=27,b=45,r=40),
+  patchwork::area(t=46,l=27,b=55,r=40)
+)
+
+plot(layout)
+
+BaseMap+CanariesMap+PossessionMap+SGeorgiaMap+
+  plot_layout(guides = "collect",design = layout)+
+  plot_annotation(tag_levels = "a")
+
+```
+

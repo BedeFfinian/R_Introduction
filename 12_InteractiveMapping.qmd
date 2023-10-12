@@ -1,0 +1,180 @@
+---
+title: "Using R to Make Interactive Maps"
+format:
+  html:
+    toc: true
+    toc-location: left
+---
+
+# <img src='Images/Leaflet.png' align="right" height="40" /></a>
+
+One of the main issues with doing mapping in R over other software is our ability to zoom in and out of maps to assess different scales, from whole ocean basin to small harbour? Likewise, when planning fieldwork or even just assessing whether the coordinates you recorded are in the right location with no missing minus signs or wrong decimal location, having a tool you can quickly upload points onto a map that then allows you to zoom in and out on is really handy. 
+
+# Leaflet
+
+Leaflet maps are a Javascript (I think) mapping library that are used very often for just the purposes I highlighted above! Used as widgets on websites they allow uses to zoom and out of maps rather than having static boring maps. Thankfully there is a leaflet package in r. And it is **SIMPLE** to use.
+
+```{r}
+
+#install.packages("leaflet")
+#install.packages("leaflet.extras")
+#install.packages("leaflet.esri")
+#install.packages("leaflet.providers")
+
+library(leaflet)
+library(leaflet.extras)
+library(leaflet.esri)
+library(leaflet.providers)
+
+leaflet()
+
+```
+
+## Layering
+
+### Base Map
+
+Like with ggplot2 the first blank arguement creates a blank layer, we can then layer preloaded and local data into the map. Unlike ggplot2 we use the pipe ( %>% ) rather than the plus (+).
+
+```{r}
+
+leaflet() %>% 
+  addTiles()
+  
+```
+
+The base map is zoomed to 2 ish globes and with the standard Open Street Map. We can change these element by choosing some other background tile and setting the zoom. You can find a whole list of all the available basemaps [here](https://leaflet-extras.github.io/leaflet-providers/preview/index.html)
+
+```{r}
+
+leaflet() %>%
+  addProviderTiles(
+    "OpenTopoMap"
+  )%>%
+    setView(lng = 6.8652, lat = 45.8326, zoom = 6) ## Location of Mont Blanc
+
+
+```
+
+We can set one we like, or we can allow our user to choose. Here we will save the map as m but we also want to plot it too so we can put brackets around the whole thing, this means we can just run the line to save and plot.
+
+```{r}
+
+
+(m<-leaflet()%>%
+  addProviderTiles(
+    "Esri.WorldImagery",
+    group = "Esri.WorldImagery"
+  ) %>%
+  # add different provider tiles
+  addProviderTiles(
+    "OpenStreetMap",
+    # give the layer a name
+    group = "OpenStreetMap"
+  ) %>%
+  addProviderTiles(
+    "Stamen.Toner",
+    group = "Stamen.Toner"
+  ) %>%
+  addProviderTiles(
+    "Stamen.Terrain",
+    group = "Stamen.Terrain"
+  ) %>%
+  addProviderTiles(
+    "Esri.WorldStreetMap",
+    group = "Esri.WorldStreetMap"
+  ) %>%
+  addProviderTiles(
+    "Wikimedia",
+    group = "Wikimedia"
+  ) %>%
+  addProviderTiles(
+    "CartoDB.Positron",
+    group = "CartoDB.Positron"
+  ) %>%
+# add a layers control
+  addLayersControl(
+    baseGroups = c(
+      "Esri.WorldImagery","OpenStreetMap", "Stamen.Toner",
+      "Stamen.Terrain", "Esri.WorldStreetMap",
+      "Wikimedia", "CartoDB.Positron" 
+    ),
+    # position it on the topleft
+    position = "topleft"
+  ))
+
+```
+
+### Local Data
+
+#### Point Data
+
+So lets assume we are interested in the tallest mountains in each continent. Lets make a dataframe then add it to the leaflet map.
+
+```{r}
+
+Mountains<-data.frame(
+  Mountain=c("Everest", "Aconcagua", "Denali", "Kilimanjaro", "Vinson", "Mont Blanc", "Mount Wilhelm"),
+  Longitude=c(86.9250,-70.0109,-151.0070, 37.3556,-85.2135, 6.8652,145.0297),
+  Latitude=c(27.9881,-32.6532,63.0692,-3.0674,-78.6341,45.8326,-5.7800),
+  Height=c(8848,6961,6194,5895,4892,4810,4509),
+  Continent=c("Asia","South America","North America","Africa","Antarctica","Europe","Oceania")
+)
+
+m %>% 
+  addMarkers(data=Mountains,lng=~Longitude,lat=~Latitude)
+
+```
+
+The base markers aren't very nice so lets add some colour and style plus some info.
+
+```{r}
+
+pal1 <- colorFactor(c("navy", "red", "green"),
+                   domain = unique(Mountains$Continent))
+
+m %>% 
+  addCircleMarkers(data=Mountains,
+                    lng=~Longitude,
+                    lat=~Latitude,
+                    popup=~paste0(Mountain," - ",Height),
+                    label=~as.character(Mountain),
+                   color=~pal1(Continent),
+                   fillOpacity = 0.8
+                   )
+
+
+```
+
+#### Spatial Data
+
+Lets download and plot some bathymetry data for the Caribbean  and Easter Tropical seas. We need to convert our bathy object to be a SpatRaster from the Terra package (also accepts raster objects but the raster package is being deprecated to switch to terra!!!!) Then we can add a colour palette along the bathymetry data we have. This is then just a couple arguments to make an alright legend.
+
+```{r}
+
+library(marmap)
+library(terra)
+library(tidyterra)
+
+bat_panama <- getNOAA.bathy(lon1=-100,lon2=-54,lat1=32,lat2=-10, res = 1)
+
+Bathy_panama <- as.xyz(bat_panama) %>% 
+  rename(Longitude=V1,Latitude=V2,Depth=V3) %>% 
+  filter(Depth<0) %>% 
+  rast()
+
+crs(Bathy_panama)<-"+proj=longlat" 
+
+pal2 <- colorNumeric(c("#0C2C84", "#41B6C4", "#FFFFCC"), values(Bathy_panama),
+  na.color = "transparent")
+
+leaflet()%>%
+  addTiles()%>%
+  addRasterImage(Bathy_panama,colors=pal2,opacity=0.7) %>%
+  addLegend(pal = pal2, values = values(Bathy_panama),
+    title = "Depth (m)")
+
+
+```
+
+

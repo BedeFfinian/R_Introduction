@@ -1,0 +1,131 @@
+---
+title: "(General) Linear Models in R - Regression Analysis Use and Examples"
+format:
+  html:
+    toc: true
+    toc-location: left
+---
+
+# Overcoming Zero-Inflated Data with GLMs <img src='Images/logo.png' align="right" height="138.5" /></a>
+
+So in the common issues with GLMs tutorial we talked about zero inflated data and how this type of data will cause a issues, often diagnosed by residuals plots. Here we will have some examples of discovering zero inflated data then how to model more appropriately using zero inflated distributions. But first a little bit of theory and thought.
+
+## Cause of the Zeros?
+
+As we have mentioned throughout the tutorials, the cause of data allows us best to model it and discover or describe natural phenomena. This structure data allows us to effectively create models that capture the causal links between factors. Likewise, with high levels of zeros we want to know why there are lots of zeros? Are the Zeros True Zeros? or are they false zeros? 
+
+-  A false zero is often called non-detections, as with the experimental fish example, if we have a net with holes bigger than a certain size of fish we will get lots of zeros for that fish, even if they were in the net but just swam through before we counted the sample. 
+
+-  A true zero would be there were non of that fish there. This is almost impossible to know for sure but if we suspect the zeros are true zeros (we didn't use a net, we used a bucket and nothing could escape if it was there) then we can model those zeros as well as the counts we do get in a very similar way. 
+
+We need to decide if we want to model the process of the zeros occuring or not. This will be case specific.
+
+## Zero Inflated Poisson Data
+
+What better way to explore poisson models than with fish data. We will use the remotes package to install a package from github called stats4nr. Within this package there is a fishing data set of fish caught in counts with livebait, whether they came in a camper, number of persons in the group and number of children in the group. 
+
+```{r}
+
+#install.packages("remotes")
+#remotes::install_github("mbrussell/stats4nr")
+
+library(stats4nr)
+library(performance)
+library(tidyverse)
+
+data(fishing)
+
+summary(fishing)
+
+glm1<-glm(count~persons + child + camper,family = "poisson", data = fishing)
+
+check_model(glm1)
+
+```
+
+As expected this isnt very good at all, with much of the residuals all around zero, maybe there are too many zeros? Lets look at the distribution of count data. 
+
+```{r}
+
+ggplot(fishing)+
+  geom_bar(aes(count),fill="darkcyan")+
+  labs(x="Count of Fish Caught", y="Count")+
+  theme_classic()
+
+
+```
+
+Well there are a lot of zeros there! But remember poisson will break down when the variance isn't proportional to the expected value, so we cal look at the variance and the mean and see how similar they are.
+
+
+```{r}
+
+mean(fishing$count)
+
+var(fishing$count)
+
+```
+
+Definitely not. This shows extreme over dispersion. We have discussed using a Negative Binomial model for this situation. But as the name of tutorial shows we are looking at Zero-Inflated models. But lets try the negative binomial anyway..
+
+
+```{r}
+
+library(MASS)
+
+glm2<- glm.nb(count ~ persons + child + camper, 
+              data = fishing)
+
+check_model(glm2)
+
+```
+
+It does go some of the way, but there are still issues around the zero values in the Homogeneity of variance plot! Okay lets get on task then, we will use the glmmTMB package to get a true ZIP family, which acts just as glm does but we have two models, one for the counts, one for the zero inflated bit. Again we will install from github as glmmTMB is very particular about how it is installed and its dependencies.
+
+```{r}
+#remotes::install_github("glmmTMB/glmmTMB/glmmTMB")
+library(glmmTMB)
+
+glm3 <- glmmTMB(count ~ persons + child + camper, zi = ~ 1,
+                 data = fishing, family = poisson)
+
+summary(glm3)
+
+check_model(glm3)
+
+ModelOutputs<-data.frame(Fitted=fitted(glm3),
+                  Residuals=resid(glm3))
+
+p3<-ggplot(ModelOutputs)+
+    geom_point(aes(x=Fitted,y=Residuals))+
+    theme_classic()+
+    labs(y="Residuals",x="Fitted Values")
+
+p4<-ggplot(ModelOutputs) +
+    stat_qq(aes(sample=Residuals))+
+    stat_qq_line(aes(sample=Residuals))+
+    theme_classic()+
+    labs(y="Sample Quartiles",x="Theoretical Quartiles")
+
+
+p3+p4
+
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

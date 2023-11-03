@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>(General) Linear Models in R - Regression Analysis Use and Examples</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="13_GLMUsageProblems_files/libs/clipboard/clipboard.min.js"></script>
+<script src="13_GLMUsageProblems_files/libs/quarto-html/quarto.js"></script>
+<script src="13_GLMUsageProblems_files/libs/quarto-html/popper.min.js"></script>
+<script src="13_GLMUsageProblems_files/libs/quarto-html/tippy.umd.min.js"></script>
+<script src="13_GLMUsageProblems_files/libs/quarto-html/anchor.min.js"></script>
+<link href="13_GLMUsageProblems_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="13_GLMUsageProblems_files/libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="13_GLMUsageProblems_files/libs/bootstrap/bootstrap.min.js"></script>
+<link href="13_GLMUsageProblems_files/libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="13_GLMUsageProblems_files/libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+
+
+</head>
+
+<body>
+
+<div id="quarto-content" class="page-columns page-rows-contents page-layout-article toc-left">
+<div id="quarto-sidebar-toc-left" class="sidebar toc-left">
+  <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#common-issues-with-glms" id="toc-common-issues-with-glms" class="nav-link active" data-scroll-target="#common-issues-with-glms">Common Issues with GLMs <img src="Images/logo.png" align="right" height="138.5"></a></li>
+  <li><a href="#gaussian-example" id="toc-gaussian-example" class="nav-link" data-scroll-target="#gaussian-example">Gaussian Example</a>
+  <ul class="collapse">
+  <li><a href="#data-loading---lets-go-bak-to-penguins" id="toc-data-loading---lets-go-bak-to-penguins" class="nav-link" data-scroll-target="#data-loading---lets-go-bak-to-penguins">Data Loading - Lets go Bak to Penguins</a>
+  <ul class="collapse">
+  <li><a href="#step-one---scienctific-model-to-stats-model" id="toc-step-one---scienctific-model-to-stats-model" class="nav-link" data-scroll-target="#step-one---scienctific-model-to-stats-model">Step One - Scienctific Model to Stats Model</a></li>
+  <li><a href="#step-two---resonse-variable-distribution" id="toc-step-two---resonse-variable-distribution" class="nav-link" data-scroll-target="#step-two---resonse-variable-distribution">Step Two - Resonse Variable Distribution</a></li>
+  <li><a href="#step-three---organising-fixed-effects" id="toc-step-three---organising-fixed-effects" class="nav-link" data-scroll-target="#step-three---organising-fixed-effects">Step Three - Organising Fixed Effects</a></li>
+  <li><a href="#step-four---assessing-model-functioning" id="toc-step-four---assessing-model-functioning" class="nav-link" data-scroll-target="#step-four---assessing-model-functioning">Step Four - Assessing Model Functioning</a></li>
+  </ul></li>
+  <li><a href="#what-is-wrong-and-how-do-we-fix-it" id="toc-what-is-wrong-and-how-do-we-fix-it" class="nav-link" data-scroll-target="#what-is-wrong-and-how-do-we-fix-it">What is wrong and How do we fix it?</a>
+  <ul class="collapse">
+  <li><a href="#wrong-distribution" id="toc-wrong-distribution" class="nav-link" data-scroll-target="#wrong-distribution">1) Wrong Distribution</a></li>
+  <li><a href="#wrong-model-structure" id="toc-wrong-model-structure" class="nav-link" data-scroll-target="#wrong-model-structure">2) Wrong Model Structure</a></li>
+  <li><a href="#inherent-bias-in-sampling" id="toc-inherent-bias-in-sampling" class="nav-link" data-scroll-target="#inherent-bias-in-sampling">3) Inherent Bias in Sampling</a></li>
+  <li><a href="#zero-or-one-inflated-data" id="toc-zero-or-one-inflated-data" class="nav-link" data-scroll-target="#zero-or-one-inflated-data">4) Zero or One Inflated Data</a></li>
+  </ul></li>
+  <li><a href="#solution" id="toc-solution" class="nav-link" data-scroll-target="#solution">Solution</a></li>
+  </ul></li>
+  <li><a href="#poisson-with-overdispersion" id="toc-poisson-with-overdispersion" class="nav-link" data-scroll-target="#poisson-with-overdispersion">Poisson with Overdispersion</a>
+  <ul class="collapse">
+  <li><a href="#galapagos" id="toc-galapagos" class="nav-link" data-scroll-target="#galapagos">Galapagos</a></li>
+  </ul></li>
+  <li><a href="#caveats" id="toc-caveats" class="nav-link" data-scroll-target="#caveats">Caveats</a></li>
+  </ul>
+</nav>
+</div>
+<div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+</div>
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">(General) Linear Models in R - Regression Analysis Use and Examples</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="common-issues-with-glms" class="level1">
+<h1>Common Issues with GLMs <img src="Images/logo.png" align="right" height="138.5"></h1>
+</section>
+<section id="gaussian-example" class="level1">
+<h1>Gaussian Example</h1>
+<p>So we have done multiple step by step guides of GLMs with different distributions and how to check assumptions are okay, and surprise surprise they have been fine or at least acceptable for our purposes. What happens when it isn’t acceptable? Following the step by step processes we will probably find issues at the checking residuals stage. So here we will make a Gaussian model, check the residuals and see some issues, then we will work out the best ways to deal with these problems. We won’t go through how to summarise and then interpret results from these models as once we are happy the methods will be the same as the other GLM tutorials.</p>
+<section id="data-loading---lets-go-bak-to-penguins" class="level2">
+<h2 class="anchored" data-anchor-id="data-loading---lets-go-bak-to-penguins">Data Loading - Lets go Bak to Penguins</h2>
+<p>We will use the Penguins data set again, but this time we will not take into consideration the causal implications of Sex or Species for the morphometric bill_depth_mm. This would not make any sense with a dataset where different species and different sexes of these species are present.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("palmerpenguins")</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.3     ✔ readr     2.1.4
+✔ forcats   1.0.0     ✔ stringr   1.5.0
+✔ ggplot2   3.4.3     ✔ tibble    3.2.1
+✔ lubridate 1.9.2     ✔ tidyr     1.3.0
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(performance)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(penguins)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>penguins_noNAs<span class="ot">&lt;-</span>penguins<span class="sc">%&gt;%</span> </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">drop_na</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="step-one---scienctific-model-to-stats-model" class="level3">
+<h3 class="anchored" data-anchor-id="step-one---scienctific-model-to-stats-model">Step One - Scienctific Model to Stats Model</h3>
+<p><img src="Images/lter_penguins.png" align="right" height="138.5"></p>
+<p>Here we will see if the effect of flipper length on the depth of the bill.</p>
+<p>This is a fairly simple model with one fixed effect and can be written as:</p>
+<p>Bill Depth ~ Flipper Length</p>
+</section>
+<section id="step-two---resonse-variable-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="step-two---resonse-variable-distribution">Step Two - Resonse Variable Distribution</h3>
+<p>As before when we modelled flipper length, bill depth is technically Gamma distributed but a linear model will work well.</p>
+</section>
+<section id="step-three---organising-fixed-effects" class="level3">
+<h3 class="anchored" data-anchor-id="step-three---organising-fixed-effects">Step Three - Organising Fixed Effects</h3>
+<p>Our data are fairly well distributed across the values, although there are two clear peaks. <em>HINT HINT</em> - This might cause issues if we haven’t taken into consideration why there are two peaks (one of which is twice the height of the other).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(penguins_noNAs,<span class="fu">aes</span>(<span class="at">x=</span>flipper_length_mm))<span class="sc">+</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">fill=</span><span class="st">"darkcyan"</span>,<span class="at">alpha=</span><span class="fl">0.7</span>)<span class="sc">+</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_classic</span>()<span class="sc">+</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x=</span><span class="st">"Flipper Length (mm)"</span>,<span class="at">y=</span><span class="st">"Density"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="13_GLMUsageProblems_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>As we will pretend these look fine, we shall fit out model with a Gaussian distribution.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>lm1<span class="ot">&lt;-</span><span class="fu">lm</span>(bill_depth_mm<span class="sc">~</span>flipper_length_mm,<span class="at">data=</span>penguins_noNAs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="step-four---assessing-model-functioning" class="level3">
+<h3 class="anchored" data-anchor-id="step-four---assessing-model-functioning">Step Four - Assessing Model Functioning</h3>
+<p>We can use the check_model() function to assess the residuals from the performance package.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(lm1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Not enough model terms in the conditional part of the model to check for
+  multicollinearity.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="13_GLMUsageProblems_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>Ahhh No, this looks pretty bad. Well the qqnorm plot looks good actually, but the residuals vs fitted values has clear patterns that cannot be ignored.</p>
+</section>
+</section>
+<section id="what-is-wrong-and-how-do-we-fix-it" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-wrong-and-how-do-we-fix-it">What is wrong and How do we fix it?</h2>
+<p>So for us to see such strong patterns in our residuals vs fitted plot there are a number of different issues that could be causing this:</p>
+<ol type="1">
+<li><p>We have used the wrong distribution,</p></li>
+<li><p>We haven’t modelled the structure of the data properly,</p></li>
+<li><p>We have ignored issues in the sampling that created inherent bias in the data,</p></li>
+<li><p>Our data have excessive numbers of 0s (either caused by our sampling methods or precision issues).</p></li>
+</ol>
+<section id="wrong-distribution" class="level3">
+<h3 class="anchored" data-anchor-id="wrong-distribution">1) Wrong Distribution</h3>
+<p>If we have used the wrong distribution we should remodel with the correct distribution. This can happen especially for poisson models where there is high levels of variance. The poisson distribution expects variance to be proportional to the expected value. When there is significant over dispersion of values we can use a different distribution called the negative binomial distribution.</p>
+</section>
+<section id="wrong-model-structure" class="level3">
+<h3 class="anchored" data-anchor-id="wrong-model-structure">2) Wrong Model Structure</h3>
+<p>If we have modelled the data structure incorrectly, i.e.&nbsp;ignored the difference in the relationship of bill depth and flipper depending on different species, then we need to include that structure in the model. Sometimes this will be some sort of hierarchy, repeat measures or multi-level structure, to model this correctly we will need to use mixed effect or multi-level models (General Linear Mixed Effect Models: GLMMs, we will go through these in future tutorials).</p>
+</section>
+<section id="inherent-bias-in-sampling" class="level3">
+<h3 class="anchored" data-anchor-id="inherent-bias-in-sampling">3) Inherent Bias in Sampling</h3>
+<p>This is a more complex issue. This could, for example, be that we only sampled male gentoo penguins and female chinstrap penguins, thus our ability to split by sex and species to model the data structure properly will be impossible. In many situations, if we know the bias we could perhaps model within one of the groups, just male gentoo penguins, but this would mean our model was only applicable to this group. Other times we may have a sampling cut off/threshold, which may or may not be acceptable. For example, when measuring penguins there may be ethical issues/sampling protocols of measuring individuals smaller than a certain size, as it could harm their parent-chick relationship, or cause too much distress to the individual. This will effectively mean you miss data below a certain size. Often this can be acceptable as long as the interpretation of the model takes this into consideration.</p>
+</section>
+<section id="zero-or-one-inflated-data" class="level3">
+<h3 class="anchored" data-anchor-id="zero-or-one-inflated-data">4) Zero or One Inflated Data</h3>
+<p>Zero (or one) inflation of data can have multiple root causes, such as sampling bias as mentioned above, also subsetting of multivariate datasets e.g.&nbsp;we have catch data for a experimental trawls. From the trawls we get abundance per trawl of all the different species caught, but we are interested in just one species and its abundance. Sometimes this means trawls will have high numbers of zeros for this species. Sometimes zeros will not cause issues but sometimes high numbers of zeros will cause clear patterns in both the residuals vs fitted and qqnorm plots. When this happens we can employ zero inflated or zero adjusted versions of the model we want. This is effectively creating two models in sequence. Firstly, we model the presence or absence with a Bernoulli model, then when there is presence we model all non-zero values with the desired distribution (We will also explore these models in a future tutorial).</p>
+</section>
+</section>
+<section id="solution" class="level2">
+<h2 class="anchored" data-anchor-id="solution">Solution</h2>
+<p>While we could go down the GLMM route here, we can also model the species into our model to sort the issues we found.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>lm2<span class="ot">&lt;-</span><span class="fu">lm</span>(bill_depth_mm<span class="sc">~</span>flipper_length_mm<span class="sc">*</span>species,<span class="at">data=</span>penguins_noNAs)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(lm2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Model has interaction terms. VIFs might be inflated.
+  You may check multicollinearity among predictors of a model without
+  interaction terms.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="13_GLMUsageProblems_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>This is a lot better, but again we can see two clear groups of points with different spreads, what other element of our data has two factors that we may have missed?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>lm3<span class="ot">&lt;-</span><span class="fu">lm</span>(bill_depth_mm<span class="sc">~</span>flipper_length_mm<span class="sc">*</span>species<span class="sc">+</span>sex,<span class="at">data=</span>penguins_noNAs)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(lm3)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Model has interaction terms. VIFs might be inflated.
+  You may check multicollinearity among predictors of a model without
+  interaction terms.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="13_GLMUsageProblems_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+<p>This is better, but not perfect as we still see some patters, but generally our points are more evenly distributed above and below the 0 line.</p>
+</section>
+</section>
+<section id="poisson-with-overdispersion" class="level1">
+<h1>Poisson with Overdispersion</h1>
+<section id="galapagos" class="level2">
+<h2 class="anchored" data-anchor-id="galapagos">Galapagos</h2>
+<p>Here we will bring the Galapagos dataset back. When we used this for a poisson model we talked about it having high levels of over dispersion. We ignored it before to give the example, but lets now actually take action.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(faraway)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(gala)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>glm1<span class="ot">&lt;-</span><span class="fu">glm</span>(Species<span class="sc">~</span>Elevation<span class="sc">+</span>Nearest,<span class="at">data=</span>gala, <span class="at">family=</span> <span class="st">"poisson"</span>)</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(glm1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="13_GLMUsageProblems_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>So how do we the fit a negative binomial model? We need to load another package as the negative binomial distribution in glm() needs to already know the overdispersion, whereas we won’t know it and will want to estimate it within the model! To do this we can use the glm.nb() function from the MASS package. Note of caution: the MASS package has a function called select() this will conflict with the select function from dplyr we use for data manipulation - Be aware!</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">#install.packages("MASS")</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(MASS)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+Attaching package: 'MASS'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following object is masked from 'package:dplyr':
+
+    select</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>glm2<span class="ot">&lt;-</span><span class="fu">glm.nb</span>(Species<span class="sc">~</span>Elevation<span class="sc">+</span>Nearest,<span class="at">data=</span>gala)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">check_model</span>(glm2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="13_GLMUsageProblems_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>As we can see this is a better residuals check. As mentioned before when we used this data set there are very few data points so we are very unlikely to get a perfect model fit (At least not with a simple glm).</p>
+</section>
+</section>
+<section id="caveats" class="level1">
+<h1>Caveats</h1>
+<p>When dealing with issues of overdispersion there is often discussion of quasi- families. However, they are not true Maximum Likelihood models and will mostly come up with the same results as Negative Binomial.</p>
+</section>
+
+</main>
+<!-- /main column -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>

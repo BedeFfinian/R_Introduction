@@ -57,6 +57,7 @@ So lets apply our model. lm() is a function in base r that allows us to create a
 
 lm2.1<-lm(flipper_length_mm~species*sex,data=penguins_noNAs)
 
+
 ```
 
 ### Step Four - Assessing Model Functioning

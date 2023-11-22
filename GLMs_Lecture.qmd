@@ -152,36 +152,224 @@ ResidualsGaus<-data.frame(y=yGaus,u=uGaus,x=xGaus) %>%
 :::
 :::
 
+::::: {.columns}
+
+:::: {.column width="50%"}
 ::: {.incremental}
 
-- [Statistical Model Formulation:]{style="font-size: 50px;left: 500px;"}
+- [1. Statistical Model Formulation:]{style="font-size: 50px;left: 500px;"}
 
-    - [What is the relationship we want to assess?]{style="font-size: 40px;"}
+    - [What is the relationship we want to assess? $y$ is caused by $x$ but is influenced by $z$]{style="font-size: 40px;"}
 
-    - [Howe do our data link to it?]{style="font-size: 40px;"}
+:::
+::::
 
-    - [$y$ is caused by $x$ but is influenced by $z$]{style="font-size: 40px;"}
+::: {.column width="50%"}
+![](Images/DagImg.png){height="850"}
+:::
 
-- [Response Variable Distribution:]{style="font-size: 50px;left: 500px;"}
+:::::
+
+
+## Practical Analysis Steps {style="font-size: 60px; font-weight: bold;"}
+
+::: {.absolute top="0" left="95%"}
+::: {.sectionhead}
+[1]{style="opacity:0.25"} 2 [3 4 5 6]{style="opacity:0.25"}
+:::
+:::
+
+::::: {.columns}
+
+:::: {.column width="50%"}
+
+- [1. Statistical Model Formulation:]{style="font-size: 50px;left: 500px;"}
+
+    - [What is the relationship we want to assess? $y$ is caused by $x$ but is influenced by $z$]{style="font-size: 40px;"}
+
+::: {.incremental}
+
+- [2. Response Variable Distribution:]{style="font-size: 50px;left: 500px;"}
 
     - [Gaussian? Binomial? Poisson?]{style="font-size: 40px;"}
 
-- [Organising Fixed Effects:]{style="font-size: 50px;left: 500px;"}
 
-    - [Continuous? Relatable scale? 2001-2010 is more complex than year 1-10]{style="font-size: 40px;"}
+:::
+::::
+
+::: {.column width="50%"}
+![](Images/Distributions.png){height="850" left="65%"}
+:::
+
+:::::
+
+## Practical Analysis Steps {style="font-size: 60px; font-weight: bold;"}
+
+::: {.absolute top="0" left="95%"}
+::: {.sectionhead}
+[1]{style="opacity:0.25"} 2 [3 4 5 6]{style="opacity:0.25"}
+:::
+:::
+
+::::: {.columns}
+
+:::: {.column width="50%"}
+
+- [1. Statistical Model Formulation:]{style="font-size: 50px;left: 500px;"}
+
+    - [What is the relationship we want to assess? $y$ is caused by $x$ but is influenced by $z$]{style="font-size: 40px;"}
+
+- [2. Response Variable Distribution:]{style="font-size: 50px;left: 500px;"}
+
+    - [Gaussian? Binomial? Poisson?]{style="font-size: 40px;"}
+
+::: {.incremental}
+
+- [3. Organising Fixed Effects:]{style="font-size: 50px;left: 500px;"}
+
+    - [Continuous? Relatable scale?]{style="font-size: 40px;"}
 
     - [Groups are ordered factors? No Order?]{style="font-size: 40px;"}
 
-- [Assessing Model Functioning:]{style="font-size: 50px;left: 500px;"}
+:::
+::::
+
+::: {.column width="50%"}
+![](Images/Groups.jpeg){height="850" left="65%"}
+:::
+
+:::::
+
+## Practical Analysis Steps {style="font-size: 60px; font-weight: bold;"}
+
+::: {.absolute top="0" left="95%"}
+::: {.sectionhead}
+[1]{style="opacity:0.25"} 2 [3 4 5 6]{style="opacity:0.25"}
+:::
+:::
+
+::::: {.columns}
+
+:::: {.column width="50%"}
+
+- [1. Statistical Model Formulation:]{style="font-size: 50px;left: 500px;"}
+
+    - [What is the relationship we want to assess? $y$ is caused by $x$ but is influenced by $z$]{style="font-size: 40px;"}
+
+- [2. Response Variable Distribution:]{style="font-size: 50px;left: 500px;"}
+
+    - [Gaussian? Binomial? Poisson?]{style="font-size: 40px;"}
+
+- [3. Organising Fixed Effects:]{style="font-size: 50px;left: 500px;"}
+
+    - [Continuous? Relatable scale?]{style="font-size: 40px;"}
+
+    - [Groups are ordered factors? No Order?]{style="font-size: 40px;"}
+
+::: {.incremental}
+
+- [4. Assessing Model Functioning:]{style="font-size: 50px;left: 500px;"}
 
     - [Assess assumptions of model, check residuals etc.]{style="font-size: 40px;"}
 
-- [Model Interpretation:]{style="font-size: 50px;left: 500px;"}
+:::
+::::
+
+::: {.column width="50%"}
+![](Images/Checks.png){height="850" left="65%"}
+:::
+
+:::::
+
+## Practical Analysis Steps {style="font-size: 60px; font-weight: bold;"}
+
+::: {.absolute top="0" left="95%"}
+::: {.sectionhead}
+[1]{style="opacity:0.25"} 2 [3 4 5 6]{style="opacity:0.25"}
+:::
+:::
+
+
+::::: {.columns}
+
+:::: {.column width="50%"}
+
+- [1. Statistical Model Formulation:]{style="font-size: 50px;left: 500px;"}
+
+    - [What is the relationship we want to assess? $y$ is caused by $x$ but is influenced by $z$]{style="font-size: 40px;"}
+
+- [2. Response Variable Distribution:]{style="font-size: 50px;left: 500px;"}
+
+    - [Gaussian? Binomial? Poisson?]{style="font-size: 40px;"}
+
+- [3. Organising Fixed Effects:]{style="font-size: 50px;left: 500px;"}
+
+    - [Continuous? Relatable scale?]{style="font-size: 40px;"}
+
+    - [Groups are ordered factors? No Order?]{style="font-size: 40px;"}
+
+- [4. Assessing Model Functioning:]{style="font-size: 50px;left: 500px;"}
+
+    - [Assess assumptions of model, check residuals etc.]{style="font-size: 40px;"}
+
+::: {.incremental}
+
+- [5. Model Interpretation:]{style="font-size: 50px;left: 500px;"}
 
     - [Plot model results in relation to our original question]{style="font-size: 40px;"}
 
+
+:::
+::::
+
+::: {.column width="50%"}
+![](Images/Example_Plot.png){height="850" left="65%"}
 :::
 
+:::::
+
+## Practical Analysis Steps {style="font-size: 60px; font-weight: bold;"}
+
+::: {.absolute top="0" left="95%"}
+::: {.sectionhead}
+[1]{style="opacity:0.25"} 2 [3 4 5 6]{style="opacity:0.25"}
+:::
+:::
+
+::::: {.columns}
+
+:::: {.column width="50%"}
+
+- [1. Statistical Model Formulation:]{style="font-size: 50px;left: 500px;"}
+
+    - [What is the relationship we want to assess? $y$ is caused by $x$ but is influenced by $z$]{style="font-size: 40px;"}
+
+- [2. Response Variable Distribution:]{style="font-size: 50px;left: 500px;"}
+
+    - [Gaussian? Binomial? Poisson?]{style="font-size: 40px;"}
+
+- [3. Organising Fixed Effects:]{style="font-size: 50px;left: 500px;"}
+
+    - [Continuous? Relatable scale?]{style="font-size: 40px;"}
+
+    - [Groups are ordered factors? No Order?]{style="font-size: 40px;"}
+
+- [4. Assessing Model Functioning:]{style="font-size: 50px;left: 500px;"}
+
+    - [Assess assumptions of model, check residuals etc.]{style="font-size: 40px;"}
+
+
+- [5. Model Interpretation:]{style="font-size: 50px;left: 500px;"}
+
+    - [Plot model results in relation to our original question]{style="font-size: 40px;"}
+
+::::
+
+::: {.column width="50%"}
+![](Images/Example_Plot.png){height="850" left="65%"}
+:::
+
+:::::
 
 ## Data Types (Population){style="font-size: 60px; font-weight: bold;"}
 
@@ -192,7 +380,11 @@ ResidualsGaus<-data.frame(y=yGaus,u=uGaus,x=xGaus) %>%
 :::
 :::
 
-::: {.incremental .centre}
+::::: {.columns}
+
+:::: {.column width="50%"}
+
+::: {.incremental}
 
 - [Response Data Types (Dependent Variable):]{style="font-size: 50px"}
 
@@ -217,8 +409,13 @@ ResidualsGaus<-data.frame(y=yGaus,u=uGaus,x=xGaus) %>%
     - [Combinations of Above]{style="font-size: 40px;"}
 
 :::
+::::
 
+:::: {.column width="50%"}
+![](Images/Distributions.png){height="850" left="65%"}
+::::
 
+:::::
 
 ## Continuous and All Real Numbers: Gaussian {style="font-size: 60px; font-weight: bold;"}
 

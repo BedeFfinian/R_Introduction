@@ -341,7 +341,7 @@ glm2<-glm(affairs_bin~Children*Yearsmarried+Gender+Religiousness_fct,data=Affair
 #| fig.width: 8
 #| fig.height: 8
 
-check_model(glm2)
+plot(glm2)
 
 ```
 

@@ -12,7 +12,7 @@ format:
 
 So we have done multiple step by step guides of GLMs with different distributions and how to check assumptions are okay, and surprise surprise they have been fine or at least acceptable for our purposes. What happens when it isn't acceptable? Following the step by step processes we will probably find issues at the checking residuals stage. So here we will make a Gaussian model, check the residuals and see some issues, then we will work out the best ways to deal with these problems. We won't go through how to summarise and then interpret results from these models as once we are happy the methods will be the same as the other GLM tutorials.
 
-## Data Loading - Lets go Bak to Penguins
+## Data Loading - Lets go Back to Penguins
 
 We will use the Penguins data set again, but this time we will not take into consideration the causal implications of Sex or Species for the morphometric bill_depth_mm. This would not make any sense with a dataset where different species and different sexes of these species are present.
 

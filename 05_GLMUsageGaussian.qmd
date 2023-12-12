@@ -27,7 +27,6 @@ penguins_noNAs<-penguins%>%
   drop_na()
 
 
-
 ```
 
 ## Modelling with Categorical Predictor Variables

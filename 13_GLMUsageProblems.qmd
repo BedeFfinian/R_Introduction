@@ -22,7 +22,7 @@ We will use the Penguins data set again, but this time we will not take into con
 
 library(tidyverse)
 library(palmerpenguins)
-library(performance)
+library(patchwork)
 
 data(penguins)
 
@@ -80,8 +80,22 @@ We can use the check_model() function to assess the residuals from the performan
 #| fig.width: 8
 #| fig.height: 8
 
-check_model(lm1)
+ModelOutputs<-data.frame(Fitted=fitted(lm1),
+                  Residuals=resid(lm1))
 
+p1<-ggplot(ModelOutputs)+
+    geom_point(aes(x=Fitted,y=Residuals))+
+    theme_classic()+
+    labs(y="Residuals",x="Fitted Values")
+
+p2<-ggplot(ModelOutputs) +
+    stat_qq(aes(sample=Residuals))+
+    stat_qq_line(aes(sample=Residuals))+
+    theme_classic()+
+    labs(y="Sample Quartiles",x="Theoretical Quartiles")
+
+
+p1+p2
 ```
 
 Ahhh No, this looks pretty bad. Well the qqnorm plot looks good actually, but the residuals vs fitted values has clear patterns that cannot be ignored. 
@@ -125,8 +139,22 @@ While we could go down the GLMM route here, we can also model the species into o
 
 lm2<-lm(bill_depth_mm~flipper_length_mm*species,data=penguins_noNAs)
 
-check_model(lm2)
+ModelOutputs<-data.frame(Fitted=fitted(lm2),
+                  Residuals=resid(lm2))
 
+p1<-ggplot(ModelOutputs)+
+    geom_point(aes(x=Fitted,y=Residuals))+
+    theme_classic()+
+    labs(y="Residuals",x="Fitted Values")
+
+p2<-ggplot(ModelOutputs) +
+    stat_qq(aes(sample=Residuals))+
+    stat_qq_line(aes(sample=Residuals))+
+    theme_classic()+
+    labs(y="Sample Quartiles",x="Theoretical Quartiles")
+
+
+p1+p2
 ```
 
 This is a lot better, but again we can see two clear groups of points with different spreads, what other element of our data has two factors that we may have missed?
@@ -138,8 +166,22 @@ This is a lot better, but again we can see two clear groups of points with diffe
 
 lm3<-lm(bill_depth_mm~flipper_length_mm*species+sex,data=penguins_noNAs)
 
-check_model(lm3)
+ModelOutputs<-data.frame(Fitted=fitted(lm3),
+                  Residuals=resid(lm3))
 
+p1<-ggplot(ModelOutputs)+
+    geom_point(aes(x=Fitted,y=Residuals))+
+    theme_classic()+
+    labs(y="Residuals",x="Fitted Values")
+
+p2<-ggplot(ModelOutputs) +
+    stat_qq(aes(sample=Residuals))+
+    stat_qq_line(aes(sample=Residuals))+
+    theme_classic()+
+    labs(y="Sample Quartiles",x="Theoretical Quartiles")
+
+
+p1+p2
 ```
 
 This is better, but not perfect as we still see some patters, but generally our points are more evenly distributed above and below the 0 line. 
@@ -158,8 +200,22 @@ data(gala)
 
 glm1<-glm(Species~Elevation+Nearest,data=gala, family= "poisson")
 
-check_model(glm1)
+ModelOutputs<-data.frame(Fitted=fitted(glm1),
+                  Residuals=resid(glm1))
 
+p1<-ggplot(ModelOutputs)+
+    geom_point(aes(x=Fitted,y=Residuals))+
+    theme_classic()+
+    labs(y="Residuals",x="Fitted Values")
+
+p2<-ggplot(ModelOutputs) +
+    stat_qq(aes(sample=Residuals))+
+    stat_qq_line(aes(sample=Residuals))+
+    theme_classic()+
+    labs(y="Sample Quartiles",x="Theoretical Quartiles")
+
+
+p1+p2
 ```
 
 So how do we the fit a negative binomial model? We need to load another package as the negative binomial distribution in glm() needs to already know the overdispersion, whereas we won't know it and will want to estimate it within the model! To do this we can use the glm.nb() function from the MASS package. Note of caution: the MASS package has a function called select() this will conflict with the select function from dplyr we use for data manipulation - Be aware!
@@ -171,8 +227,22 @@ library(MASS)
 
 glm2<-glm.nb(Species~Elevation+Nearest,data=gala)
 
-check_model(glm2)
+ModelOutputs<-data.frame(Fitted=fitted(glm2),
+                  Residuals=resid(glm2))
 
+p1<-ggplot(ModelOutputs)+
+    geom_point(aes(x=Fitted,y=Residuals))+
+    theme_classic()+
+    labs(y="Residuals",x="Fitted Values")
+
+p2<-ggplot(ModelOutputs) +
+    stat_qq(aes(sample=Residuals))+
+    stat_qq_line(aes(sample=Residuals))+
+    theme_classic()+
+    labs(y="Sample Quartiles",x="Theoretical Quartiles")
+
+
+p1+p2
 ```
 
 As we can see this is a better residuals check. As mentioned before when we used this data set there are very few data points so we are very unlikely to get a perfect model fit (At least not with a simple glm). 

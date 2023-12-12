@@ -32,7 +32,7 @@ What better way to explore poisson models than with fish data. We will use the r
 #remotes::install_github("mbrussell/stats4nr")
 
 library(stats4nr)
-library(performance)
+library(patchwork)
 library(tidyverse)
 
 data(fishing)
@@ -41,8 +41,22 @@ summary(fishing)
 
 glm1<-glm(count~persons + child + camper,family = "poisson", data = fishing)
 
-check_model(glm1)
+ModelOutputs<-data.frame(Fitted=fitted(glm1),
+                  Residuals=resid(glm1))
 
+p1<-ggplot(ModelOutputs)+
+    geom_point(aes(x=Fitted,y=Residuals))+
+    theme_classic()+
+    labs(y="Residuals",x="Fitted Values")
+
+p2<-ggplot(ModelOutputs) +
+    stat_qq(aes(sample=Residuals))+
+    stat_qq_line(aes(sample=Residuals))+
+    theme_classic()+
+    labs(y="Sample Quartiles",x="Theoretical Quartiles")
+
+
+p1+p2
 ```
 
 As expected this isnt very good at all, with much of the residuals all around zero, maybe there are too many zeros? Lets look at the distribution of count data. 
@@ -82,8 +96,22 @@ library(MASS)
 glm2<- glm.nb(count ~ persons + child + camper, 
               data = fishing)
 
-check_model(glm2)
+ModelOutputs<-data.frame(Fitted=fitted(glm2),
+                  Residuals=resid(glm2))
 
+p1<-ggplot(ModelOutputs)+
+    geom_point(aes(x=Fitted,y=Residuals))+
+    theme_classic()+
+    labs(y="Residuals",x="Fitted Values")
+
+p2<-ggplot(ModelOutputs) +
+    stat_qq(aes(sample=Residuals))+
+    stat_qq_line(aes(sample=Residuals))+
+    theme_classic()+
+    labs(y="Sample Quartiles",x="Theoretical Quartiles")
+
+
+p1+p2
 ```
 
 It does go some of the way, but there are still issues around the zero values in the Homogeneity of variance plot! Okay lets get on task then, we will use the zeroinfl() function from the pscl package. We will need to extract the fitted and residuals to plot ourselves as the check_model() function doesn't support this glm type yet.
@@ -118,7 +146,7 @@ p1+p2
 
 ```
 
-This is a little bit better but still not great. 
+This is still not great. 
 
 ## Zero Inflated Simulated Data
 
@@ -206,8 +234,23 @@ Now lets try model this.
 glm4 <- glm(Count_Zeros ~ MPA*Time,
                  data = df1, family = "poisson")
 
-check_model(glm4)
 
+ModelOutputs<-data.frame(Fitted=fitted(glm4),
+                  Residuals=resid(glm4))
+
+p1<-ggplot(ModelOutputs)+
+    geom_point(aes(x=Fitted,y=Residuals))+
+    theme_classic()+
+    labs(y="Residuals",x="Fitted Values")
+
+p2<-ggplot(ModelOutputs) +
+    stat_qq(aes(sample=Residuals))+
+    stat_qq_line(aes(sample=Residuals))+
+    theme_classic()+
+    labs(y="Sample Quartiles",x="Theoretical Quartiles")
+
+
+p1+p2
 ```
 
 Well this model looks pretty bad, not surprisingly. 

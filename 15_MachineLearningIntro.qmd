@@ -1,0 +1,226 @@
+---
+title: "Machine Learning Introduction"
+format:
+  html:
+    toc: true
+    toc-location: left
+---
+
+# Basic Concepts
+
+So far we have used models to describe data but a lot of times we might want to create a model that is able to predict new data. This may be new data outside of our temporal or spatial range, or outside of our current knowledge base. The best set of tools for predicting new data is generally Machine Learning (ML) methods. 
+
+## Unsupervised ML 
+
+One group of ML models, requiring minimum input, are Unsupervised models do not required training/labelled data and thus require less initial work. These methods will group similar data into groups or clusters. As the vast majority of data is unlabelled Unsupervised models appeal in that they can be applied with no prior work. However, the user will normally define how many groups to split the data into or at what level of similarity to split, and thus may influence the model itself. Generally, these methods are poor at complex prediction tasks and can be easily outperformed by Supervised ML. 
+
+## Supervised ML
+
+Supervised learning algorithms or models are models where we 'train' a model with known and labelled data so that the model can discern patterns that when it is given unknown/unlabelled data it will be able to, hopefully, predict what the label should be. These models can perform both regression (continuous data) or classification (categorical data), but will be highly reliant on the data used to train the model, as values or classes outside of what it has already seen will have much higher inaccuracy. There are a few different types of Supervised ML with varying levels of complexity from General Linear Models (GLMs), K-Nearest Neighbours (KNN), Random Forests (RF), Support Vector Machines (SVMs), eXtreme Gradient Boosting (XGBoost) and Neural Networks (NN).
+
+# General Workflow for Supervised ML
+
+Regardless of the algorithm to be used the general steps to create a ML model is the same:
+
+1). You have a dataset with a labelled response variable (quantitative or qualitative) and one or more predictor variables (can be quantitative or qualitative or a combination, also called features). 
+
+2). These data are split into training data*, testing data. Depending on the amounts of data you have the ratios will vary but often 75/25.
+
+3). The training data are used to train a ML algorithm*.
+
+4). The ML is applied to the testing data to predict what their label should be. 
+
+5). The predicted label is compared to the true label of the testing data, and the accuracy of the model is calculated from the difference/similarity between the predicted and true labels.
+
+
+*For higher accuracy and better model performance, the training data are often split again into folds (often cross validation folds) to repetitively repeat model training with different values elements termed hyper parameters (These are different tuning elements for each different type of model). The different hyper parameter values are used and accuracy is assess on each fold, then the 'best' performing hyper parameter values are selected for the model that is then used to predict on the testing data. 
+
+## Which model type to chose? and why is the data more important?
+
+The most popular ML models are Random Forests (RFs), which require very little hyper parameter training and usually provide good accuracy "off the shelf". XGBoost models perform to higher accuracy once their hyper parameters are effectively trained but are not as good as RF off the shelf, similarly Neural Networks are generally the most accurate and powerful models available but require far more hyper parameter and model architecture to perfect. With all the different ML models the quantity and quality of training data will dictate the eventually ability of the models. For example, none of these models are able to predict a new class when predicting a classification problem, likewise many of these models (but not all) will be unable or very poor at extrapolating outside of the range of the label training values.
+
+# Random Forest with Tidymodels
+
+Here we will go through a worked example of a Random Forest in R. There are many packages for applying machine learning algorithms but to continue on the 'tidy' theme we will utilise the 'tidymodels' ecosystem of packages to apply ML models. Tidymodels brings together many different modelling engines, packages and frameworks, and has a consistent coding style across all of them so that we can swap model type, package or style with minimal effort. 
+
+## ML Modelling steps:
+
+- Pre-process: tidying, splitting and transforming data
+
+- Train: Training the model (with or without hyperparameter training)
+
+- Validate: Testing the model on the testing data and calculating accuracy
+
+
+# Let's Give it a Go
+
+We will actually only need the tidymodels package as it lots all the tidyverse in the background too! But lets bring in our old favourite penguin dataset too!
+
+```{r}
+library(tidymodels)
+library(palmerpenguins)
+```
+
+So the first step in any analysis is to do some basic data exploration i.e. plotting our response variable against other features
+
+We will try classify penguin species based on biometric information.
+
+```{r}
+penguins %>% 
+  ggplot(aes(x=flipper_length_mm,y=bill_length_mm,colour=species))+
+  geom_point()
+```
+
+## Pre-Processing 
+
+The data are already tidy so lots split and then carry out any transformations we might want to do.
+
+```{r}
+
+penguins_noNA<-penguins %>% 
+  drop_na()
+
+splitdata<-initial_split(penguins_noNA)
+
+df_train<-splitdata %>% 
+  training()
+
+df_test<-splitdata %>% 
+  testing()
+
+```
+
+We will be tuning hyper parameters later so we will also split the training data further into 5 cross validation folds. When we look at the fold object we can see that there are 10 sets of the same training data where the split is randomly different each time.
+
+
+```{r}
+
+df_train_folds<-vfold_cv(df_train)
+
+df_train_folds
+
+```
+
+With tidymodels we use recipes to integrate transformations and model formula
+
+For our categorical predictors we will convert them to dummy variables. We will also "prep" and "juice" datasets, which creates a dataset where the recipe hase been applied to it for later on. 
+
+```{r}
+
+penguin_recipe<-recipe(species~.,data=df_train)%>% 
+  step_dummy(island,sex) 
+
+
+penguin_juiced <- prep(penguin_recipe) %>% 
+  juice()
+
+```
+
+
+## Model Building
+
+We now create a model object, we can add specific values to the three hyper parameters, or we can tell the model we will try to tune them across our data folds.
+
+
+```{r}
+tune_spec <- rand_forest(
+  mtry = tune(),
+  trees = 500,
+  min_n = tune()
+) %>%
+  set_mode("classification") %>%
+  set_engine("ranger")
+
+```
+
+
+Once we have the recipe and the model we can then add them to a workflow and tune the model on the folded training data. 
+
+```{r}
+
+tune_wf <- workflow() %>%
+  add_recipe(penguin_recipe) %>%
+  add_model(tune_spec)
+
+tune_res <- tune_grid(
+  tune_wf,
+  resamples = df_train_folds,
+  grid = 10
+)
+
+tune_res
+
+```
+
+Lets plot the results of each fold using the ROC_AUC
+
+```{r}
+tune_res %>%
+  collect_metrics() %>%
+  filter(.metric == "roc_auc") %>%
+  select(mean, min_n, mtry) %>%
+  pivot_longer(min_n:mtry,
+    values_to = "value",
+    names_to = "parameter"
+  ) %>%
+  ggplot(aes(value, mean, color = parameter)) +
+  geom_point(show.legend = FALSE) +
+  facet_wrap(~parameter, scales = "free_x") +
+  labs(x = NULL, y = "AUC")
+
+```
+
+We can see that the best values are low min_n and low mtry. But we can use a function to select the best hyper parameters from this AUC value, then that is our final model.
+
+
+```{r}
+
+best_auc <- select_best(tune_res, "roc_auc")
+
+final_rf <- finalize_model(
+  tune_spec,
+  best_auc
+)
+
+final_rf
+
+```
+
+So this is our model, lets investigate the different features and their importance using the vip package. This is where we use the juiced data set.
+
+```{r}
+
+library(vip)
+
+final_rf %>%
+  set_engine("ranger", importance = "permutation") %>%
+  fit(species~.,data=penguin_juiced
+  ) %>%
+  vip(geom = "point")
+
+```
+
+
+From this we can see that flipper length is the best predictor of species, followed by bill length.
+
+## Validate Model on testing data
+
+Lets prepare the workflow with our final model then apply the model to the testing data, and collect the accuracy metrics.
+
+```{r}
+
+final_wf <- workflow() %>%
+  add_recipe(penguin_recipe) %>%
+  add_model(final_rf)
+
+final_res <- final_wf %>%
+  last_fit(splitdata)
+
+final_res %>%
+  collect_metrics()
+
+```
+
+
+So in this very specific example we have got ridiculously good results in our model. This is not always the case.
+

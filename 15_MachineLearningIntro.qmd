@@ -39,9 +39,13 @@ Regardless of the algorithm to be used the general steps to create a ML model is
 
 The most popular ML models are Random Forests (RFs), which require very little hyper parameter training and usually provide good accuracy "off the shelf". XGBoost models perform to higher accuracy once their hyper parameters are effectively trained but are not as good as RF off the shelf, similarly Neural Networks are generally the most accurate and powerful models available but require far more hyper parameter and model architecture to perfect. With all the different ML models the quantity and quality of training data will dictate the eventually ability of the models. For example, none of these models are able to predict a new class when predicting a classification problem, likewise many of these models (but not all) will be unable or very poor at extrapolating outside of the range of the label training values.
 
+## Theory
+
+We won't go into depth of what each of these models is doing inside these functions as there are very many useful and clear tutorials on the theory behind each different machine learning algorithm. Here we will focus on their application, common mistakes, tricks and challenges. For further reading I would recommend: Julia Silge for tidymodels tutorials (Where I learnt): <https://juliasilge.com/>, for more complicated theory of random forest (although with python code examples): <https://www.analyticsvidhya.com/blog/2021/06/understanding-random-forest/> and for indepth explanation of neural networks I would recommend Jeremy Howards Youtuube channel: <https://www.youtube.com/@howardjeremyp> (again this is mostly from a python coding approach).
+
 # Random Forest with Tidymodels
 
-Here we will go through a worked example of a Random Forest in R. There are many packages for applying machine learning algorithms but to continue on the 'tidy' theme we will utilise the 'tidymodels' ecosystem of packages to apply ML models. Tidymodels brings together many different modelling engines, packages and frameworks, and has a consistent coding style across all of them so that we can swap model type, package or style with minimal effort. 
+Here we will go through a simple worked example of a Random Forest in R. There are many packages for applying machine learning algorithms but to continue on the 'tidy' theme we will utilise the 'tidymodels' ecosystem of packages to apply ML models. Tidymodels brings together many different modelling engines, packages and frameworks, and has a consistent coding style across all of them so that we can swap model type, package or style with minimal effort. 
 
 ## ML Modelling steps:
 

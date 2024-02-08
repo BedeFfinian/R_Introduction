@@ -87,6 +87,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#general-workflow-for-supervised-ml" id="toc-general-workflow-for-supervised-ml" class="nav-link" data-scroll-target="#general-workflow-for-supervised-ml">General Workflow for Supervised ML</a>
   <ul class="collapse">
   <li><a href="#which-model-type-to-chose-and-why-is-the-data-more-important" id="toc-which-model-type-to-chose-and-why-is-the-data-more-important" class="nav-link" data-scroll-target="#which-model-type-to-chose-and-why-is-the-data-more-important">Which model type to chose? and why is the data more important?</a></li>
+  <li><a href="#theory" id="toc-theory" class="nav-link" data-scroll-target="#theory">Theory</a></li>
   </ul></li>
   <li><a href="#random-forest-with-tidymodels" id="toc-random-forest-with-tidymodels" class="nav-link" data-scroll-target="#random-forest-with-tidymodels">Random Forest with Tidymodels</a>
   <ul class="collapse">
@@ -149,6 +150,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="which-model-type-to-chose-and-why-is-the-data-more-important">Which model type to chose? and why is the data more important?</h2>
 <p>The most popular ML models are Random Forests (RFs), which require very little hyper parameter training and usually provide good accuracy “off the shelf”. XGBoost models perform to higher accuracy once their hyper parameters are effectively trained but are not as good as RF off the shelf, similarly Neural Networks are generally the most accurate and powerful models available but require far more hyper parameter and model architecture to perfect. With all the different ML models the quantity and quality of training data will dictate the eventually ability of the models. For example, none of these models are able to predict a new class when predicting a classification problem, likewise many of these models (but not all) will be unable or very poor at extrapolating outside of the range of the label training values.</p>
 </section>
+<section id="theory" class="level2">
+<h2 class="anchored" data-anchor-id="theory">Theory</h2>
+<p>We won’t go into depth of what each of these models is doing inside these functions as there are very many useful and clear tutorials on the theory behind each different machine learning algorithm. Here we will focus on their application, common mistakes, tricks and challenges. For further reading I would recommend: Julia Silge for tidymodels tutorials (Where I learnt): <a href="https://juliasilge.com/" class="uri">https://juliasilge.com/</a>, for more complicated theory of random forest (although with python code examples): <a href="https://www.analyticsvidhya.com/blog/2021/06/understanding-random-forest/" class="uri">https://www.analyticsvidhya.com/blog/2021/06/understanding-random-forest/</a> and for indepth explanation of neural networks I would recommend Jeremy Howards Youtuube channel: <a href="https://www.youtube.com/@howardjeremyp" class="uri">https://www.youtube.com/@howardjeremyp</a> (again this is mostly from a python coding approach).</p>
+</section>
 </section>
 <section id="random-forest-with-tidymodels" class="level1">
 <h1>Random Forest with Tidymodels</h1>
@@ -186,7 +191,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 ✖ dplyr::filter()  masks stats::filter()
 ✖ dplyr::lag()     masks stats::lag()
 ✖ recipes::step()  masks stats::step()
-• Search for functions across packages at https://www.tidymodels.org/find/</code></pre>
+• Use tidymodels_prefer() to resolve common conflicts.</code></pre>
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(palmerpenguins)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
@@ -244,16 +249,16 @@ Attaching package: 'palmerpenguins'</code></pre>
 # A tibble: 10 × 2
    splits           id    
    &lt;list&gt;           &lt;chr&gt; 
- 1 &lt;split [222/27]&gt; Fold01
- 2 &lt;split [222/27]&gt; Fold02
- 3 &lt;split [224/25]&gt; Fold03
- 4 &lt;split [224/25]&gt; Fold04
+ 1 &lt;split [223/26]&gt; Fold01
+ 2 &lt;split [223/26]&gt; Fold02
+ 3 &lt;split [223/26]&gt; Fold03
+ 4 &lt;split [223/26]&gt; Fold04
  5 &lt;split [224/25]&gt; Fold05
- 6 &lt;split [225/24]&gt; Fold06
+ 6 &lt;split [224/25]&gt; Fold06
  7 &lt;split [225/24]&gt; Fold07
  8 &lt;split [225/24]&gt; Fold08
  9 &lt;split [225/24]&gt; Fold09
-10 &lt;split [225/24]&gt; Fold10</code></pre>
+10 &lt;split [226/23]&gt; Fold10</code></pre>
 </div>
 </div>
 <p>With tidymodels we use recipes to integrate transformations and model formula</p>
@@ -302,19 +307,19 @@ Attaching package: 'palmerpenguins'</code></pre>
 # A tibble: 10 × 4
    splits           id     .metrics          .notes          
    &lt;list&gt;           &lt;chr&gt;  &lt;list&gt;            &lt;list&gt;          
- 1 &lt;split [222/27]&gt; Fold01 &lt;tibble [20 × 6]&gt; &lt;tibble [0 × 3]&gt;
- 2 &lt;split [222/27]&gt; Fold02 &lt;tibble [20 × 6]&gt; &lt;tibble [0 × 3]&gt;
- 3 &lt;split [224/25]&gt; Fold03 &lt;tibble [20 × 6]&gt; &lt;tibble [0 × 3]&gt;
- 4 &lt;split [224/25]&gt; Fold04 &lt;tibble [20 × 6]&gt; &lt;tibble [0 × 3]&gt;
+ 1 &lt;split [223/26]&gt; Fold01 &lt;tibble [20 × 6]&gt; &lt;tibble [0 × 3]&gt;
+ 2 &lt;split [223/26]&gt; Fold02 &lt;tibble [20 × 6]&gt; &lt;tibble [0 × 3]&gt;
+ 3 &lt;split [223/26]&gt; Fold03 &lt;tibble [20 × 6]&gt; &lt;tibble [0 × 3]&gt;
+ 4 &lt;split [223/26]&gt; Fold04 &lt;tibble [20 × 6]&gt; &lt;tibble [0 × 3]&gt;
  5 &lt;split [224/25]&gt; Fold05 &lt;tibble [20 × 6]&gt; &lt;tibble [0 × 3]&gt;
- 6 &lt;split [225/24]&gt; Fold06 &lt;tibble [20 × 6]&gt; &lt;tibble [0 × 3]&gt;
+ 6 &lt;split [224/25]&gt; Fold06 &lt;tibble [20 × 6]&gt; &lt;tibble [0 × 3]&gt;
  7 &lt;split [225/24]&gt; Fold07 &lt;tibble [20 × 6]&gt; &lt;tibble [0 × 3]&gt;
  8 &lt;split [225/24]&gt; Fold08 &lt;tibble [20 × 6]&gt; &lt;tibble [0 × 3]&gt;
  9 &lt;split [225/24]&gt; Fold09 &lt;tibble [20 × 6]&gt; &lt;tibble [0 × 3]&gt;
-10 &lt;split [225/24]&gt; Fold10 &lt;tibble [20 × 6]&gt; &lt;tibble [0 × 3]&gt;</code></pre>
+10 &lt;split [226/23]&gt; Fold10 &lt;tibble [20 × 6]&gt; &lt;tibble [0 × 3]&gt;</code></pre>
 </div>
 </div>
-<p>Lets plot the results of each fold using the ROC_AUC</p>
+<p>Lets plot the results of each fold using the ROC_AUC.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>tune_res <span class="sc">%&gt;%</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">collect_metrics</span>() <span class="sc">%&gt;%</span></span>
@@ -351,9 +356,9 @@ Attaching package: 'palmerpenguins'</code></pre>
 <pre><code>Random Forest Model Specification (classification)
 
 Main Arguments:
-  mtry = 8
+  mtry = 3
   trees = 500
-  min_n = 5
+  min_n = 28
 
 Computational engine: ranger </code></pre>
 </div>
@@ -403,8 +408,8 @@ Attaching package: 'vip'</code></pre>
 <pre><code># A tibble: 2 × 4
   .metric  .estimator .estimate .config             
   &lt;chr&gt;    &lt;chr&gt;          &lt;dbl&gt; &lt;chr&gt;               
-1 accuracy multiclass     0.964 Preprocessor1_Model1
-2 roc_auc  hand_till      1.00  Preprocessor1_Model1</code></pre>
+1 accuracy multiclass     0.988 Preprocessor1_Model1
+2 roc_auc  hand_till      0.999 Preprocessor1_Model1</code></pre>
 </div>
 </div>
 <p>So in this very specific example we have got ridiculously good results in our model. This is not always the case.</p>
@@ -416,12 +421,12 @@ Attaching package: 'vip'</code></pre>
 <div class="cell-output cell-output-stdout">
 <pre><code>           Truth
 Prediction  Adelie Chinstrap Gentoo
-  Adelie        33         1      0
-  Chinstrap      0        16      0
-  Gentoo         2         0     32</code></pre>
+  Adelie        39         1      0
+  Chinstrap      0        14      0
+  Gentoo         0         0     30</code></pre>
 </div>
 </div>
-<p>So we can see from this that almost all the predictions are the truth. If you want to see how much the random number generation from before effects the results you can rerun this script with different set.seed() numbers.</p>
+<p>So we can see from this that almost all the predictions are the same as the truth. If you want to see how much the random number generation from before effects the results you can rerun this script with different set.seed() numbers.</p>
 </section>
 </section>
 

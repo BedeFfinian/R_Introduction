@@ -68,12 +68,14 @@ We will try classify penguin species based on biometric information.
 ```{r}
 penguins %>% 
   ggplot(aes(x=flipper_length_mm,y=bill_length_mm,colour=species))+
-  geom_point()
+  geom_point()+
+  theme_classic()
+
 ```
 
 ## Pre-Processing 
 
-The data are already tidy so lots split and then carry out any transformations we might want to do.
+The data are already tidy so lets split and then carry out any transformations we might want to do.
 
 ```{r}
 
@@ -90,12 +92,13 @@ df_test<-splitdata %>%
 
 ```
 
-We will be tuning hyper parameters later so we will also split the training data further into 5 cross validation folds. When we look at the fold object we can see that there are 10 sets of the same training data where the split is randomly different each time.
+We will be tuning hyper parameters later so we will also split the training data further into 5 cross validation folds. When we look at the fold object we can see that there are 10 sets of the same training data where the split is randomly different each time. As this element has randomisation involved we set a seed to make sure we get consistent results each time the code is run. We also want to make sure that the different levels of the response variable is present in both sides of each fold so we set strata to be species.
 
 
 ```{r}
+set.seed(234)
 
-df_train_folds<-vfold_cv(df_train)
+df_train_folds<-vfold_cv(df_train,strata = species)
 
 df_train_folds
 
@@ -142,6 +145,8 @@ tune_wf <- workflow() %>%
   add_recipe(penguin_recipe) %>%
   add_model(tune_spec)
 
+set.seed(234)
+
 tune_res <- tune_grid(
   tune_wf,
   resamples = df_train_folds,
@@ -152,7 +157,7 @@ tune_res
 
 ```
 
-Lets plot the results of each fold using the ROC_AUC
+Lets plot the results of each fold using the ROC_AUC.
 
 ```{r}
 tune_res %>%
@@ -166,7 +171,8 @@ tune_res %>%
   ggplot(aes(value, mean, color = parameter)) +
   geom_point(show.legend = FALSE) +
   facet_wrap(~parameter, scales = "free_x") +
-  labs(x = NULL, y = "AUC")
+  labs(x = NULL, y = "AUC")+
+  theme_classic()
 
 ```
 
@@ -196,7 +202,8 @@ final_rf %>%
   set_engine("ranger", importance = "permutation") %>%
   fit(species~.,data=penguin_juiced
   ) %>%
-  vip(geom = "point")
+  vip(geom = "point")+
+  theme_classic()
 
 ```
 
@@ -224,3 +231,14 @@ final_res %>%
 
 So in this very specific example we have got ridiculously good results in our model. This is not always the case.
 
+We can also create a confusion matrix to compare where inaccuracies lay (i.e. false positives, false negatives?).
+
+```{r}
+
+final_res  %>% 
+  unnest(cols=.predictions) %>% 
+  conf_mat(.pred_class,species)
+
+```
+
+So we can see from this that almost all the predictions are the same as the truth. If you want to see how much the random number generation from before effects the results you can rerun this script with different set.seed() numbers.

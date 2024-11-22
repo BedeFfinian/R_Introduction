@@ -28,7 +28,7 @@ format:
 
 [University of Nantes]{style="font-size: 45px; font-weight: bold;"}
 
-[Winter Semester 2023]{style="font-size: 40px; font-weight: bold;"}
+[Winter Semester 2024]{style="font-size: 40px; font-weight: bold;"}
 
 :::: 
 

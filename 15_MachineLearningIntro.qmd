@@ -126,7 +126,7 @@ penguin_juiced <- prep(penguin_recipe) %>%
 
 ## Model Building
 
-We now create a model object, we can add specific values to the three hyper parameters, or we can tell the model we will try to tune them across our data folds.
+We now create a model object, we can add specific values to the three hyper parameters, or we can tell the model we will try to tune them across our data folds. Here we create the random forest model and tell tidy models it is a classification mode model and we want to use the ranger "engine".
 
 
 ```{r}
